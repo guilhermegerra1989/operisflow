@@ -1,0 +1,96 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: docker.io/postgres:15
+    container_name: operisflow_postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: operisflow_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - operisflow_postgres_data:/var/lib/postgresql/data
+    networks:
+      - operisflow_net
+
+  redis:
+    image: docker.io/redis:7
+    container_name: operisflow_redis
+    ports:
+      - "6379:6379"
+    networks:
+      - operisflow_net
+
+  operisflow-api:
+    build:
+      context: ../apps/operisflow-api
+      dockerfile: ../../infra/Containerfile.api
+    container_name: operisflow_api
+    command: npm run start:dev
+    environment:
+      NODE_ENV: development
+      PORT: 3001
+
+      # Banco
+      DATABASE_URL: postgres://admin:admin123@postgres:5432/operisflow_db
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: admin
+      DB_PASS: admin123
+      DB_NAME: operisflow_db
+
+      # Redis
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    ports:
+      - "3001:3001"
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ../apps/operisflow-api:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      - operisflow_net
+
+  operisflow-web:
+    build:
+      context: ../apps/operisflow-web
+      dockerfile: ../../infra/Containerfile.web
+    container_name: operisflow_web
+    command: npm run dev
+    environment:
+      NODE_ENV: development
+      # Ajuste conforme seu front (Vite/Next/etc)
+      VITE_API_URL: http://localhost:80/api
+      NEXT_PUBLIC_API_URL: http://localhost:80/api
+    ports:
+      - "3000:3000"
+    depends_on:
+      - operisflow-api
+    volumes:
+      - ../apps/operisflow-web:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      - operisflow_net
+
+  nginx:
+    image: docker.io/nginx:latest
+    container_name: operisflow_nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ../infra/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - operisflow-api
+      - operisflow-web
+    networks:
+      - operisflow_net
+
+volumes:
+  operisflow_postgres_data:
+
+networks:
+  operisflow_net:
