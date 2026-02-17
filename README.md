@@ -9,6 +9,8 @@ Este é o projeto OperisFlow, contendo:
 ## Estrutura
 
 
+
+
 ## Start e Stop
 
 Acessar dentro do projeto  apps --> infra e rodar:
@@ -27,3 +29,9 @@ stop:   podman compose down
     podman volume rm operisflow_operisflow_postgres_data 
 
     # (subir projeto novamente)
+
+
+
+
+
+
