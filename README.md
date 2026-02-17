@@ -9,6 +9,16 @@ Este é o projeto OperisFlow, contendo:
 ## Estrutura
 
 
+## Start e Stop
+
+Acessar dentro do projeto  apps --> infra e rodar:
+
+start:  podman compose up
+
+stop:   podman compose down
+
+
+
 ## BD
 
 - infra/db   (todas querys, inserts do banco ficam nessa pasta)
