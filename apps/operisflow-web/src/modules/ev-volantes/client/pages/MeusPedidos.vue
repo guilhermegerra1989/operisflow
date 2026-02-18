@@ -20,10 +20,24 @@ const token: string = localStorage.getItem("token") ?? "";
 onMounted(async () => {
   pedidos.value = await apiGet("/orders/my", token);
 });
+
+function logout() {
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
+  window.location.href = "/ev-volantes/login";
+}
+
 </script>
 
 <template>
   <div class="container">
+
+
+    <!-- HEADER COM NOME E LOGOUT -->
+   <div class="top-bar">
+      <img src="../../../../assets/ev-volantes-logo.png" alt="EV Volantes" class="logo" />
+      <button class="btn-logout" @click="logout">Sair</button>
+    </div>
 
     <!-- BOTÃO NOVO PEDIDO SEMPRE NO TOPO -->
     <router-link to="/ev-volantes/client/novo" class="btn-novo">
@@ -71,18 +85,6 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-
-.btn-novo {
-  display: block;
-  text-align: center;
-  padding: 12px;
-  background: #1e88e5;
-  color: white;
-  border-radius: 10px;
-  font-weight: 700;
-  margin-bottom: 16px;
-  text-decoration: none;
-}
 
 .qty {
   font-size: 13px;
@@ -167,6 +169,48 @@ h2 {
 .status.done {
   background: #cce5ff;
   color: #004085;
+}
+
+/* se ainda não tiver */
+.btn-novo {
+  display: block;
+  text-align: center;
+  padding: 12px;
+  background: #1e88e5;
+  color: white;
+  border-radius: 10px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  text-decoration: none;
+} 
+
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.logo {
+  height: 36px;         /* tamanho ideal para mobile */
+  object-fit: contain;
+}
+
+.btn-logout {
+  background: transparent;
+  border: 1px solid #e53935;
+  color: #e53935;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  max-width: 100px;
+}
+
+.btn-logout:hover {
+  background: #ffebee;
 }
 
 </style>

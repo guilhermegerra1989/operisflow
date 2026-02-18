@@ -21,6 +21,10 @@ onMounted(async () => {
   volantes.value = await apiGet("/volantes", token);
 });
 
+function voltar() {
+  window.location.href = "/ev-volantes/client";
+}
+
 async function criar() {
   if (!volanteId.value || !numeroNotaFiscal.value || !quantidade.value) {
     alert("Preencha volante, nota fiscal e quantidade.");
@@ -49,6 +53,13 @@ async function criar() {
 
 <template>
   <div class="container">
+
+    <!-- HEADER COM NOME E LOGOUT -->
+   <div class="top-bar">
+      <img src="../../../../assets/ev-volantes-logo.png" alt="EV Volantes" class="logo" />
+      <button class="btn-voltar" @click="voltar()">Voltar</button>
+    </div>
+
     <h2>Novo Pedido</h2>
 
     <label>Tipo de Volante *</label>
@@ -101,5 +112,33 @@ async function criar() {
   color: white;
   font-weight: 700;
   font-size: 16px;
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.logo {
+  height: 36px;         /* tamanho ideal para mobile */
+  object-fit: contain;
+}
+
+.btn-voltar {
+  background: transparent;
+  border: 1px solid #e53935;
+  color: #e53935;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  max-width: 100px;
+}
+
+.btn-voltar:hover {
+  background: #ffebee;
 }
 </style>
