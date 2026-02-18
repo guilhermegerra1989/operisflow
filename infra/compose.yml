@@ -27,18 +27,22 @@ services:
   operisflow-api:
     build:
       context: ../apps/operisflow-api
-      dockerfile: ../../infra/Containerfile.api
+      dockerfile: ../../infra/Containerfile.api  # ⬅️ IMPORTANTE: relativo ao context
     container_name: operisflow_api
     command: npm run start:dev
     environment:
       NODE_ENV: development
       PORT: 3001
+
+      # Banco
       DATABASE_URL: postgres://admin:admin123@postgres:5432/operisflow_db
       DB_HOST: postgres
       DB_PORT: 5432
       DB_USER: admin
       DB_PASS: admin123
       DB_NAME: operisflow_db
+
+      # Redis
       REDIS_HOST: redis
       REDIS_PORT: 6379
     ports:
@@ -47,8 +51,7 @@ services:
       - postgres
       - redis
     volumes:
-      - ../apps/operisflow-api:/usr/src/app:Z
-      - /usr/src/app/node_modules
+      - ../apps/operisflow-api:/usr/src/app:Z  # ⬅️ apenas esse volume, sem node_modules
     networks:
       - operisflow_net
 
