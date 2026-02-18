@@ -13,7 +13,10 @@ export class OrdersService {
     });
   }
 
+  
   async create(tenantId: string, userId: string, dto: CreateOrderDto) {
+    console.log('CreateOrderDto recebido:', dto); // ajuda a ver no log
+
     const result = await this.db.query(
       `
       INSERT INTO orders (
@@ -21,10 +24,11 @@ export class OrdersService {
         client_user_id,
         volante_id,
         numero_nota_fiscal,
+        quantidade,
         title,
         description
       )
-      VALUES ($1, $2, $3, $4, $5, $6)
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
       RETURNING *
       `,
       [
@@ -32,6 +36,7 @@ export class OrdersService {
         userId,
         dto.volanteId,
         dto.numeroNotaFiscal,
+        dto.quantidade,
         dto.title,
         dto.description || null,
       ],
@@ -40,14 +45,31 @@ export class OrdersService {
     return result.rows[0];
   }
 
+
   async findMyOrders(tenantId: string, userId: string) {
     const result = await this.db.query(
       `
-      SELECT *
-      FROM orders
-      WHERE tenant_id = $1
-        AND client_user_id = $2
-      ORDER BY created_at DESC
+      SELECT 
+        o.id,
+        o.tenant_id,
+        o.client_user_id,
+        o.volante_id,
+        o.numero_nota_fiscal,
+        o.quantidade, 
+        o.title,
+        o.description,
+        o.status,
+        o.created_at,
+        o.updated_at,
+
+        v.codigo AS volante_codigo,
+        v.descricao AS volante_descricao
+
+      FROM orders o
+      JOIN volantes v ON v.id = o.volante_id
+      WHERE o.tenant_id = $1
+        AND o.client_user_id = $2
+      ORDER BY o.created_at DESC
       `,
       [tenantId, userId],
     );
@@ -93,6 +115,7 @@ export class OrdersService {
         status = COALESCE($5, status),
         volante_id = COALESCE($6, volante_id),
         numero_nota_fiscal = COALESCE($7, numero_nota_fiscal),
+        quantidade = COALESCE($6, quantidade),
         updated_at = NOW()
       WHERE tenant_id = $1 AND id = $2
       RETURNING *
@@ -105,6 +128,7 @@ export class OrdersService {
         dto.status ?? null,
         dto.volanteId ?? null,
         dto.numeroNotaFiscal ?? null,
+        dto.quantidade ?? null,
       ],
     );
 

@@ -26,6 +26,7 @@ async function login() {
     localStorage.setItem("token", data.access_token);
     localStorage.setItem("user", JSON.stringify(data.user));
 
+    debugger
     if (data.user.role === "client") {
       window.location.href = "/ev-volantes/client";
     } else {

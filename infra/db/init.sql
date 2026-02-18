@@ -132,8 +132,9 @@ CREATE TABLE IF NOT EXISTS orders (
   tenant_id UUID NOT NULL,
   client_user_id UUID NOT NULL,
 
-  volante_id UUID NOT NULL,             -- tipo de volante (FK para volantes)
-  numero_nota_fiscal VARCHAR(50) NOT NULL, -- número da NF (obrigatório)
+  volante_id UUID NOT NULL,         
+  numero_nota_fiscal VARCHAR(50) NOT NULL, 
+  quantidade INT NOT NULL DEFAULT 1,
 
   title VARCHAR(255) NOT NULL,
   description TEXT,

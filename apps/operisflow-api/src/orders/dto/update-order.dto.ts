@@ -5,4 +5,5 @@ export class UpdateOrderDto {
 
   volanteId?: string;
   numeroNotaFiscal?: string;
+  quantidade: number;
 }

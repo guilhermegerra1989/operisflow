@@ -4,6 +4,7 @@ import Login from "../modules/ev-volantes/client/pages/Login.vue";
 import MeusPedidos from "../modules/ev-volantes/client/pages/MeusPedidos.vue";
 import NovoPedido from "../modules/ev-volantes/client/pages/NovoPedido.vue";
 import UsersAdmin from "../modules/ev-volantes/admin/pages/UserAdmin.vue";
+import VolantesAdmin from "../modules/ev-volantes/admin/pages/VolantesAdmin.vue";
 
 export const router = createRouter({
   history: createWebHistory(),
@@ -17,5 +18,8 @@ export const router = createRouter({
 
     // ADMINISTRADOR
     { path: "/ev-volantes/admin", component: UsersAdmin },
+    { path: "/ev-volantes/admin/volantes", component: VolantesAdmin },
+
+
   ]
 });
