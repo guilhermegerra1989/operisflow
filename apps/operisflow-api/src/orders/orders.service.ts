@@ -16,11 +16,25 @@ export class OrdersService {
   async create(tenantId: string, userId: string, dto: CreateOrderDto) {
     const result = await this.db.query(
       `
-      INSERT INTO orders (tenant_id, client_user_id, title, description)
-      VALUES ($1, $2, $3, $4)
+      INSERT INTO orders (
+        tenant_id,
+        client_user_id,
+        volante_id,
+        numero_nota_fiscal,
+        title,
+        description
+      )
+      VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING *
       `,
-      [tenantId, userId, dto.title, dto.description || null],
+      [
+        tenantId,
+        userId,
+        dto.volanteId,
+        dto.numeroNotaFiscal,
+        dto.title,
+        dto.description || null,
+      ],
     );
 
     return result.rows[0];
@@ -73,18 +87,29 @@ export class OrdersService {
     const result = await this.db.query(
       `
       UPDATE orders
-      SET title = COALESCE($3, title),
-          description = COALESCE($4, description),
-          status = COALESCE($5, status),
-          updated_at = NOW()
+      SET
+        title = COALESCE($3, title),
+        description = COALESCE($4, description),
+        status = COALESCE($5, status),
+        volante_id = COALESCE($6, volante_id),
+        numero_nota_fiscal = COALESCE($7, numero_nota_fiscal),
+        updated_at = NOW()
       WHERE tenant_id = $1 AND id = $2
       RETURNING *
       `,
-      [tenantId, id, dto.title, dto.description, dto.status],
+      [
+        tenantId,
+        id,
+        dto.title ?? null,
+        dto.description ?? null,
+        dto.status ?? null,
+        dto.volanteId ?? null,
+        dto.numeroNotaFiscal ?? null,
+      ],
     );
 
     return result.rows[0];
-  }
+  } 
 
   async remove(tenantId: string, id: string) {
     await this.db.query(

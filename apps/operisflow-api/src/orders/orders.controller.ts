@@ -13,7 +13,7 @@ import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { CurrentUser } from '../common/decorators/curret-user.decorator';
+import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { Tenant } from '../common/decorators/tenant.decorator';
 
 @Controller('orders')
