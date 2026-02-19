@@ -35,12 +35,15 @@ services:
       PORT: 3001
 
       # Banco
-      DATABASE_URL: postgres://admin:admin123@postgres:5432/operisflow_db
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_USER: admin
-      DB_PASS: admin123
-      DB_NAME: operisflow_db
+      #DATABASE_URL: postgres://admin:admin123@postgres:5432/operisflow_db
+      #DB_HOST: postgres
+      #DB_PORT: 5432
+      #DB_USER: admin
+      #DB_PASS: admin123
+      #DB_NAME: operisflow_db
+
+      # Banco Prod
+      DATABASE_URL: postgres://admin:yq5R7dViDzpY9kPNFxTPK1BnMYH6zKjk@dpg-1234567890abcdef.oregon-postgres.render.com:5432/operisflow_db
 
       # Redis
       REDIS_HOST: redis
