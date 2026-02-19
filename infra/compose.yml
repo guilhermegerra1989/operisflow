@@ -43,7 +43,8 @@ services:
       #DB_NAME: operisflow_db
 
       # Banco Prod
-      DATABASE_URL: postgres://admin:yq5R7dViDzpY9kPNFxTPK1BnMYH6zKjk@dpg-1234567890abcdef.oregon-postgres.render.com:5432/operisflow_db
+      #DATABASE_URL: postgres://admin:yq5R7dViDzpY9kPNFxTPK1BnMYH6zKjk@dpg-1234567890abcdef.oregon-postgres.render.com:5432/operisflow_db
+      DATABASE_URL: postgres://admin:yq5R7dViDzpY9kPNFxTPK1BnMYH6zKjk@dpg-1234567890abcdef.oregon-postgres.render.com:5432/operisflow_db?sslmode=require
 
       # Redis
       REDIS_HOST: redis
