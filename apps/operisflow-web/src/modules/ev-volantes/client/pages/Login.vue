@@ -43,9 +43,6 @@ async function login() {
     <!-- LOGO -->
     <img :src="logo" alt="Logo EV Volantes" class="logo" />
 
-    <!-- TEXTO EV VOLANTES -->
-    <h1 class="title">EV Volantes</h1>
-
     <!-- CAMPOS -->
     <input v-model="email" placeholder="E-mail" />
     <input v-model="password" type="password" placeholder="Senha" />
@@ -64,8 +61,8 @@ async function login() {
 }
 
 .logo {
-  width: 160px;
-  height: 160px;
+  width: 360px;
+  height: 360px;
   object-fit: contain;
   margin-bottom: 10px;
 }
