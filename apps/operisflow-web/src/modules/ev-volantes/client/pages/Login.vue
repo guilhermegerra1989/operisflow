@@ -1,6 +1,9 @@
 <script setup>
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 import logo from "../../../../assets/ev-volantes-logo.png";
+
+const router = useRouter();
 
 const email = ref("");
 const password = ref("");
@@ -26,12 +29,12 @@ async function login() {
     localStorage.setItem("token", data.access_token);
     localStorage.setItem("user", JSON.stringify(data.user));
 
-    debugger
     if (data.user.role === "client") {
-      window.location.href = "/ev-volantes/client";
+      router.push("/ev-volantes/client");
     } else {
-      window.location.href = "/ev-volantes/admin";
+      router.push("/ev-volantes/admin");
     }
+
   } catch {
     error.value = "Credenciais inválidas";
   }
