@@ -43,17 +43,19 @@ async function login() {
 
 <template>
   <div class="container login-wrapper">
-    <!-- LOGO -->
-    <img :src="logo" alt="Logo EV Volantes" class="logo" />
 
-    <!-- CAMPOS -->
-    <input v-model="email" placeholder="E-mail" />
-    <input v-model="password" type="password" placeholder="Senha" />
+    <!-- FORM -->
+    <form @submit.prevent="login">
+      <img :src="logo" alt="Logo EV Volantes" class="logo" />
 
-    <!-- BOTÃO -->
-    <button @click="login">Entrar</button>
+      <input v-model="email" placeholder="E-mail" />
+      <input v-model="password" type="password" placeholder="Senha" />
 
-    <p v-if="error" class="error">{{ error }}</p>
+      <button type="submit">Entrar</button>
+
+      <p v-if="error" class="error">{{ error }}</p>
+    </form>
+
   </div>
 </template>
 
