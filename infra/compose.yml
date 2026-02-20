@@ -27,7 +27,7 @@ services:
   operisflow-api:
     build:
       context: ../apps/operisflow-api
-      dockerfile: ../../infra/Containerfile.api  # ⬅️ IMPORTANTE: relativo ao context
+      dockerfile: ../../infra/Containerfile.api  
     container_name: operisflow_api
     command: npm run start:dev
     environment:

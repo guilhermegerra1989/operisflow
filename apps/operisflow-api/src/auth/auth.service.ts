@@ -1,16 +1,13 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, Inject } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Pool } from 'pg';
 
 @Injectable()
 export class AuthService {
-  private db: Pool;
-
-  constructor(private readonly jwtService: JwtService) {
-    this.db = new Pool({
-      connectionString: process.env.DATABASE_URL,
-    });
-  }
+  constructor(
+    private readonly jwtService: JwtService,
+    @Inject('PG_POOL') private readonly db: Pool,
+  ) {}
 
   async validateUser(email: string, password: string) {
     const result = await this.db.query(
@@ -23,7 +20,6 @@ export class AuthService {
       throw new UnauthorizedException('Credenciais inválidas');
     }
 
-    // POC: comparação em texto puro (depois trocamos por bcrypt)
     if (user.password !== password) {
       throw new UnauthorizedException('Credenciais inválidas');
     }
