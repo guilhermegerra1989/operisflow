@@ -5,7 +5,6 @@ import logo from "../../../../assets/ev-volantes-logo.png";
 import BaseButton from "../../../../components/BaseButton.vue";
 
 const router = useRouter();
-
 const email = ref("");
 const password = ref("");
 const error = ref("");
@@ -32,11 +31,11 @@ async function login() {
     localStorage.setItem("token", data.access_token);
     localStorage.setItem("user", JSON.stringify(data.user));
 
-    if (data.user.role === "client") {
-      router.push("/ev-volantes/client");
-    } else {
-      router.push("/ev-volantes/admin");
-    }
+    router.push(
+      data.user.role === "client"
+        ? "/ev-volantes/client"
+        : "/ev-volantes/admin"
+    );
   } catch {
     error.value = "Credenciais inválidas";
   } finally {
@@ -47,19 +46,14 @@ async function login() {
 
 <template>
   <div class="container login-wrapper">
-    <form @submit.prevent="login" class="login-form">
+    <form @submit.prevent="login">
       <img :src="logo" alt="Logo EV Volantes" class="logo" />
 
       <input v-model="email" placeholder="E-mail" />
       <input v-model="password" type="password" placeholder="Senha" />
 
-      <BaseButton
-        type="submit"
-        :loading="isLoading"
-        label="Entrar"
-        variant="primary"
-        :fullWidth="true"
-      />
+      <!-- BaseButton substituindo o botão original -->
+      <BaseButton type="submit" :loading="isLoading" label="Entrar" />
 
       <p v-if="error" class="error">{{ error }}</p>
     </form>
@@ -70,30 +64,22 @@ async function login() {
 .login-wrapper {
   text-align: center;
   margin-top: 40px;
-  display: flex;
-  justify-content: center;
-}
-
-.login-form {
-  display: inline-flex;
-  flex-direction: column;
-  gap: 10px;
-  align-items: center;
 }
 
 .logo {
-  width: 260px;
-  height: 260px;
+  width: 360px;
+  height: 360px;
   object-fit: contain;
   margin-bottom: 10px;
 }
 
 input {
-  width: 260px;
-  padding: 10px 12px;
+  width: 100%;                /* 👈 mantém os campos grandes */
+  padding: 14px 16px;
   border-radius: 6px;
   border: 1px solid #d0d0d0;
-  font-size: 14px;
+  font-size: 16px;
+  margin-bottom: 10px;        /* 👈 mantém espaçamento original */
 }
 
 input:focus {
@@ -103,8 +89,7 @@ input:focus {
 }
 
 .error {
-  color: #dc2626;
+  color: red;
   margin-top: 10px;
-  font-size: 13px;
 }
 </style>
