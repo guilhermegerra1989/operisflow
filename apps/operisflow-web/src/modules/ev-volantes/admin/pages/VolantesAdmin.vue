@@ -93,7 +93,48 @@ async function remover(v: any) {
     console.error(e);
   }
 }
+
+function exportToCsv() {
+  if (!volantes.value.length) return;
+
+  // Cabeçalhos
+  const headers = ["ID", "Código", "Descrição"];
+
+  // Linhas
+  const rows = volantes.value.map((v) => [
+    v.id,
+    v.codigo,
+    v.descricao,
+  ]);
+
+  // Monta o conteúdo CSV
+  const csvContent =
+    [headers, ...rows]
+      .map((row) =>
+        row
+          .map((cell) => `"${String(cell).replace(/"/g, '""')}"`) // escapa aspas
+          .join(";") // separador ; (mais comum em PT-BR)
+      )
+      .join("\n");
+
+  // Cria o blob e dispara download
+  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement("a");
+  link.href = url;
+  link.setAttribute("download", "volantes.csv");
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
 </script>
+
+
+
+
 
 <template>
   <div class="container">
@@ -161,6 +202,8 @@ async function remover(v: any) {
         </tbody>
       </table>
     </div>
+
+    <button @click="exportToCsv">Exportar para Excel (CSV)</button>
   </div>
 </template>
 
