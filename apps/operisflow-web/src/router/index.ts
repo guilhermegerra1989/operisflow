@@ -40,7 +40,7 @@ export const router = createRouter({
 });
 
 // Guard global
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _from, next) => {
   const token = localStorage.getItem("token");
 
   const isAuthenticated = !!token;
