@@ -5,6 +5,7 @@ import MeusPedidos from "../modules/ev-volantes/client/pages/MeusPedidos.vue";
 import NovoPedido from "../modules/ev-volantes/client/pages/NovoPedido.vue";
 import UsersAdmin from "../modules/ev-volantes/admin/pages/UserAdmin.vue";
 import VolantesAdmin from "../modules/ev-volantes/admin/pages/VolantesAdmin.vue";
+import DashboardAdmin from "../modules/ev-volantes/admin/pages/DashboardAdmin.vue";
 
 export const router = createRouter({
   history: createWebHistory(),
@@ -29,6 +30,11 @@ export const router = createRouter({
     // ADMINISTRADOR
     {
       path: "/ev-volantes/admin",
+      component: DashboardAdmin,
+      meta: { requiresAuth: true, role: "admin" },
+    },
+    {
+      path: "/ev-volantes/admin/users",
       component: UsersAdmin,
       meta: { requiresAuth: true, role: "admin" },
     },
@@ -50,8 +56,7 @@ router.beforeEach((to, _from, next) => {
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
 
   // role exigida pela rota (ex: 'client' ou 'admin')
-  const requiredRole = to.matched.find((record) => record.meta.role)?.meta
-    .role as "client" | "admin" | undefined;
+ const requiredRole = to.meta.role as "client" | "admin" | undefined;
 
   // 1) Tentando acessar rota protegida SEM estar logado
   if (requiresAuth && !isAuthenticated) {

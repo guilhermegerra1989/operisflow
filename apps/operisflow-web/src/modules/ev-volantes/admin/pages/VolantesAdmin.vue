@@ -19,6 +19,10 @@ const editingId = ref<string | null>(null);
 const codigo = ref("");
 const descricao = ref("");
 
+function voltar() {
+  window.location.href = "/ev-volantes/admin";
+}
+
 // carregar volantes
 async function loadVolantes() {
   try {
@@ -93,6 +97,13 @@ async function remover(v: any) {
 
 <template>
   <div class="container">
+
+
+    <div class="top-bar">
+      <img src="../../../../assets/ev-volantes-logo.png" alt="EV Volantes" class="logo" />
+      <button class="btn-voltar" @click="voltar()">Voltar</button>
+    </div>
+
     <h2>Catálogo de Volantes</h2>
 
     <p v-if="error" class="error">{{ error }}</p>
@@ -258,5 +269,33 @@ h2 {
 .btn-small.danger {
   background: #ffcdd2;
   color: #b71c1c;
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.logo {
+  height: 36px;         /* tamanho ideal para mobile */
+  object-fit: contain;
+}
+
+.btn-voltar {
+  background: transparent;
+  border: 1px solid #e53935;
+  color: #e53935;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  max-width: 100px;
+}
+
+.btn-voltar:hover {
+  background: #ffebee;
 }
 </style>
