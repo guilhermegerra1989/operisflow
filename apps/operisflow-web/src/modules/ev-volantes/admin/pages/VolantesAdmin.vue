@@ -263,7 +263,7 @@ h2 {
   border: none;
   cursor: pointer;
   font-size: 12px;
-  background: #f5f5f5;
+  background: #dfdcdc;
 }
 
 .btn-small.danger {
