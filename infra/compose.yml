@@ -67,8 +67,8 @@ services:
     command: npm run dev
     environment:
       NODE_ENV: development
-      VITE_API_URL: https://operisflow-api.onrender.com
-      #VITE_API_URL: http://192.168.15.12:8080/api
+      #VITE_API_URL: https://operisflow-api.onrender.com
+      VITE_API_URL: http://192.168.15.12:8080/api
      # VITE_API_URL: http://localhost:8080/api
     ports:
       - "3000:3000"
