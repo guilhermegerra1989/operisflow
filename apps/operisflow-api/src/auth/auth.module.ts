@@ -3,6 +3,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtStrategy } from './jwt.strategy';
+import { DatabaseModule } from '../database/database.module';
 
 @Module({
   imports: [
@@ -10,6 +11,7 @@ import { JwtStrategy } from './jwt.strategy';
       secret: process.env.JWT_SECRET || 'dev-secret-operisflow',
       signOptions: { expiresIn: '1h' },
     }),
+    DatabaseModule, // 👈 AGORA SIM
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],
