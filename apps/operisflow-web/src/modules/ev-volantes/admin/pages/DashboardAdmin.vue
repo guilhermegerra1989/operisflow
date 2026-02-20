@@ -41,7 +41,7 @@ function logout() {
 
     <!-- BOTÃO NOVO PEDIDO SEMPRE NO TOPO -->
     <router-link to="/ev-volantes/admin/users" class="btn">
-      Users
+      Usuários
     </router-link>
 
     <!-- BOTÃO NOVO PEDIDO SEMPRE NO TOPO -->
