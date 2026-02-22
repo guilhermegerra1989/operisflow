@@ -5,6 +5,7 @@ import MeusPedidos from "../modules/ev-volantes/client/pages/MeusPedidos.vue";
 import NovoPedido from "../modules/ev-volantes/client/pages/NovoPedido.vue";
 import UsersAdmin from "../modules/ev-volantes/admin/pages/UserAdmin.vue";
 import VolantesAdmin from "../modules/ev-volantes/admin/pages/VolantesAdmin.vue";
+import PedidosAdmin from "../modules/ev-volantes/admin/pages/PedidosAdmin.vue";
 import DashboardAdmin from "../modules/ev-volantes/admin/pages/DashboardAdmin.vue";
 
 export const router = createRouter({
@@ -41,6 +42,11 @@ export const router = createRouter({
     {
       path: "/ev-volantes/admin/volantes",
       component: VolantesAdmin,
+      meta: { requiresAuth: true, role: "admin" },
+    },
+    {
+      path: "/ev-volantes/admin/pedidos",
+      component: PedidosAdmin,
       meta: { requiresAuth: true, role: "admin" },
     },
   ],

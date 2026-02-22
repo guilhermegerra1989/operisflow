@@ -31,105 +31,44 @@ function logout() {
 
 <template>
   <div class="container">
-
-
     <!-- HEADER COM NOME E LOGOUT -->
-   <div class="top-bar">
-      <img src="../../../../assets/ev-volantes-logo.png" alt="EV Volantes" class="logo" />
+    <div class="top-bar">
+      <img
+        src="../../../../assets/ev-volantes-logo.png"
+        alt="EV Volantes"
+        class="logo"
+      />
       <button class="btn-logout" @click="logout">Sair</button>
     </div>
 
-    <!-- BOTÃO NOVO PEDIDO SEMPRE NO TOPO -->
-    <router-link to="/ev-volantes/admin/users" class="btn">
-      Usuários
-    </router-link>
+    <h2>Dashboard</h2>
 
-    <!-- BOTÃO NOVO PEDIDO SEMPRE NO TOPO -->
-    <router-link to="/ev-volantes/admin/volantes" class="btn">
-      Tipos de Volantes
-    </router-link>
+    <!-- GRID DE BOTÕES / CARDS PRINCIPAIS -->
+    <div class="menu-grid">
+      <router-link to="/ev-volantes/admin/users" class="btn menu-card">
+        <h3>Usuários</h3>
+        <p>Gerenciar clientes e administradores</p>
+      </router-link>
 
+      <router-link to="/ev-volantes/admin/volantes" class="btn menu-card">
+        <h3>Tipos de Volantes</h3>
+        <p>Configurar tipos de volantes disponíveis</p>
+      </router-link>
+
+      <router-link to="/ev-volantes/admin/pedidos" class="btn menu-card">
+        <h3>Pedidos</h3>
+        <p>Visualizar todos os pedidos dos clientes</p>
+      </router-link>
+    </div>
   </div>
 </template>
 
 <style scoped>
-
-.qty {
-  font-size: 13px;
-  margin-bottom: 8px;
-}
-
-h2 {
-  margin-bottom: 16px;
-}
-
-.empty {
-  text-align: center;
-  color: #777;
-  margin-top: 20px;
-}
-
-.card {
-  background: white;
+.container {
   padding: 16px;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  margin-bottom: 12px;
 }
 
-.volante {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 6px;
-}
-
-.volante strong {
-  font-size: 14px;
-}
-
-.volante span {
-  font-size: 13px;
-  color: #555;
-}
-
-.nf {
-  font-size: 13px;
-  margin-bottom: 8px;
-}
-
-.title {
-  font-weight: 600;
-  margin-bottom: 4px;
-}
-
-.desc {
-  font-size: 14px;
-  color: #444;
-  margin-bottom: 10px;
-}
-
-.footer {
-  display: flex;
-  justify-content: space-between;
-  font-size: 12px;
-  color: #777;
-  margin-top: 8px;
-}
-
-
-.btn {
-  display: block;
-  text-align: center;
-  padding: 12px;
-  background: #1e88e5;
-  color: white;
-  border-radius: 10px;
-  font-weight: 700;
-  margin-bottom: 16px;
-  text-decoration: none;
-} 
-
-
+/* Topo */
 .top-bar {
   display: flex;
   justify-content: space-between;
@@ -138,7 +77,7 @@ h2 {
 }
 
 .logo {
-  height: 36px;         /* tamanho ideal para mobile */
+  height: 36px; /* bom para mobile e desktop */
   object-fit: contain;
 }
 
@@ -158,4 +97,65 @@ h2 {
   background: #ffebee;
 }
 
+/* Título */
+h2 {
+  margin-bottom: 16px;
+}
+
+/* Grid de menu – bom em PC, quebra em mobile */
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+/* Botão base que você já tinha */
+.btn {
+  display: block;
+  text-align: left;
+  padding: 16px;
+  background: #1e88e5;
+  color: white;
+  border-radius: 10px;
+  font-weight: 700;
+  margin-bottom: 0; /* grid já controla espaçamento */
+  text-decoration: none;
+}
+
+/* Estilo de card para os itens de menu */
+.menu-card {
+  background: #1e88e5;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: 0.2s;
+}
+
+.menu-card:hover {
+  background: #1565c0;
+  transform: translateY(-2px);
+}
+
+.menu-card h3 {
+  margin: 0 0 4px 0;
+  font-size: 18px;
+}
+
+.menu-card p {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+
+.qty,
+.empty,
+.card,
+.volante,
+.volante strong,
+.volante span,
+.nf,
+.title,
+.desc,
+.footer {
+  
+}
 </style>

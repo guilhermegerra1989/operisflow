@@ -19,9 +19,16 @@ const editingId = ref<string | null>(null);
 const codigo = ref("");
 const descricao = ref("");
 
-function voltar() {
+function logout() {
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
+  window.location.href = "/ev-volantes/login";
+}
+
+function voltarDashboard() {
   window.location.href = "/ev-volantes/admin";
 }
+
 
 // carregar volantes
 async function loadVolantes() {
@@ -141,8 +148,19 @@ function exportToCsv() {
 
 
     <div class="top-bar">
-      <img src="../../../../assets/ev-volantes-logo.png" alt="EV Volantes" class="logo" />
-      <button class="btn-voltar" @click="voltar()">Voltar</button>
+      <img
+        src="../../../../assets/ev-volantes-logo.png"
+        alt="EV Volantes"
+        class="logo"
+      />
+      <div class="top-actions">
+        <button class="btn-secondary" @click="voltarDashboard">
+          Dashboard
+        </button>
+        <button class="btn-logout" @click="logout">
+          Sair
+        </button>
+      </div>
     </div>
 
     <h2>Catálogo de Volantes</h2>
@@ -263,15 +281,6 @@ h2 {
   font-weight: 600;
 }
 
-.btn-secondary {
-  background: #e0e0e0;
-  color: #333;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
 .btn-primary:hover,
 .btn-secondary:hover,
 .btn-small:hover {
@@ -314,6 +323,16 @@ h2 {
   color: #b71c1c;
 }
 
+.logo {
+  height: 36px;         /* tamanho ideal para mobile */
+  object-fit: contain;
+}
+
+.container {
+  padding: 16px;
+}
+
+/* TOPO */
 .top-bar {
   display: flex;
   justify-content: space-between;
@@ -322,11 +341,32 @@ h2 {
 }
 
 .logo {
-  height: 36px;         /* tamanho ideal para mobile */
+  height: 36px;
   object-fit: contain;
 }
 
-.btn-voltar {
+.top-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* Botões */
+.btn-secondary {
+  background: transparent;
+  border: 1px solid #1e88e5;
+  color: #1e88e5;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background: #e3f2fd;
+}
+
+.btn-logout {
   background: transparent;
   border: 1px solid #e53935;
   color: #e53935;
@@ -335,10 +375,9 @@ h2 {
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  max-width: 100px;
 }
 
-.btn-voltar:hover {
+.btn-logout:hover {
   background: #ffebee;
 }
 </style>

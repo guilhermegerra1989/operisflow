@@ -78,19 +78,36 @@ export class OrdersService {
   }
 
   async findAll(tenantId: string) {
-    const result = await this.db.query(
-      `
-      SELECT o.*, u.name AS client_name
+  const result = await this.db.query(
+    `
+      SELECT 
+        o.id,
+        o.tenant_id,
+        o.client_user_id,
+        o.volante_id,
+        o.numero_nota_fiscal,
+        o.quantidade, 
+        o.title,
+        o.description,
+        o.status,
+        o.created_at,
+        o.updated_at,
+
+        u.name AS client_name,
+        v.codigo AS volante_codigo,
+        v.descricao AS volante_descricao
+
       FROM orders o
       JOIN users u ON u.id = o.client_user_id
+      JOIN volantes v ON v.id = o.volante_id
       WHERE o.tenant_id = $1
       ORDER BY o.created_at DESC
       `,
-      [tenantId],
-    );
+    [tenantId],
+  );
 
-    return result.rows;
-  }
+  return result.rows;
+}
 
   async findOne(tenantId: string, id: string) {
     const result = await this.db.query(
