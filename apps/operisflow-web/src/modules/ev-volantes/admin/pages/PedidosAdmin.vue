@@ -25,13 +25,13 @@ const statusFilter = ref<string>(""); // "" = todos
 const searchTerm = ref<string>("");
 
 // lista de status distintos (montada a partir dos dados)
-const statusOptions = computed(() => {
-  const set = new Set<string>();
-  pedidos.value.forEach((p) => {
-    if (p.status) set.add(p.status);
-  });
-  return Array.from(set);
-});
+// const statusOptions = computed(() => {
+//   const set = new Set<string>();
+//   pedidos.value.forEach((p) => {
+//     if (p.status) set.add(p.status);
+//   });
+//   return Array.from(set);
+// });
 
 // pedidos filtrados para exibição na tabela
 const filteredPedidos = computed(() => {
