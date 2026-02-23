@@ -154,6 +154,9 @@ function exportToCsv() {
         class="logo"
       />
       <div class="top-actions">
+        <button class="btn-secondary" @click="exportToCsv">
+          Exportar
+        </button>
         <button class="btn-secondary" @click="voltarDashboard">
           Dashboard
         </button>
@@ -221,7 +224,6 @@ function exportToCsv() {
       </table>
     </div>
 
-    <button @click="exportToCsv">Exportar para Excel (CSV)</button>
   </div>
 </template>
 

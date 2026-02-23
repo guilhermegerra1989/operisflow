@@ -50,6 +50,7 @@ const filteredPedidos = computed(() => {
         p.description,
         p.volante_codigo,
         p.volante_descricao,
+        p.client_name,
       ]
         .filter(Boolean)
         .join(" ")
@@ -85,6 +86,60 @@ function formatDate(dateStr: string): string {
   return d.toLocaleString("pt-BR");
 }
 
+// 🔽🔽🔽 NOVO: exportar pedidos para CSV
+function exportPedidosToCsv() {
+  const data = filteredPedidos.value.length
+    ? filteredPedidos.value
+    : pedidos.value;
+
+  if (!data.length) return;
+
+  // Cabeçalhos
+  const headers = [
+    "NF",
+    "Título",
+    "Código Volante",
+    "Descrição Volante",
+    "Quantidade",
+    "Status",
+    "Criado em",
+    "Cliente",
+  ];
+
+  // Linhas
+  const rows = data.map((p) => [
+    p.numero_nota_fiscal || "",
+    p.title || "",
+    p.volante_codigo || "",
+    p.volante_descricao || "",
+    String(p.quantidade ?? ""),
+    p.status || "",
+    formatDate(p.created_at),
+    p.client_name || "",
+  ]);
+
+  const csvContent = [headers, ...rows]
+    .map((row) =>
+      row
+        .map((cell) => `"${String(cell).replace(/"/g, '""')}"`)
+        .join(";") // separador ; (PT-BR)
+    )
+    .join("\n");
+
+  const blob = new Blob([csvContent], {
+    type: "text/csv;charset=utf-8;",
+  });
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement("a");
+  link.href = url;
+  link.setAttribute("download", "pedidos.csv");
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
 onMounted(loadPedidos);
 </script>
 
@@ -98,6 +153,9 @@ onMounted(loadPedidos);
         class="logo"
       />
       <div class="top-actions">
+         <button class="btn-secondary" @click="exportPedidosToCsv">
+          Exportar
+        </button>
         <button class="btn-secondary" @click="voltarDashboard">
           Dashboard
         </button>
@@ -129,7 +187,7 @@ onMounted(loadPedidos);
           placeholder="NF, título, código ou descrição..."
         />
       </div>
-    </div>
+    </div>     
 
     <!-- TABELA -->
     <div class="table-container" v-if="filteredPedidos.length">
@@ -146,7 +204,7 @@ onMounted(loadPedidos);
         </thead>
         <tbody>
           <tr v-for="p in filteredPedidos" :key="p.id">
-            <td>{{ p.numero_nota_fiscal || '-' }}</td>
+            <td>{{ p.numero_nota_fiscal || "-" }}</td>
             <td>{{ p.title }}</td>
             <td>
               <div class="volante-info">
@@ -171,6 +229,7 @@ onMounted(loadPedidos);
     </div>
   </div>
 </template>
+
 
 <style scoped>
 .container {
@@ -380,5 +439,26 @@ tbody tr:hover {
   h2 {
     font-size: 18px;
   }
+}
+
+.export-row {
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-export {
+  background: #1e88e5;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-export:hover {
+  background: #1565c0;
 }
 </style>
