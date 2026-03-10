@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { apiGet, apiPost } from "../../api/apiClient";
 
 type Volante = {
@@ -10,15 +10,38 @@ type Volante = {
 
 const token: string = localStorage.getItem("token") ?? "";
 
+// Lista de volantes carregados da API
 const volantes = ref<Volante[]>([]);
-const volanteId = ref("");
-const numeroNotaFiscal = ref("");
-const quantidade = ref(1);  // 👈 começa com 1
-const title = ref("");
-const description = ref("");
+
+// Campos do formulário
+const selectedVolanteId = ref("");          // volanteId no payload
+const numeroNotaFiscalRemessa = ref("");    // numeroNotaFiscal
+const quantidadeVolantes = ref(1);          // quantidade
+const tituloPedido = ref("");               // title
+const observacoesPedido = ref("");          // description
 
 onMounted(async () => {
   volantes.value = await apiGet("/volantes", token);
+});
+
+// Sempre que o usuário selecionar um volante, 
+// preenche automaticamente o título com a descrição do volante
+watch(selectedVolanteId, (novoId) => {
+  if (!novoId) {
+    tituloPedido.value = "";
+    return;
+  }
+
+  const volanteSelecionado = volantes.value.find(
+    (volante) => volante.id === novoId
+  );
+
+  if (volanteSelecionado) {
+    // aqui usamos a descricao do volante como título do pedido
+    tituloPedido.value = volanteSelecionado.descricao;
+  } else {
+    tituloPedido.value = "";
+  }
 });
 
 function voltar() {
@@ -26,26 +49,22 @@ function voltar() {
 }
 
 async function criar() {
-  if (!volanteId.value || !numeroNotaFiscal.value || !quantidade.value) {
+  if (!selectedVolanteId.value || !numeroNotaFiscalRemessa.value || !quantidadeVolantes.value) {
     alert("Preencha volante, nota fiscal e quantidade.");
     return;
   }
 
-  console.log("Payload do front:", {
-    volanteId: volanteId.value,
-    numeroNotaFiscal: numeroNotaFiscal.value,
-    quantidade: quantidade.value,
-    title: title.value,
-    description: description.value,
-  });
+  const payload = {
+    volanteId: selectedVolanteId.value,
+    numeroNotaFiscal: numeroNotaFiscalRemessa.value,
+    quantidade: quantidadeVolantes.value,
+    title: tituloPedido.value,
+    description: observacoesPedido.value,
+  };
 
-  await apiPost("/orders", token, {
-    volanteId: volanteId.value,
-    numeroNotaFiscal: numeroNotaFiscal.value,
-    quantidade: quantidade.value,
-    title: title.value,
-    description: description.value,
-  });
+  console.log("Payload do front:", payload);
+
+  await apiPost("/orders", token, payload);
 
   window.location.href = "/ev-volantes/client";
 }
@@ -53,40 +72,52 @@ async function criar() {
 
 <template>
   <div class="container">
-
-    <!-- HEADER COM NOME E LOGOUT -->
-   <div class="top-bar">
-      <img src="../../../../assets/ev-volantes-logo.png" alt="EV Volantes" class="logo" />
+    <!-- HEADER COM LOGO E VOLTAR -->
+    <div class="top-bar">
+      <img
+        src="../../../../assets/ev-volantes-logo.png"
+        alt="EV Volantes"
+        class="logo"
+      />
       <button class="btn-voltar" @click="voltar()">Voltar</button>
     </div>
 
     <h2>Novo Pedido</h2>
 
-    <label>Tipo de Volante *</label>
-    <select v-model="volanteId" class="input">
+    <label>Código do Volante *</label>
+    <select v-model="selectedVolanteId" class="input">
       <option value="">Selecione...</option>
-      <option v-for="v in volantes" :key="v.id" :value="v.id">
-        {{ v.codigo }} - {{ v.descricao }}
+      <option v-for="volante in volantes" :key="volante.id" :value="volante.id">
+        {{ volante.codigo }}
       </option>
     </select>
 
-    <label>Número da Nota Fiscal *</label>
-    <input v-model="numeroNotaFiscal" class="input" placeholder="Ex: 123456" />
+    <label>Descrição</label>
+    <input
+      v-model="tituloPedido"
+      class="input"
+      placeholder="Ex: Troca de volante"
+      disabled
+    />
+
+    <label>Nota Fiscal de remessa para conserto *</label>
+    <input
+      v-model="numeroNotaFiscalRemessa"
+      class="input"
+      placeholder="Ex: 123456"
+    />
 
     <label>Quantidade *</label>
     <input
       type="number"
-      v-model.number="quantidade"
+      v-model.number="quantidadeVolantes"
       min="1"
       class="input"
     />
 
-    <label>Título</label>
-    <input v-model="title" class="input" placeholder="Ex: Troca de volante" />
-
-    <label>Descrição</label>
+    <label>Observações</label>
     <textarea
-      v-model="description"
+      v-model="observacoesPedido"
       class="input"
       placeholder="Detalhes..."
     ></textarea>
@@ -96,6 +127,12 @@ async function criar() {
 </template>
 
 <style scoped>
+.container {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
 .input {
   width: 100%;
   padding: 12px;
@@ -104,6 +141,7 @@ async function criar() {
   border: 1px solid #ccc;
   font-size: 16px;
 }
+
 .btn {
   background: #1e88e5;
   padding: 12px;
@@ -112,6 +150,12 @@ async function criar() {
   color: white;
   font-weight: 700;
   font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: #1565c0;
 }
 
 .top-bar {
@@ -122,7 +166,7 @@ async function criar() {
 }
 
 .logo {
-  height: 36px;         /* tamanho ideal para mobile */
+  height: 36px; /* tamanho ideal para mobile */
   object-fit: contain;
 }
 
