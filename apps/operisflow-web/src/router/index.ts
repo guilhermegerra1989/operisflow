@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 
+import Home from "../modules/ev-volantes/client/pages/Home.vue";
 import Login from "../modules/ev-volantes/client/pages/Login.vue";
 import MeusPedidos from "../modules/ev-volantes/client/pages/MeusPedidos.vue";
 import NovoPedido from "../modules/ev-volantes/client/pages/NovoPedido.vue";
@@ -11,9 +12,13 @@ import DashboardAdmin from "../modules/ev-volantes/admin/pages/DashboardAdmin.vu
 export const router = createRouter({
   history: createWebHistory(),
   routes: [
-    { path: "/", redirect: "/ev-volantes/login" },
+    // NOVA ROTA PÚBLICA: site da empresa
+    { path: "/", component: Home },
 
-    // PÚBLICA
+    // PÚBLICA - HOME
+    { path: "/ev-volantes", component: Home },
+
+    // PÚBLICA - LOGIN
     { path: "/ev-volantes/login", component: Login },
 
     // CLIENTE
@@ -50,8 +55,8 @@ export const router = createRouter({
       meta: { requiresAuth: true, role: "admin" },
     },
   ],
+  
 });
-
 
 router.beforeEach((to, _from, next) => {
   const token = localStorage.getItem("token");
@@ -60,31 +65,33 @@ router.beforeEach((to, _from, next) => {
 
   const isAuthenticated = !!token;
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
+  const requiredRole = to.meta.role as "client" | "admin" | undefined;
 
-  // role exigida pela rota (ex: 'client' ou 'admin')
- const requiredRole = to.meta.role as "client" | "admin" | undefined;
+  console.log("[ROUTER GUARD]");
+  console.log("-> indo para:", to.fullPath);
+  console.log("-> requiresAuth:", requiresAuth);
+  console.log("-> isAuthenticated:", isAuthenticated);
+  console.log("-> requiredRole:", requiredRole);
+  console.log("-> user:", user);
 
   // 1) Tentando acessar rota protegida SEM estar logado
   if (requiresAuth && !isAuthenticated) {
     return next({
       path: "/ev-volantes/login",
-      query: { redirect: to.fullPath }, // opcional
+      query: { redirect: to.fullPath },
     });
   }
 
-  // 2) Se a rota exige um role específico e o user não tem esse role
+  // 2) Se a rota exige role e o usuário não tem
   if (requiresAuth && requiredRole && user?.role !== requiredRole) {
-    // Se o usuário é client, manda pra área client
     if (user?.role === "client") {
       return next("/ev-volantes/client");
     }
 
-    // Se é admin, manda pra área admin
     if (user?.role === "admin") {
       return next("/ev-volantes/admin");
     }
 
-    // Caso raro: tem token mas user sem role compatível -> volta pro login
     return next("/ev-volantes/login");
   }
 
@@ -98,6 +105,6 @@ router.beforeEach((to, _from, next) => {
     }
   }
 
-  // 4) Caso normal: deixa seguir
+  // 4) Caso normal
   return next();
 });
