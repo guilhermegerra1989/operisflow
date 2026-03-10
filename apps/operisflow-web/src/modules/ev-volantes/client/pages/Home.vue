@@ -47,7 +47,7 @@
 
         <!-- FOTO / BANNER -->
         <div class="hero-image">
-          <div class="hero-photo-placeholder">
+          <div>
             <img
               src="/ev_volantes.jpeg"
               alt="EV Volantes"
