@@ -13,164 +13,112 @@
         </div>
 
         <nav class="nav">
-          <a href="#features" class="nav-link">Funcionalidades</a>
-          <a href="#how-it-works" class="nav-link">Como funciona</a>
+          <a href="#sobre" class="nav-link">Sobre</a>
+          <a href="#fotos" class="nav-link">Produtos</a>
           <a href="#contact" class="nav-link">Contato</a>
 
-          <!-- Botão de login no header -->
-          <RouterLink to="/ev-volantes/login" class="btn btn-outline">
+          <RouterLink to="/ev-volantes/login" class="btn-outline">
             Entrar
           </RouterLink>
         </nav>
       </div>
     </header>
 
-    <!-- Conteúdo principal -->
     <main class="main">
       <!-- HERO -->
       <section class="hero">
         <div class="hero-text">
-          <span class="hero-badge">
-            <img
-              src="/ev_volantes_image.jpeg"
-              alt="EV Volantes"
-              class="hero-logo"
-            />
-            Plataforma EV Volantes
-          </span>
-
           <h1>
-            Gestão de volantes simples, rápida
-            <span class="highlight">e feita para o seu negócio.</span>
+            Volantes automotivos revisados, confiáveis
+            <span class="highlight">para atacado, varejo e base de troca.</span>
           </h1>
 
           <p class="hero-subtitle">
-            Centralize seus pedidos de impressão, controle clientes e acompanhe
-            o andamento dos trabalhos em um único lugar. Menos planilha e
-            WhatsApp, mais organização e previsibilidade.
+            Atuamos fornecendo volantes completos e revisados com alto padrão
+            de qualidade. Atendemos oficinas, lojistas, mecânicas e clientes
+            finais que buscam segurança e acabamento impecável.
           </p>
 
           <div class="hero-actions">
-            <RouterLink to="/ev-volantes/login" class="btn btn-primary">
-              Acessar sistema
-            </RouterLink>
-            <a href="#features" class="btn btn-secondary">
-              Ver funcionalidades
-            </a>
+            <a href="#fotos" class="btn-primary">Conheça nossos produtos</a>
+            <a href="#sobre" class="btn-secondary">Quem somos</a>
           </div>
-
-          <p class="hero-note">
-            Já é cliente? Clique em <strong>Acessar sistema</strong> para fazer login.
-          </p>
         </div>
 
-        <div class="hero-panel">
-          <div class="panel-card">
-            <div class="panel-header">
-              <img
-                src="/ev_volantes_image.jpeg"
-                alt="EV Volantes"
-                class="panel-logo"
-              />
-              <div>
-                <h2>Área do cliente</h2>
-                <p class="panel-subtitle">
-                  Acesse seus pedidos com segurança e rapidez.
-                </p>
-              </div>
-            </div>
-
-            <p class="panel-text">
-              Acompanhe seus pedidos, veja o status das impressões
-              e registre novos pedidos em poucos cliques.
-            </p>
-
-            <ul class="panel-list">
-              <li>✔ Meus pedidos em tempo real</li>
-              <li>✔ Criação rápida de novos pedidos</li>
-              <li>✔ Comunicação centralizada</li>
-            </ul>
-
-            <RouterLink
-              to="/ev-volantes/login"
-              class="btn btn-primary full-width"
-            >
-              Entrar na plataforma
-            </RouterLink>
+        <!-- FOTO / BANNER -->
+        <div class="hero-image">
+          <div class="hero-photo-placeholder">
+            <img
+              src="/ev_volantes.jpeg"
+              alt="EV Volantes"
+              class="logo-brand"
+            />
           </div>
         </div>
       </section>
 
-      <!-- FUNCIONALIDADES -->
-      <section id="features" class="section">
+      <!-- SOBRE A EMPRESA -->
+      <section id="sobre" class="section">
         <div class="section-header">
-          <h2>Funcionalidades principais</h2>
-          <p>Tudo o que você precisa para organizar seus volantes.</p>
+          <h2>Sobre a EV Volantes</h2>
+          <p>Excelência em volantes automotivos com qualidade e confiança.</p>
         </div>
 
-        <div class="feature-grid">
-          <div class="feature-card">
-            <h3>Gestão de pedidos</h3>
-            <p>
-              Cadastre, acompanhe e atualize pedidos de forma prática.
-              Histórico completo e visão clara do que está em produção.
-            </p>
-          </div>
-
-          <div class="feature-card">
-            <h3>Painel do administrador</h3>
-            <p>
-              Controle usuários, volantes, pedidos e tenha visão geral
-              do negócio com o painel administrativo.
-            </p>
-          </div>
-
-          <div class="feature-card">
-            <h3>Experiência do cliente</h3>
-            <p>
-              Seus clientes enxergam profissionalismo com uma área dedicada,
-              com acesso seguro e interface simples.
-            </p>
-          </div>
-        </div>
+        <p class="sobre-text">
+          A EV Volantes é uma empresa especializada na venda de volantes
+          automotivos no atacado, varejo e base de troca. Trabalhamos com
+          peças revisadas, limpas e prontas para entrega, priorizando sempre a
+          segurança e a satisfação do cliente.
+          <br /><br />
+          Cada volante passa por uma inspeção completa, garantindo acabamento,
+          durabilidade e funcionamento perfeito. Nosso compromisso é entregar
+          produtos de alto padrão com agilidade e atendimento diferenciado.
+        </p>
       </section>
 
-      <!-- COMO FUNCIONA -->
-      <section id="how-it-works" class="section section-alt">
+      <!-- GALERIA DE FOTOS -->
+      <section id="fotos" class="section section-alt">
         <div class="section-header">
-          <h2>Como funciona na prática</h2>
+          <h2>Galeria de Produtos</h2>
+          <p>Volantes esportivos, originais e modelos para troca</p>
         </div>
 
-        <ol class="steps">
-          <li>
-            <strong>1. Seu cliente acessa o sistema</strong><br />
-            Pelo link que você enviar (ex: <code>app.evvolantes.com.br</code>).
-          </li>
-          <li>
-            <strong>2. Cria ou acompanha pedidos</strong><br />
-            Ele consegue registrar novos pedidos e acompanhar o status.
-          </li>
-          <li>
-            <strong>3. Você gerencia tudo no painel admin</strong><br />
-            Organiza, atualiza status e controla o fluxo de trabalho.
-          </li>
-        </ol>
+        <div class="galeria-grid">
+          <div class="foto-card">
+            <img
+              src="/volante_1.jpeg"
+              alt="Volante 1"
+            />
+          </div>
+
+          <div class="foto-card">
+            <img
+              src="/volante_2.jpeg"
+              alt="Volante 2"
+            />
+          </div>
+
+          <div class="foto-card">
+            <img
+              src="/volante_3.jpeg"
+              alt="Volante 3"
+            />
+          </div>
+        </div>
       </section>
 
       <!-- CONTATO -->
       <section id="contact" class="section">
         <div class="section-header">
-          <h2>Fale com a EV Volantes</h2>
-          <p>
-            Quer testar, contratar ou tirar dúvidas? Entre em contato.
-          </p>
+          <h2>Contato</h2>
+          <p>Entre em contato para pedidos, dúvidas e informações.</p>
         </div>
 
         <div class="contact-box">
-          <p><strong>E-mail:</strong> contato@evvolantes.com.br</p>
-          <p><strong>WhatsApp:</strong> (00) 00000-0000</p>
+          <p><strong>E-mail:</strong> comercial@evvolantes.com.br</p>
+          <p><strong>WhatsApp:</strong> (12) 98266-9702</p>
           <p class="contact-note">
-            Esses dados são apenas placeholders, você pode trocar pelos reais.
+            Estamos à disposição para atender sua necessidade.
           </p>
         </div>
       </section>
@@ -178,21 +126,13 @@
 
     <!-- Footer -->
     <footer class="footer">
-      <span>© {{ currentYear }} EV Volantes. Todos os direitos reservados.</span>
+      <span>© 2026 EV Volantes. Todos os direitos reservados.</span>
     </footer>
   </div>
 </template>
 
-<script setup lang="ts">
-import { computed } from "vue";
-
-const currentYear = computed(() => new Date().getFullYear());
-</script>
-
 <style scoped>
-:root {
-  color-scheme: dark light;
-}
+:root { color-scheme: dark light; }
 
 .page {
   min-height: 100vh;
@@ -200,20 +140,17 @@ const currentYear = computed(() => new Date().getFullYear());
   flex-direction: column;
   background: radial-gradient(circle at top left, #0f172a, #020617);
   color: #e5e7eb;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
-  overflow-x: hidden; /* evita scroll horizontal no mobile */
+  font-family: system-ui, sans-serif;
+  overflow-x: hidden;
 }
 
-/* HEADER - agora com fundo branco */
-
+/* HEADER */
 .header {
+  background: #F2F2F2;
   border-bottom: 1px solid rgba(148, 163, 184, 0.3);
-  backdrop-filter: blur(10px);
   position: sticky;
   top: 0;
   z-index: 20;
-  background: #F2F2F2; /* 👈 fundo branco */
 }
 
 .header-content {
@@ -238,260 +175,94 @@ const currentYear = computed(() => new Date().getFullYear());
 }
 
 .brand-name {
+  color: #0f172a;
   font-weight: 600;
-  letter-spacing: 0.04em;
-  color: #0f172a; /* texto escuro no header branco */
 }
 
 .nav {
   display: flex;
+  gap: 1rem;
   align-items: center;
-  gap: 0.75rem;
-  flex-wrap: wrap;
 }
 
 .nav-link {
-  font-size: 0.9rem;
-  color: #1f2933; /* link escuro */
+  color: #0f172a;
   text-decoration: none;
-  padding: 0.35rem 0.5rem;
-  border-radius: 999px;
-  transition: background 0.15s, color 0.15s;
+  font-weight: 500;
+  padding: 6px 10px;
+  border-radius: 6px;
 }
 
 .nav-link:hover {
-  background: rgba(15, 23, 42, 0.06);
-  color: #0f172a;
+  background: rgba(0,0,0,0.08);
 }
 
-/* MAIN */
-
-.main {
-  flex: 1;
+/* BOTÃO ENTRAR */
+.btn-outline {
+  padding: 8px 18px;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  background: #0f172a;
+  color: #fff;
+  border: none;
+  font-weight: 600;
+  transition: 0.2s ease-in-out;
 }
 
-/* HERO */
+.btn-outline:hover {
+  background: #1e293b;
+  transform: translateY(-2px);
+}
 
+/* MAIN / HERO */
 .hero {
   max-width: 1120px;
   margin: 0 auto;
-  padding: 2.5rem 1rem 2rem;
+  padding: 3rem 1rem 3rem;
   display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  grid-template-columns: 1.3fr 1fr;
   gap: 2rem;
   align-items: center;
 }
 
-.hero-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.25rem 0.75rem;
-  border-radius: 999px;
-  background: rgba(15, 23, 42, 0.9);
-  border: 1px solid rgba(56, 189, 248, 0.6);
-  color: #e5e7eb;
-  font-size: 0.75rem;
-  margin-bottom: 0.75rem;
-}
-
-.hero-logo {
-  width: 35px;
-  height: 20px;
-  object-fit: cover;
-}
-
 .hero-text h1 {
-  font-size: 2rem;
-  line-height: 1.2;
-  margin-bottom: 1rem;
+  font-size: 2.2rem;
+  line-height: 1.3;
 }
 
-.hero-text .highlight {
-  display: block;
+.highlight {
   color: #38bdf8;
+  display: block;
 }
 
 .hero-subtitle {
-  color: #9ca3af;
-  margin-bottom: 1.5rem;
-  font-size: 0.98rem;
+  margin: 1rem 0 1.5rem;
+  color: #cbd5e1;
 }
 
 .hero-actions {
+  margin-top: 1rem;
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-bottom: 0.75rem;
-}
-
-.hero-note {
-  font-size: 0.85rem;
-  color: #9ca3af;
-}
-
-/* HERO PANEL */
-
-.hero-panel {
-  display: flex;
-  justify-content: center;
-}
-
-.panel-card {
-  background: rgba(15, 23, 42, 0.9);
-  border-radius: 1rem;
-  padding: 1.5rem;
-  border: 1px solid rgba(148, 163, 184, 0.3);
-  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.7);
-  max-width: 360px;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.panel-header {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 0.75rem;
-}
-
-.panel-logo {
-  width: 64px;
-  height: 40px;
-  object-fit: contain;
-}
-
-.panel-card h2 {
-  font-size: 1.1rem;
-  margin-bottom: 0.1rem;
-}
-
-.panel-subtitle {
-  font-size: 0.8rem;
-  color: #9ca3af;
-}
-
-.panel-text {
-  font-size: 0.9rem;
-  color: #9ca3af;
-  margin-bottom: 1rem;
-}
-
-.panel-list {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 1.25rem;
-  font-size: 0.9rem;
-  color: #e5e7eb;
-}
-
-.panel-list li + li {
-  margin-top: 0.35rem;
-}
-
-/* SECTIONS */
-
-.section {
-  max-width: 1120px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
-}
-
-.section-alt {
-  background: radial-gradient(circle at top left, #020617, #020617);
-  border-top: 1px solid rgba(148, 163, 184, 0.2);
-  border-bottom: 1px solid rgba(148, 163, 184, 0.2);
-}
-
-.section-header h2 {
-  font-size: 1.4rem;
-  margin-bottom: 0.25rem;
-}
-
-.section-header p {
-  font-size: 0.95rem;
-  color: #9ca3af;
-}
-
-/* FEATURE GRID */
-
-.feature-grid {
-  margin-top: 1.5rem;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
   gap: 1rem;
 }
 
-.feature-card {
-  border-radius: 0.75rem;
-  padding: 1.25rem;
-  background: rgba(15, 23, 42, 0.9);
-  border: 1px solid rgba(148, 163, 184, 0.25);
-}
-
-.feature-card h3 {
-  font-size: 1rem;
-  margin-bottom: 0.5rem;
-}
-
-.feature-card p {
-  font-size: 0.9rem;
-  color: #9ca3af;
-}
-
-/* STEPS */
-
-.steps {
-  margin-top: 1.5rem;
-  padding-left: 1.25rem;
-  color: #e5e7eb;
-}
-
-.steps li {
-  margin-bottom: 0.75rem;
-  font-size: 0.95rem;
-}
-
-/* CONTATO */
-
-.contact-box {
-  margin-top: 1.5rem;
-  padding: 1.25rem;
-  border-radius: 0.75rem;
-  border: 1px solid rgba(148, 163, 184, 0.3);
-  background: rgba(15, 23, 42, 0.9);
-  font-size: 0.95rem;
-}
-
-.contact-note {
-  font-size: 0.8rem;
-  color: #9ca3af;
-  margin-top: 0.5rem;
-}
-
-/* BUTTONS */
-
-.btn {
-  border-radius: 999px;
-  padding: 0.55rem 1.25rem;
-  font-size: 0.9rem;
-  border: none;
-  cursor: pointer;
-  text-decoration: none;
+/* Botões principais hero */
+.btn-primary,
+.btn-secondary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.35rem;
-  transition: background 0.15s, color 0.15s, transform 0.05s, box-shadow 0.05s;
-  white-space: normal; /* permite quebrar linha */
-  box-sizing: border-box; /* conta padding dentro da largura */
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 0.9rem;
+  transition: 0.2s ease-in-out;
 }
 
 .btn-primary {
   background: #38bdf8;
   color: #0f172a;
-  font-weight: 600;
-  box-shadow: 0 10px 25px rgba(56, 189, 248, 0.4);
 }
 
 .btn-primary:hover {
@@ -500,131 +271,179 @@ const currentYear = computed(() => new Date().getFullYear());
 }
 
 .btn-secondary {
-  border: 1px solid rgba(148, 163, 184, 0.6);
-  color: #e5e7eb;
+  border: 1px solid #38bdf8;
+  color: #38bdf8;
   background: transparent;
 }
 
 .btn-secondary:hover {
-  background: rgba(148, 163, 184, 0.15);
+  background: rgba(56, 189, 248, 0.1);
+  transform: translateY(-1px);
 }
 
-.btn-outline {
-  border: 1px solid rgba(15, 23, 42, 0.2);
-  padding-inline: 1rem;
-  color: #0f172a; /* botão escuro no header branco */
-  background: transparent;
+/* FOTO BANNER */
+.hero-image {
+  display: flex;
+  justify-content: center;
 }
 
-.btn-outline:hover {
-  background: rgba(15, 23, 42, 0.06);
+.hero-photo-placeholder {
+  width: 260px;
+  height: 250px;
+  border-radius: 12px;
+  border: 2px dashed #475569;
+  background: #1e293b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.full-width {
+.logo-brand {
+  width: 260px;
+  height: 250px;
+  object-fit: contain;
+}
+
+/* SECTIONS */
+.section {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 3rem 1rem;
+}
+
+.section-alt {
+  background: #111827;
+}
+
+.section-header {
+  margin-bottom: 1.5rem;
+}
+
+.sobre-text {
+  color: #cbd5e1;
+  line-height: 1.6;
+}
+
+/* GALERIA + ANIMAÇÃO */
+.galeria-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.foto-card {
   width: 100%;
+  aspect-ratio: 1 / 1;              /* card quadrado */
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #334155;
+  background: #020617;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transform: translateY(0);
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.5);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
-/* garante que no card o botão nunca ultrapasse */
-.panel-card .btn {
-  max-width: 100%;
+.foto-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;              /* mostra o volante inteiro */
+  object-position: center;
+  transition: transform 0.25s ease;
+}
+
+/* Hover: levanta card + zoom leve */
+.foto-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 35px rgba(15, 23, 42, 0.8);
+}
+
+.foto-card:hover img {
+  transform: scale(1.05);
+}
+
+/* Animação de entrada */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.galeria-grid .foto-card:nth-child(1) {
+  animation: fadeInUp 0.5s ease-out 0s both;
+}
+
+.galeria-grid .foto-card:nth-child(2) {
+  animation: fadeInUp 0.5s ease-out 0.1s both;
+}
+
+.galeria-grid .foto-card:nth-child(3) {
+  animation: fadeInUp 0.5s ease-out 0.2s both;
+}
+
+/* CONTATO */
+.contact-box {
+  background: #1e293b;
+  border: 1px solid #334155;
+  padding: 1.5rem;
+  border-radius: 10px;
+}
+
+.contact-note {
+  font-size: 0.85rem;
+  color: #94a3b8;
 }
 
 /* FOOTER */
-
 .footer {
-  border-top: 1px solid rgba(148, 163, 184, 0.3);
+  background: #F2F2F2;
+  color: #0f172a;
   padding: 1rem;
   text-align: center;
-  font-size: 0.8rem;
-  color: #9ca3af;
+  font-size: 0.85rem;
 }
 
-/* RESPONSIVO - MOBILE COMUM (até 768px) */
-
+/* RESPONSIVO MOBILE */
 @media (max-width: 768px) {
   .header-content {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
+    align-items: center;
+    gap: 0.8rem;
+    text-align: center;
   }
 
   .nav {
-    width: 100%;
-    justify-content: flex-start;
-    gap: 0.5rem;
     flex-wrap: wrap;
+    justify-content: center;
   }
 
   .hero {
-    grid-template-columns: minmax(0, 1fr); /* 1 coluna no mobile */
-    padding: 1.5rem 1rem 1.5rem;
+    grid-template-columns: 1fr;
+    text-align: center;
   }
 
-  .hero-text h1 {
-    font-size: 1.6rem;
-  }
-
-  .hero-subtitle {
-    font-size: 0.9rem;
-  }
-
-  .hero-panel {
+  .hero-image {
     margin-top: 1.5rem;
-    width: 100%;
   }
 
-  .panel-card {
-    max-width: 100%;
-    padding: 1.25rem 1rem;
+  .logo-brand {
+    width: 200px;
+    height: 200px;
   }
 
-  .panel-logo {
-    width: 48px;
-    height: auto;
-  }
-
-  .btn {
-    font-size: 0.85rem;
-    padding: 0.5rem 1rem;
-  }
-}
-
-/* RESPONSIVO - CELULAR PEQUENO (até 480px) */
-
-@media (max-width: 480px) {
-  .hero-text h1 {
-    font-size: 1.4rem;
-  }
-
-  .hero-badge {
-    font-size: 0.7rem;
-    padding: 0.2rem 0.6rem;
-  }
-
-  .hero-logo {
-    width: 28px;
-    height: auto;
-  }
-
-  .panel-card {
-    padding: 1rem 0.9rem;
-  }
-
-  .btn {
-    font-size: 0.8rem;
-    padding: 0.45rem 0.9rem;
-  }
-}
-
-/* DESKTOP MAIOR */
-
-@media (min-width: 900px) {
-  .hero-text h1 {
-    font-size: 2.3rem;
-  }
-
-  .feature-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+  .hero-actions {
+    justify-content: center;
+    flex-wrap: wrap;
   }
 }
 </style>

@@ -24,15 +24,6 @@ const pedidos = ref<Pedido[]>([]);
 const statusFilter = ref<string>(""); // "" = todos
 const searchTerm = ref<string>("");
 
-// lista de status distintos (montada a partir dos dados)
-// const statusOptions = computed(() => {
-//   const set = new Set<string>();
-//   pedidos.value.forEach((p) => {
-//     if (p.status) set.add(p.status);
-//   });
-//   return Array.from(set);
-// });
-
 // pedidos filtrados para exibição na tabela
 const filteredPedidos = computed(() => {
   return pedidos.value.filter((p) => {
@@ -97,9 +88,9 @@ function exportPedidosToCsv() {
   // Cabeçalhos
   const headers = [
     "NF",
-    "Título",
     "Código Volante",
     "Descrição Volante",
+    "Observações",
     "Quantidade",
     "Status",
     "Criado em",
@@ -109,9 +100,9 @@ function exportPedidosToCsv() {
   // Linhas
   const rows = data.map((p) => [
     p.numero_nota_fiscal || "",
-    p.title || "",
     p.volante_codigo || "",
     p.volante_descricao || "",
+    p.description || "",
     String(p.quantidade ?? ""),
     p.status || "",
     formatDate(p.created_at),
@@ -195,8 +186,9 @@ onMounted(loadPedidos);
         <thead>
           <tr>
             <th>NF</th>
-            <th>Título</th>
-            <th>Volante</th>
+            <th>Código</th>
+            <th>Descrição</th>
+            <th>Observação</th>
             <th>Qtd</th>
             <th>Status</th>
             <th>Criado em</th>
@@ -205,13 +197,9 @@ onMounted(loadPedidos);
         <tbody>
           <tr v-for="p in filteredPedidos" :key="p.id">
             <td>{{ p.numero_nota_fiscal || "-" }}</td>
-            <td>{{ p.title }}</td>
-            <td>
-              <div class="volante-info">
-                <strong>{{ p.volante_codigo }}</strong>
-                <span>{{ p.volante_descricao }}</span>
-              </div>
-            </td>
+            <td>{{ p.volante_codigo }}</td>
+            <td>{{ p.volante_descricao }}</td>
+            <td>{{ p.description }}</td>
             <td>{{ p.quantidade }}</td>
             <td>
               <span class="badge">
