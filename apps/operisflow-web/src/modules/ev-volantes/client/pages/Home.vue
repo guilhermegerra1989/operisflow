@@ -213,7 +213,7 @@ const currentYear = computed(() => new Date().getFullYear());
   position: sticky;
   top: 0;
   z-index: 20;
-  background: #ffffff; /* 👈 fundo branco */
+  background: #F2F2F2; /* 👈 fundo branco */
 }
 
 .header-content {
