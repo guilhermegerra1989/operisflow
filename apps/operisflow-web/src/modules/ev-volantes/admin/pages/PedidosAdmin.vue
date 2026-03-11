@@ -292,8 +292,8 @@ table {
 /* Botões */
 .btn-secondary {
   background: transparent;
-  border: 1px solid #1e88e5;
-  color: #1e88e5;
+  border: 1px solid #0759a0;
+  color: #5e72a8;
   padding: 4px 10px;
   border-radius: 6px;
   font-size: 14px;
@@ -436,7 +436,7 @@ tbody tr:hover {
 }
 
 .btn-export {
-  background: #1e88e5;
+  background: #5e72a8;
   color: #fff;
   border: none;
   padding: 6px 12px;

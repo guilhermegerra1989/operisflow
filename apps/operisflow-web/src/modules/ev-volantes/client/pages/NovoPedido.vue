@@ -143,7 +143,7 @@ async function criar() {
 }
 
 .btn {
-  background: #1e88e5;
+  background: #5e72a8;
   padding: 12px;
   width: 100%;
   border-radius: 10px;
@@ -155,7 +155,7 @@ async function criar() {
 }
 
 .btn:hover {
-  background: #1565c0;
+  background: #5e72a8;
 }
 
 .top-bar {

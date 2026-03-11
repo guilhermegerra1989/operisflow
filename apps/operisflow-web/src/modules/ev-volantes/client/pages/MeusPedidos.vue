@@ -176,7 +176,7 @@ h2 {
   display: block;
   text-align: center;
   padding: 12px;
-  background: #1e88e5;
+  background: #5e72a8;
   color: white;
   border-radius: 10px;
   font-weight: 700;

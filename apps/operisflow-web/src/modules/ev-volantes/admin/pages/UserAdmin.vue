@@ -240,7 +240,7 @@ onMounted(loadUsers);
 .btn-secondary {
   background: transparent;
   border: 1px solid #1e88e5;
-  color: #1e88e5;
+  color: #5e72a8;
   padding: 4px 10px;
   border-radius: 6px;
   font-size: 14px;
@@ -301,7 +301,7 @@ h2 {
 }
 
 .btn-editar {
-  background: #1976d2;
+  background: #5e72a8;
   border: none;
   color: #fff;
   padding: 4px 10px;
@@ -342,9 +342,9 @@ h2 {
 }
 
 .pill.active {
-  background: #1976d2;
+  background: #5e72a8;
   color: white;
-  border-color: #1976d2;
+  border-color: #5e72a8;
 }
 
 /* Botões do formulário (criar/editar + cancelar) */
@@ -355,7 +355,7 @@ h2 {
 }
 
 .actions-form > button:first-child {
-  background: #1e88e5;
+  background: #5e72a8;
   color: white;
   border: none;
   padding: 8px 16px;
@@ -365,7 +365,7 @@ h2 {
 }
 
 .actions-form > button:first-child:hover {
-  background: #1565c0;
+  background: #5e72a8;
 }
 
 .btn-cancelar {

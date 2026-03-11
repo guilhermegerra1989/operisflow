@@ -274,7 +274,7 @@ h2 {
 }
 
 .btn-primary {
-  background: #1e88e5;
+  background: #5e72a8;
   color: white;
   border: none;
   padding: 10px 16px;
@@ -356,7 +356,7 @@ h2 {
 .btn-secondary {
   background: transparent;
   border: 1px solid #1e88e5;
-  color: #1e88e5;
+  color: #5e72a8;
   padding: 4px 10px;
   border-radius: 6px;
   font-size: 14px;

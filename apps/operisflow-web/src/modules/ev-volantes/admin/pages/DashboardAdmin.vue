@@ -114,7 +114,7 @@ h2 {
   display: block;
   text-align: left;
   padding: 16px;
-  background: #1e88e5;
+  background: #5e72a8;
   color: white;
   border-radius: 10px;
   font-weight: 700;
@@ -124,13 +124,13 @@ h2 {
 
 /* Estilo de card para os itens de menu */
 .menu-card {
-  background: #1e88e5;
+  background: #5e72a8;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   transition: 0.2s;
 }
 
 .menu-card:hover {
-  background: #1565c0;
+  background: #5e72a8;
   transform: translateY(-2px);
 }
 
