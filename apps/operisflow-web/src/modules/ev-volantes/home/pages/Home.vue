@@ -104,6 +104,36 @@
               alt="Volante 3"
             />
           </div>
+           <div class="foto-card">
+            <img
+              src="/volante_4.jpeg"
+              alt="Volante 4"
+            />
+          </div>
+           <div class="foto-card">
+            <img
+              src="/volante_5.jpeg"
+              alt="Volante 5"
+            />
+          </div>
+          <div class="foto-card">
+            <img
+              src="/volante_6.jpeg"
+              alt="Volante 6"
+            />
+          </div>
+          <div class="foto-card">
+            <img
+              src="/volante_7.jpeg"
+              alt="Volante 7"
+            />
+          </div>
+          <div class="foto-card">
+            <img
+              src="/volante_8.jpeg"
+              alt="Volante 8"
+            />
+          </div>
         </div>
       </section>
 
@@ -202,7 +232,7 @@
   padding: 8px 18px;
   border-radius: 50px;
   font-size: 0.9rem;
-  background: #0f172a;
+  background: #5e72a8;
   color: #fff;
   border: none;
   font-weight: 600;
@@ -284,17 +314,6 @@
 /* FOTO BANNER */
 .hero-image {
   display: flex;
-  justify-content: center;
-}
-
-.hero-photo-placeholder {
-  width: 260px;
-  height: 250px;
-  border-radius: 12px;
-  border: 2px dashed #475569;
-  background: #1e293b;
-  display: flex;
-  align-items: center;
   justify-content: center;
 }
 

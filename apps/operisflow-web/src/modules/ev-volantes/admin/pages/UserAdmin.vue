@@ -8,7 +8,7 @@ type User = {
   id: string;
   name: string;
   email: string;
-  role: "client" | "admin";
+  role: "client" | "admin" | "operator";
   active: boolean;
 };
 
@@ -18,7 +18,7 @@ const name = ref<string>("");
 const email = ref<string>("");
 const password = ref<string>("");
 
-const role = ref<"client" | "admin">("client");
+const role = ref<"client" | "admin" | "operator">("client");
 const active = ref<boolean>(true);
 
 const editingUserId = ref<string | null>(null);
@@ -49,7 +49,7 @@ function resetForm() {
 type UserPayload = {
   name: string;
   email: string;
-  role: "client" | "admin";
+  role: "client" | "admin" | "operator";
   active: boolean;
   password?: string;
 };
@@ -146,6 +146,13 @@ onMounted(loadUsers);
           @click="role = 'admin'"
         >
           Admin
+        </div>
+        <div 
+          class="pill" 
+          :class="{ active: role === 'operator' }"
+          @click="role = 'operator'"
+        >
+          Operador
         </div>
       </div>
     </div>

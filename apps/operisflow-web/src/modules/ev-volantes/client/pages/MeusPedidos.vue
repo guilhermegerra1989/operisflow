@@ -34,7 +34,7 @@ function logout() {
 
 
     <!-- HEADER COM NOME E LOGOUT -->
-   <div class="top-bar">
+    <div class="top-bar">
       <img src="../../../../assets/ev-volantes-logo.png" alt="EV Volantes" class="logo" />
       <button class="btn-logout" @click="logout">Sair</button>
     </div>

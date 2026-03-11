@@ -45,18 +45,20 @@ async function login() {
 </script>
 
 <template>
-  <div class="container login-wrapper">
-    <form @submit.prevent="login">
-      <img :src="logo" alt="Logo EV Volantes" class="logo" />
+   <div class="container">
+    <div class="container login-wrapper">
+      <form @submit.prevent="login">
+        <img :src="logo" alt="Logo EV Volantes" class="logo" />
 
-      <input v-model="email" placeholder="E-mail" />
-      <input v-model="password" type="password" placeholder="Senha" />
+        <input v-model="email" placeholder="E-mail" />
+        <input v-model="password" type="password" placeholder="Senha" />
 
-      <!-- BaseButton substituindo o botão original -->
-      <BaseButton type="submit" :loading="isLoading" label="Entrar" />
+        <!-- BaseButton substituindo o botão original -->
+        <BaseButton type="submit" :loading="isLoading" label="Entrar" />
 
-      <p v-if="error" class="error">{{ error }}</p>
-    </form>
+        <p v-if="error" class="error">{{ error }}</p>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -64,6 +66,13 @@ async function login() {
 .login-wrapper {
   text-align: center;
   margin-top: 40px;
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
 }
 
 .logo {
@@ -92,4 +101,5 @@ input:focus {
   color: red;
   margin-top: 10px;
 }
+
 </style>

@@ -33,7 +33,7 @@ const props = withDefaults(defineProps<Props>(), {
   border-radius: 6px;
   border: none;
   cursor: pointer;
-  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  background: linear-gradient(135deg, #8492b1, #5e72a8);
   color: #ffffff;
   font-weight: 600;
   display: inline-flex;

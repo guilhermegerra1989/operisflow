@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import Home from "../modules/ev-volantes/client/pages/Home.vue";
+import Home from "../modules/ev-volantes/home/pages/Home.vue";
 import Login from "../modules/ev-volantes/client/pages/Login.vue";
 import MeusPedidos from "../modules/ev-volantes/client/pages/MeusPedidos.vue";
 import NovoPedido from "../modules/ev-volantes/client/pages/NovoPedido.vue";
@@ -8,6 +8,7 @@ import UsersAdmin from "../modules/ev-volantes/admin/pages/UserAdmin.vue";
 import VolantesAdmin from "../modules/ev-volantes/admin/pages/VolantesAdmin.vue";
 import PedidosAdmin from "../modules/ev-volantes/admin/pages/PedidosAdmin.vue";
 import DashboardAdmin from "../modules/ev-volantes/admin/pages/DashboardAdmin.vue";
+import DashboardOperator from "../modules/ev-volantes/operator/pages/DashboardOperator.vue";
 
 export const router = createRouter({
   history: createWebHistory(),
@@ -54,6 +55,13 @@ export const router = createRouter({
       component: PedidosAdmin,
       meta: { requiresAuth: true, role: "admin" },
     },
+
+    // OPERADOR
+    {
+      path: "/ev-volantes/operator",
+      component: DashboardOperator,
+      meta: { requiresAuth: true, role: "operator" },
+    },
   ],
   
 });
@@ -65,7 +73,7 @@ router.beforeEach((to, _from, next) => {
 
   const isAuthenticated = !!token;
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
-  const requiredRole = to.meta.role as "client" | "admin" | undefined;
+  const requiredRole = to.meta.role as "client" | "admin" | "operator" | undefined;
 
   console.log("[ROUTER GUARD]");
   console.log("-> indo para:", to.fullPath);
@@ -90,6 +98,10 @@ router.beforeEach((to, _from, next) => {
 
     if (user?.role === "admin") {
       return next("/ev-volantes/admin");
+    }
+
+    if (user?.role === "operator") {
+      return next("/ev-volantes/operator");
     }
 
     return next("/ev-volantes/login");
