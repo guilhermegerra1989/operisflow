@@ -145,17 +145,4 @@ h2 {
   font-weight: 400;
 }
 
-
-.qty,
-.empty,
-.card,
-.volante,
-.volante strong,
-.volante span,
-.nf,
-.title,
-.desc,
-.footer {
-  
-}
 </style>
