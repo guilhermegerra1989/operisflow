@@ -5,8 +5,13 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
-    origin: 'https://operisflow-web.onrender.com',
+    origin: [
+      'https://operisflow-web.onrender.com',
+      'https://evvolantes.com.br',
+      'https://www.evvolantes.com.br',
+    ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true,
   });
 
   await app.listen(process.env.PORT ?? 3000);
