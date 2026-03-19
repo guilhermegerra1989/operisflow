@@ -68,7 +68,7 @@ function logout() {
 }
 
 function voltarDashboard() {
-  window.location.href = "/ev-volantes/admin";
+  window.location.href = "/ev-volantes/operator";
 }
 
 function formatDate(dateStr: string): string {
@@ -77,7 +77,7 @@ function formatDate(dateStr: string): string {
   return d.toLocaleString("pt-BR");
 }
 
-// NOVO: exportar pedidos para CSV
+// exportar pedidos para CSV
 function exportPedidosToCsv() {
   const data = filteredPedidos.value.length
     ? filteredPedidos.value

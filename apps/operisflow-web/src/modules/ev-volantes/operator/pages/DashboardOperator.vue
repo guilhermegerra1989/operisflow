@@ -45,7 +45,7 @@ function logout() {
 
     <!-- GRID DE BOTÕES / CARDS PRINCIPAIS -->
     <div class="menu-grid">
-      <router-link to="/ev-volantes/admin/users" class="btn menu-card">
+      <!-- <router-link to="/ev-volantes/admin/users" class="btn menu-card">
         <h3>Usuários</h3>
         <p>Gerenciar clientes e administradores</p>
       </router-link>
@@ -54,11 +54,11 @@ function logout() {
         <h3>Tipos de Volantes</h3>
         <p>Configurar tipos de volantes disponíveis</p>
       </router-link>
-
-      <router-link to="/ev-volantes/admin/pedidos" class="btn menu-card">
+-->
+      <router-link to="/ev-volantes/operator/pedidos" class="btn menu-card">
         <h3>Pedidos</h3>
-        <p>Visualizar todos os pedidos dos clientes</p>
-      </router-link>
+        <p>Visualizar pedidos</p>
+      </router-link> 
     </div>
   </div>
 </template>
@@ -114,7 +114,7 @@ h2 {
   display: block;
   text-align: left;
   padding: 16px;
-  background: #1e88e5;
+  background: #5e72a8;
   color: white;
   border-radius: 10px;
   font-weight: 700;
@@ -124,13 +124,13 @@ h2 {
 
 /* Estilo de card para os itens de menu */
 .menu-card {
-  background: #1e88e5;
+  background: #5e72a8;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   transition: 0.2s;
 }
 
 .menu-card:hover {
-  background: #1565c0;
+  background: #5e72a8;
   transform: translateY(-2px);
 }
 

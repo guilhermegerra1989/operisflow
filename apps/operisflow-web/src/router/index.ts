@@ -9,6 +9,7 @@ import VolantesAdmin from "../modules/ev-volantes/admin/pages/VolantesAdmin.vue"
 import PedidosAdmin from "../modules/ev-volantes/admin/pages/PedidosAdmin.vue";
 import DashboardAdmin from "../modules/ev-volantes/admin/pages/DashboardAdmin.vue";
 import DashboardOperator from "../modules/ev-volantes/operator/pages/DashboardOperator.vue";
+import PedidosOperator from "../modules/ev-volantes/operator/pages/PedidosOperator.vue";
 
 export const router = createRouter({
   history: createWebHistory(),
@@ -60,6 +61,11 @@ export const router = createRouter({
     {
       path: "/ev-volantes/operator",
       component: DashboardOperator,
+      meta: { requiresAuth: true, role: "operator" },
+    },
+    {
+      path: "/ev-volantes/operator/pedidos",
+      component: PedidosOperator,
       meta: { requiresAuth: true, role: "operator" },
     },
   ],

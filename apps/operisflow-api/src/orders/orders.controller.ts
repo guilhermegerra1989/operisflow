@@ -46,7 +46,7 @@ export class OrdersController {
     @Tenant() tenantId: string,
     @CurrentUser() user: any,
   ) {
-    if (user.role !== 'admin') {
+    if (user.role !== 'admin' && user.role !== 'operator') {
       throw new ForbiddenException('Apenas administrador pode listar todos os pedidos');
     }
     return this.ordersService.findAll(tenantId);
