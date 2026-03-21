@@ -1,4 +1,6 @@
--- Extensões
+--------------------------------------------------------
+-- EXTENSÃO UUID
+--------------------------------------------------------
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 --------------------------------------------------------
@@ -11,61 +13,66 @@ CREATE TABLE IF NOT EXISTS tenants (
 );
 
 --------------------------------------------------------
+-- TABELA: marcas (ex: Chevrolet, Fiat, etc)
+--------------------------------------------------------
+CREATE TABLE IF NOT EXISTS marcas (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  tenant_id UUID NOT NULL,
+
+  nome VARCHAR(255) NOT NULL,
+  descricao TEXT,
+
+  created_at TIMESTAMP DEFAULT NOW(),
+
+  CONSTRAINT fk_marcas_tenant
+    FOREIGN KEY (tenant_id) REFERENCES tenants(id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_marcas_tenant ON marcas(tenant_id);
+
+--------------------------------------------------------
+-- TABELA: rotas
+--------------------------------------------------------
+CREATE TABLE IF NOT EXISTS rotas (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  tenant_id UUID NOT NULL,
+
+  nome VARCHAR(255) NOT NULL,
+  descricao TEXT,
+
+  created_at TIMESTAMP DEFAULT NOW(),
+
+  CONSTRAINT fk_rotas_tenant
+    FOREIGN KEY (tenant_id) REFERENCES tenants(id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_rotas_tenant ON rotas(tenant_id);
+
+--------------------------------------------------------
 -- TABELA: users
 --------------------------------------------------------
 CREATE TABLE IF NOT EXISTS users (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   tenant_id UUID NOT NULL,
+
   name VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL UNIQUE,
   password VARCHAR(255) NOT NULL,
   role VARCHAR(50) DEFAULT 'client',
   active BOOLEAN DEFAULT TRUE,
+  rota_id UUID NULL,
+
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW(),
 
   CONSTRAINT fk_users_tenant
-    FOREIGN KEY (tenant_id) REFERENCES tenants(id)
+    FOREIGN KEY (tenant_id) REFERENCES tenants(id),
+
+  CONSTRAINT fk_users_rota
+    FOREIGN KEY (rota_id) REFERENCES rotas(id)
 );
 
 CREATE INDEX IF NOT EXISTS idx_users_tenant ON users(tenant_id);
-
-
---------------------------------------------------------
--- SEED: Tenant EV Volantes
---------------------------------------------------------
-INSERT INTO tenants (id, name)
-VALUES ('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'EV Volantes')
-ON CONFLICT DO NOTHING;
-
---------------------------------------------------------
--- SEED: Usuário Administrador EV Volantes
---------------------------------------------------------
-INSERT INTO users (id, tenant_id, name, email, password, role)
-VALUES (
-  'd4b3629f-12cf-4d8d-91c1-0bf671a95190',
-  '3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab',
-  'Administrador EV Volantes',
-  'admin@evvolantes.com',
-  'admin123',   -- senha em texto puro para o protótipo
-  'admin'
-)
-ON CONFLICT DO NOTHING;
-
---------------------------------------------------------
--- SEED: Usuário Cliente EV Volantes
---------------------------------------------------------
-INSERT INTO users (id, tenant_id, name, email, password, role)
-VALUES (
-  '5b458932-66ed-43b4-b9f9-4c55a13aa218',
-  '3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab',
-  'Cliente EV Volantes',
-  'cliente@evvolantes.com',
-  'cliente123',  -- senha em texto puro para o protótipo
-  'client'
-)
-ON CONFLICT DO NOTHING;
-
 
 --------------------------------------------------------
 -- TABELA: volantes (catálogo de tipos de volante)
@@ -73,6 +80,8 @@ ON CONFLICT DO NOTHING;
 CREATE TABLE IF NOT EXISTS volantes (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   tenant_id UUID NOT NULL,
+
+  marca_id UUID NOT NULL,  -- NOVO CAMPO: referência a marcas
 
   codigo VARCHAR(50) NOT NULL,
   descricao VARCHAR(255) NOT NULL,
@@ -83,58 +92,22 @@ CREATE TABLE IF NOT EXISTS volantes (
   CONSTRAINT fk_volantes_tenant
     FOREIGN KEY (tenant_id) REFERENCES tenants(id),
 
+  CONSTRAINT fk_volantes_marca
+    FOREIGN KEY (marca_id) REFERENCES marcas(id),
+
   CONSTRAINT uq_volantes_codigo UNIQUE (tenant_id, codigo)
 );
 
 CREATE INDEX IF NOT EXISTS idx_volantes_tenant ON volantes(tenant_id);
-
-
---------------------------------------------------------
--- SEED: volantes iniciais para EV Volantes
---------------------------------------------------------
-
-INSERT INTO volantes (tenant_id, codigo, descricao) VALUES 
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'EVR11', 'VOL GM ONIX AB - APLIQUE'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'EVR12', 'VOL GM ONIX AB - PU'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'EVR13', 'VOL GM COBALT AB - APLIQUE'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'EVR14', 'VOL GM COBALT AB - PU'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'EVR15', 'VOL GM CELTA NOVO'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'EVR16', 'VOL GM PRISMA'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'EVR17', 'VOL GM AGILE AB'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'EVR18', 'VOL GM ONIX CONTROLE'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'EVR19', 'VOL GM SPIN CONTROLE'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'EVR21', 'VOL FIAT UNO FIRE'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'EVR22', 'VOL FIAT VIVACE'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'EVR23', 'VOL FIAT IDEA AB'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'EVR24', 'VOL FIAT PALIO NOVO'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'EVR31', 'VOL FORD NEW KA'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'EVR32', 'VOL FORD FIESTA 2003'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'EVR33', 'VOL FORD ECO SPORT AB'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'EVR41', 'VOL RENAULT LOGAN 3 TRAVAS'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'EVR42', 'VOL RENAULT SANDERO'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'EVR51', 'VOL VW VOYAGE'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'EVR52', 'VOL VW GOL G4'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'EVR53', 'VOL VW GOL G5'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'EVR54', 'VOL VW GOL G7'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'EVR55', 'VOL VW GOL G6 TRÊS TRAVAS'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'EVR56', 'VOL VW GOL G6 DUAS TRAVAS'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'EVR57', 'VOL VW DELIVERY/CONSTELLATION'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'EVR61', 'VOL HYUNDAI HB20'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'EVR71', 'VOL MB 1620 PEQUENO'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'EVR72', 'VOL MB ATRON/EURO');
-
+CREATE INDEX IF NOT EXISTS idx_volantes_marca ON volantes(marca_id);
 
 --------------------------------------------------------
--- TABELA: orders (pedidos do cliente)
+-- TABELA: orders (cabeçalho do pedido - SEM nota fiscal)
 --------------------------------------------------------
 CREATE TABLE IF NOT EXISTS orders (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   tenant_id UUID NOT NULL,
   client_user_id UUID NOT NULL,
-
-  volante_id UUID NOT NULL,         
-  numero_nota_fiscal VARCHAR(50) NOT NULL, 
-  quantidade INT NOT NULL DEFAULT 1,
 
   title VARCHAR(255) NOT NULL,
   description TEXT,
@@ -147,15 +120,168 @@ CREATE TABLE IF NOT EXISTS orders (
     FOREIGN KEY (tenant_id) REFERENCES tenants(id),
 
   CONSTRAINT fk_orders_user
-    FOREIGN KEY (client_user_id) REFERENCES users(id),
-
-  CONSTRAINT fk_orders_volante
-    FOREIGN KEY (volante_id) REFERENCES volantes(id)
+    FOREIGN KEY (client_user_id) REFERENCES users(id)
 );
 
 CREATE INDEX IF NOT EXISTS idx_orders_tenant ON orders(tenant_id);
-CREATE INDEX IF NOT EXISTS idx_orders_volante ON orders(volante_id);
+CREATE INDEX IF NOT EXISTS idx_orders_client ON orders(client_user_id);
 
+--------------------------------------------------------
+-- TABELA: order_items (itens do pedido)
+--------------------------------------------------------
+CREATE TABLE IF NOT EXISTS order_items (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  order_id UUID NOT NULL,
+  tenant_id UUID NOT NULL,
 
+  volante_id UUID NOT NULL,
+  quantidade INT NOT NULL DEFAULT 1,
 
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW(),
 
+  CONSTRAINT fk_orderitems_order
+    FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
+
+  CONSTRAINT fk_orderitems_tenant
+    FOREIGN KEY (tenant_id) REFERENCES tenants(id),
+
+  CONSTRAINT fk_orderitems_volante
+    FOREIGN KEY (volante_id) REFERENCES volantes(id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_order_items_order ON order_items(order_id);
+CREATE INDEX IF NOT EXISTS idx_order_items_tenant ON order_items(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_order_items_volante ON order_items(volante_id);
+
+--------------------------------------------------------
+-- SEEDS
+--------------------------------------------------------
+
+--------------------------------------------------------
+-- SEED: Tenant EV Volantes
+--------------------------------------------------------
+INSERT INTO tenants (id, name)
+VALUES ('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'EV Volantes')
+ON CONFLICT (id) DO NOTHING;
+
+--------------------------------------------------------
+-- SEED: Marcas para EV Volantes
+--------------------------------------------------------
+INSERT INTO marcas (id, tenant_id, nome, descricao) VALUES
+('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1',
+ '3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab',
+ 'Chevrolet', 'Veículos da marca Chevrolet / GM'),
+('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2',
+ '3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab',
+ 'Fiat', 'Veículos da marca Fiat'),
+('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa3',
+ '3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab',
+ 'Ford', 'Veículos da marca Ford'),
+('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa4',
+ '3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab',
+ 'Renault', 'Veículos da marca Renault'),
+('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5',
+ '3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab',
+ 'Volkswagen', 'Veículos da marca Volkswagen'),
+('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa6',
+ '3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab',
+ 'Hyundai', 'Veículos da marca Hyundai'),
+('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa7',
+ '3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab',
+ 'Mercedes-Benz', 'Veículos da marca Mercedes-Benz')
+ON CONFLICT (id) DO NOTHING;
+
+--------------------------------------------------------
+-- SEED: Rotas (Padrão, Sul, Centro Oeste)
+--------------------------------------------------------
+INSERT INTO rotas (id, tenant_id, nome, descricao) VALUES
+('11111111-1111-1111-1111-111111111111',
+ '3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab',
+ 'Rota Padrão', 'Rota inicial do sistema'),
+('22222222-2222-2222-2222-222222222222',
+ '3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab',
+ 'Rota Sul', 'Região Sul do Brasil'),
+('33333333-3333-3333-3333-333333333333',
+ '3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab',
+ 'Rota Centro Oeste', 'Região Centro Oeste do Brasil')
+ON CONFLICT (id) DO NOTHING;
+
+--------------------------------------------------------
+-- SEED: Usuário Administrador EV Volantes
+--------------------------------------------------------
+INSERT INTO users (id, tenant_id, name, email, password, role, rota_id)
+VALUES (
+  'd4b3629f-12cf-4d8d-91c1-0bf671a95190',
+  '3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab',
+  'Administrador EV Volantes',
+  'admin@evvolantes.com',
+  'admin123',            -- para protótipo; em produção usar hash
+  'admin',
+  '11111111-1111-1111-1111-111111111111'
+)
+ON CONFLICT (id) DO NOTHING;
+
+--------------------------------------------------------
+-- SEED: Usuário Cliente EV Volantes
+--------------------------------------------------------
+INSERT INTO users (id, tenant_id, name, email, password, role, rota_id)
+VALUES (
+  '5b458932-66ed-43b4-b9f9-4c55a13aa218',
+  '3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab',
+  'Cliente EV Volantes',
+  'cliente@evvolantes.com',
+  'cliente123',          -- para protótipo; em produção usar hash
+  'client',
+  '11111111-1111-1111-1111-111111111111'
+)
+ON CONFLICT (id) DO NOTHING;
+
+--------------------------------------------------------
+-- SEED: Volantes iniciais para EV Volantes
+-- Agora com marca_id preenchido
+--------------------------------------------------------
+INSERT INTO volantes (tenant_id, marca_id, codigo, descricao) VALUES 
+
+-- Chevrolet / GM
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR11', 'VOL GM ONIX AB - APLIQUE'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR12', 'VOL GM ONIX AB - PU'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR13', 'VOL GM COBALT AB - APLIQUE'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR14', 'VOL GM COBALT AB - PU'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR15', 'VOL GM CELTA NOVO'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR16', 'VOL GM PRISMA'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR17', 'VOL GM AGILE AB'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR18', 'VOL GM ONIX CONTROLE'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR19', 'VOL GM SPIN CONTROLE'),
+
+-- Fiat
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2', 'EVR21', 'VOL FIAT UNO FIRE'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2', 'EVR22', 'VOL FIAT VIVACE'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2', 'EVR23', 'VOL FIAT IDEA AB'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2', 'EVR24', 'VOL FIAT PALIO NOVO'),
+
+-- Ford
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa3', 'EVR31', 'VOL FORD NEW KA'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa3', 'EVR32', 'VOL FORD FIESTA 2003'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa3', 'EVR33', 'VOL FORD ECO SPORT AB'),
+
+-- Renault
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa4', 'EVR41', 'VOL RENAULT LOGAN 3 TRAVAS'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa4', 'EVR42', 'VOL RENAULT SANDERO'),
+
+-- Volkswagen
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVR51', 'VOL VW VOYAGE'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVR52', 'VOL VW GOL G4'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVR53', 'VOL VW GOL G5'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVR54', 'VOL VW GOL G7'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVR55', 'VOL VW GOL G6 TRÊS TRAVAS'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVR56', 'VOL VW GOL G6 DUAS TRAVAS'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVR57', 'VOL VW DELIVERY/CONSTELLATION'),
+
+-- Hyundai
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa6', 'EVR61', 'VOL HYUNDAI HB20'),
+
+-- Mercedes-Benz
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa7', 'EVR71', 'VOL MB 1620 PEQUENO'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa7', 'EVR72', 'VOL MB ATRON/EURO')
+ON CONFLICT DO NOTHING;
