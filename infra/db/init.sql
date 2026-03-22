@@ -108,6 +108,7 @@ CREATE TABLE IF NOT EXISTS orders (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   tenant_id UUID NOT NULL,
   client_user_id UUID NOT NULL,
+  numero_pedido INTEGER,
 
   title VARCHAR(255) NOT NULL,
   description TEXT,
@@ -285,3 +286,31 @@ INSERT INTO volantes (tenant_id, marca_id, codigo, descricao) VALUES
 ('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa7', 'EVR71', 'VOL MB 1620 PEQUENO'),
 ('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa7', 'EVR72', 'VOL MB ATRON/EURO')
 ON CONFLICT DO NOTHING;
+
+
+CREATE OR REPLACE FUNCTION generate_order_number_per_tenant()
+RETURNS TRIGGER AS $$
+DECLARE
+  seq_name TEXT;
+  next_number INTEGER;
+BEGIN
+  -- sequence por tenant
+  seq_name := 'order_seq_' || replace(NEW.tenant_id::text, '-', '');
+
+  -- cria sequence se não existir
+  EXECUTE 'CREATE SEQUENCE IF NOT EXISTS ' || seq_name || ' START 1';
+
+  -- pega próximo número
+  EXECUTE 'SELECT nextval(''' || seq_name || ''')'
+  INTO next_number;
+
+  NEW.numero_pedido := next_number;
+
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_generate_order_number_per_tenant
+BEFORE INSERT ON orders
+FOR EACH ROW
+EXECUTE FUNCTION generate_order_number_per_tenant();

@@ -1,8 +1,10 @@
 <template>
   <div class="page">
+
     <!-- Header -->
     <header class="header">
       <div class="header-content">
+
         <div class="logo-area">
           <img
             src="/ev_volantes_image.jpeg"
@@ -74,6 +76,22 @@
           durabilidade e funcionamento perfeito. Nosso compromisso é entregar
           produtos de alto padrão com agilidade e atendimento diferenciado.
         </p>
+
+        <div class="section-header">
+          <h2>Missão</h2>
+          <p>Fornecer os melhores produtos comprometidos com a qualidade única e rara no mercado de volantes.</p>
+        </div>
+
+        <div class="section-header">
+          <h2>Visão</h2>
+          <p>Ser o melhor no mercado de volantes, visando sempre a melhoria contínua. Oferecer para os nossos clientes a segurança em adquirir um produto de qualidade e durabilidade.</p>
+        </div>
+
+        <div class="section-header">
+          <h2>Valores</h2>
+          <p>Transparência - respeito - credibilidade - honestidade - confiança.</p>
+        </div>
+
       </section>
 
       <!-- GALERIA DE FOTOS -->
@@ -465,4 +483,6 @@
     flex-wrap: wrap;
   }
 }
+
+
 </style>

@@ -14,68 +14,106 @@ export class OrdersService {
   }
 
   
+  
   async create(tenantId: string, userId: string, dto: CreateOrderDto) {
-    console.log('CreateOrderDto recebido:', dto); // ajuda a ver no log
+    const client = await this.db.connect();
 
-    const result = await this.db.query(
-      `
-      INSERT INTO orders (
-        tenant_id,
-        client_user_id,
-        volante_id,
-        numero_nota_fiscal,
-        quantidade,
-        title,
-        description
-      )
-      VALUES ($1, $2, $3, $4, $5, $6, $7)
-      RETURNING *
-      `,
-      [
-        tenantId,
-        userId,
-        dto.volanteId,
-        dto.numeroNotaFiscal,
-        dto.quantidade,
-        dto.title,
-        dto.description || null,
-      ],
-    );
+    try {
+      await client.query('BEGIN');
 
-    return result.rows[0];
+      // 1) Insere o cabeçalho do pedido em "orders"
+      const orderResult = await client.query(
+        `
+        INSERT INTO orders (
+          tenant_id,
+          client_user_id,
+          title,
+          description
+        )
+        VALUES ($1, $2, $3, $4)
+        RETURNING *
+        `,
+        [tenantId, userId, dto.title, dto.description ?? null],
+      );
+
+      const order = orderResult.rows[0];
+
+      // 2) Insere os itens em "order_items"
+      if (dto.items && dto.items.length > 0) {
+        const values: any[] = [];
+        const placeholders: string[] = [];
+
+        dto.items.forEach((item, index) => {
+          const baseIndex = index * 4;
+          placeholders.push(
+            `($${baseIndex + 1}, $${baseIndex + 2}, $${baseIndex + 3}, $${
+              baseIndex + 4
+            })`,
+          );
+          values.push(order.id, tenantId, item.volanteId, item.quantidade);
+        });
+
+        await client.query(
+          `
+          INSERT INTO order_items (
+            order_id,
+            tenant_id,
+            volante_id,
+            quantidade
+          )
+          VALUES ${placeholders.join(', ')}
+          `,
+          values,
+        );
+      }
+
+      await client.query('COMMIT');
+
+      // você pode retornar o pedido com ou sem itens; por enquanto, só o cabeçalho:
+      return order;
+    } catch (error) {
+      await client.query('ROLLBACK');
+      console.error('Erro ao criar pedido:', error);
+      throw error;
+    } finally {
+      client.release();
+    }
   }
 
 
-  async findMyOrders(tenantId: string, userId: string) {
-    const result = await this.db.query(
-      `
-      SELECT 
-        o.id,
-        o.tenant_id,
-        o.client_user_id,
-        o.volante_id,
-        o.numero_nota_fiscal,
-        o.quantidade, 
-        o.title,
-        o.description,
-        o.status,
-        o.created_at,
-        o.updated_at,
 
-        v.codigo AS volante_codigo,
-        v.descricao AS volante_descricao
+ async findMyOrders(tenantId: string, userId: string) {
+  const result = await this.db.query(
+    `
+    SELECT
+      o.id AS order_id,
+      o.title,
+      o.description,
+      o.status,
+      o.created_at,
+      o.numero_pedido,
 
-      FROM orders o
-      JOIN volantes v ON v.id = o.volante_id
-      WHERE o.tenant_id = $1
-        AND o.client_user_id = $2
-      ORDER BY o.created_at DESC
-      `,
-      [tenantId, userId],
-    );
+      oi.quantidade,
+      v.codigo AS volante_codigo,
+      v.descricao AS volante_descricao,
 
-    return result.rows;
-  }
+      m.nome AS marca_nome
+    FROM orders o
+    LEFT JOIN order_items oi
+      ON oi.order_id = o.id
+    LEFT JOIN volantes v
+      ON v.id = oi.volante_id
+    LEFT JOIN marcas m
+      ON m.id = v.marca_id
+    WHERE o.tenant_id = $1
+      AND o.client_user_id = $2
+    ORDER BY o.created_at DESC, m.nome ASC, v.codigo ASC
+    `,
+    [tenantId, userId],
+  );
+
+  return result.rows;
+}
 
   async findAll(tenantId: string) {
   const result = await this.db.query(
@@ -85,7 +123,7 @@ export class OrdersService {
         o.tenant_id,
         o.client_user_id,
         o.volante_id,
-        o.numero_nota_fiscal,
+        o.numero_pedido,
         o.quantidade, 
         o.title,
         o.description,

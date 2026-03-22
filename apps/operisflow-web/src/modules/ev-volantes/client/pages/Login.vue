@@ -42,10 +42,23 @@ async function login() {
     isLoading.value = false;
   }
 }
+
+function logout() {
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
+  window.location.href = "/ev-volantes";
+}
 </script>
 
 <template>
    <div class="container">
+
+    <div class="top-bar">
+      <img src="../../../../assets/ev-volantes-logo.png" alt="EV Volantes" class="logo_header" />
+      <button class="btn-logout" @click="logout">Retornar ao site</button>
+    </div>
+
+
     <div class="container login-wrapper">
       <form @submit.prevent="login">
         <img :src="logo" alt="Logo EV Volantes" class="logo" />
@@ -100,6 +113,34 @@ input:focus {
 .error {
   color: red;
   margin-top: 10px;
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.logo_header {
+  height: 36px;         /* tamanho ideal para mobile */
+  object-fit: contain;
+}
+
+.btn-logout {
+  background: transparent;
+  border: 1px solid #5e72a8;
+  color: #5e72a8;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  max-width: 150px;
+}
+
+.btn-logout:hover {
+  background: #ffebee;
 }
 
 </style>

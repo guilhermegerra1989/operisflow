@@ -7,12 +7,11 @@
         alt="EV Volantes"
         class="logo"
       />
-      <button class="btn-voltar" @click="voltar()">Voltar</button>
+      <button class="btn-voltar" @click="voltar()">Dashboard</button>
     </div>
 
     <h2>Novo Pedido</h2>
 
-    <!-- Dados gerais do pedido -->
     <label>Título do Pedido *</label>
     <input
       v-model="tituloPedido" disabled
@@ -53,6 +52,11 @@
             class="btn-marca"
             @click="selecionarMarca(marca.id)"
           >
+          <img 
+            :src="logoMarcas[marca.nome]" 
+            alt="logo" 
+            class="marca-logo"
+          />
             {{ marca.nome }}
           </button>
         </div>
@@ -127,13 +131,19 @@
 
   <h4>Itens adicionados</h4>
 
-  <!-- Agrupamento por marca -->
       <div
         v-for="(grupo, marcaId) in itensAgrupados"
         :key="marcaId"
         class="grupo-marca"
       >
-        <div class="grupo-titulo">{{ grupo.marcaNome }}</div>
+        <div class="grupo-titulo">
+          <img 
+            :src="logoMarcas[grupo.marcaNome]" 
+            alt="logo" 
+            class="marca-logo"
+          />
+          <span>{{ grupo.marcaNome }}</span>
+        </div>
 
         <div
           class="grupo-item"
@@ -141,24 +151,21 @@
           :key="it.volanteId"
         >
           <div class="grupo-item-info">
-            <div class="grupo-item-codigo">{{ it.codigo }}</div>
-            <div class="grupo-item-descricao">{{ it.descricao }}</div>
+            <div class="grupo-item-codigo">{{ it.codigo }}  <div class="grupo-item-descricao">{{ it.descricao }}</div> </div>
           </div>
 
           <div class="grupo-item-acoes">
-            <span class="grupo-item-qtd">x{{ it.quantidade }}</span>
+            <span class="grupo-item-qtd">Qtde {{ it.quantidade }} </span>
             <button
               class="grupo-item-remove"
               @click="removerItemPorId(it.volanteId)"
-            >
-              ✕
-            </button>
+            > ✕ </button>
           </div>
         </div>
       </div>
     </div>
 
-    <button @click="criar" class="btn-enviar">
+    <button @click="criar" class="btn-enviar" v-if="uiStep === 'idle'">
       Enviar Pedido
     </button>
   </div>
@@ -177,8 +184,8 @@ type Volante = {
   id: string;
   codigo: string;
   descricao: string;
-  marcaId: string;       // importante: vindo da API
-  marcaNome?: string;    // opcional, se você quiser já mandar do backend
+  marcaId: string;       
+  marcaNome?: string;    
 };
 
 type ItemPedido = {
@@ -188,6 +195,16 @@ type ItemPedido = {
   codigo: string;
   descricao: string;
   quantidade: number;
+};
+
+const logoMarcas: Record<string, string> = {
+  "Chevrolet": "/marcas/chevrolet.png",
+  "Fiat": "/marcas/fiat.png",
+  "Ford": "/marcas/ford.png",
+  "Renault": "/marcas/renault.png",
+  "Volkswagen": "/marcas/volkswagen.png",
+  "Hyundai": "/marcas/hyundai.png",
+  "Mercedes-Benz": "/marcas/mercedes.png",
 };
 
 type UIStep = "idle" | "marcas" | "modelos";
@@ -233,8 +250,8 @@ onMounted(async () => {
     id: v.id,
     codigo: v.codigo,
     descricao: v.descricao,
-    marcaId: v.marca_id ?? v.marcaId,       // cobre os dois jeitos
-    marcaNome: v.marca_nome ?? v.marcaNome, // se você fizer join com marcas depois
+    marcaId: v.marca_id ?? v.marcaId,       
+    marcaNome: v.marca_nome ?? v.marcaNome, 
   }));
 
  // usuário + rota
@@ -395,12 +412,6 @@ function confirmarModelos() {
   uiStep.value = "idle";
 }
 
-/**
- * Remover item da lista
- */
-function removerItem(index: number) {
-  itens.value.splice(index, 1);
-}
 
 /**
  * Criar pedido
@@ -462,8 +473,8 @@ async function criar() {
 
 .btn-voltar {
   background: transparent;
-  border: 1px solid #e53935;
-  color: #e53935;
+  border: 1px solid #5e72a8;
+  color: #5e72a8;
   padding: 4px 10px;
   border-radius: 6px;
   font-size: 14px;
@@ -497,46 +508,45 @@ h4 {
   border-top: 1px solid #eee;
 }
 
-/* Card do fluxo de adicionar item */
-.card-add-item {
-  border-radius: 10px;
-  border: 1px solid #ddd;
-  padding: 12px;
-  margin-bottom: 16px;
-  background: #fafafa;
-}
-
-/* Mensagens de etapa */
-.mensagem-passos {
-  font-size: 14px;
-  margin-bottom: 8px;
-}
-
-/* Grid de marcas (botões) */
 .marcas-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 12px;
+  gap: 6px;               
+  margin-bottom: 10px;
 }
 
 .btn-marca {
-  flex: 1 1 45%;
-  padding: 8px;
+  flex: 1 1 100%;       
+  display: flex;           
+  align-items: center;      
+  gap: 10px;                
+  padding: 10px;            
   border-radius: 8px;
   border: 1px solid #5e72a8;
   background: #ffffff;
   color: #5e72a8;
-  font-size: 14px;
+  font-size: 15px;         
   font-weight: 600;
   cursor: pointer;
+  transition: background 0.2s ease;
 }
 
 .btn-marca:hover {
   background: #eef1ff;
 }
 
-/* Lista de modelos */
+.marca-logo {
+  width: 26px;           
+  height: 26px;
+  object-fit: contain;
+  display: block;
+}
+
+.mensagem-passos {
+  font-size: 14px;
+  margin-bottom: 6px;       
+}
+
 .modelos-lista {
   max-height: 260px;
   overflow-y: auto;
@@ -574,14 +584,12 @@ h4 {
   font-size: 14px;
 }
 
-/* Ações na etapa de modelos */
 .acoes-modelos {
   display: flex;
   justify-content: space-between;
   gap: 8px;
 }
 
-/* Lista de itens adicionados */
 .itens-lista {
   margin-bottom: 16px;
 }
@@ -614,7 +622,6 @@ h4 {
   margin-bottom: 2px;
 }
 
-/* Botões genéricos */
 .btn-outline {
   background: transparent;
   border: 1px dashed #5e72a8;
@@ -674,13 +681,11 @@ h4 {
   background: #4b5b8a;
 }
 
-/* ========== STEPPER ( + / - ) ========== */
-
 .stepper {
   display: flex;
   align-items: center;
   border: 1px solid #ccc;
-  width: 110px; /* compacto */
+  width: 110px; 
   border-radius: 8px;
   background: #fff;
 }
@@ -697,7 +702,7 @@ h4 {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 6px 0 0 6px; /* ajustado via CSS */
+  border-radius: 6px 0 0 6px;
   transition: 0.15s ease;
 }
 
@@ -719,10 +724,6 @@ h4 {
   background: transparent;
 }
 
-/* =============================== */
-/* GRUPOS DE MARCA NA LISTAGEM    */
-/* =============================== */
-
 .grupo-marca {
   margin-bottom: 16px;
   padding: 10px 12px;
@@ -733,15 +734,27 @@ h4 {
 }
 
 .grupo-titulo {
+  display: flex;
+  align-items: center;     
+  gap: 10px;                
   font-size: 15px;
   font-weight: 700;
   color: #5e72a8;
   margin-bottom: 8px;
   border-bottom: 1px solid #eee;
-  padding-bottom: 4px;
+  padding-bottom: 6px;
 }
 
-/* Item dentro do grupo */
+.marca-logo {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  display: block;           
+  margin: 0;
+  padding: 0;
+  vertical-align: middle;   
+}
+
 .grupo-item {
   display: flex;
   justify-content: space-between;
@@ -769,7 +782,6 @@ h4 {
   color: #666;
 }
 
-/* Quantidade + botão remover */
 .grupo-item-acoes {
   display: flex;
   align-items: center;

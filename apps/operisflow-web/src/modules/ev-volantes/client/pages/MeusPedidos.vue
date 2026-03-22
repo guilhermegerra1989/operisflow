@@ -1,14 +1,16 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { apiGet } from "../../api/apiClient";
 
 type Pedido = {
-  id: string;
+  order_id: string;
   title: string;
-  description: string;
+  numero_pedido: string;
+  description: string | null;
   status: string;
   created_at: string;
-  numero_nota_fiscal: string;
+
+  marca_nome: string;
   volante_codigo: string;
   volante_descricao: string;
   quantidade: number;
@@ -26,6 +28,47 @@ function logout() {
   localStorage.removeItem("user");
   window.location.href = "/ev-volantes/login";
 }
+
+const pedidosAgrupados = computed(() => {
+  const map: Record<string, any> = {};
+
+  pedidos.value.forEach((row) => {
+    if (!map[row.order_id]) {
+      map[row.order_id] = {
+        id: row.order_id,
+        title: row.title,
+        numero_pedido: row.numero_pedido,
+        description: row.description,
+        status: row.status,
+        created_at: row.created_at,
+        marcas: {},
+      };
+    }
+
+    // agrupar por marca
+    if (!map[row.order_id].marcas[row.marca_nome]) {
+      map[row.order_id].marcas[row.marca_nome] = [];
+    }
+
+    map[row.order_id].marcas[row.marca_nome].push({
+      codigo: row.volante_codigo,
+      descricao: row.volante_descricao,
+      quantidade: row.quantidade,
+    });
+  });
+
+  return Object.values(map);
+});
+
+const logoMarcas: Record<string, string> = {
+  "Chevrolet": "/marcas/chevrolet.png",
+  "Fiat": "/marcas/fiat.png",
+  "Ford": "/marcas/ford.png",
+  "Renault": "/marcas/renault.png",
+  "Volkswagen": "/marcas/volkswagen.png",
+  "Hyundai": "/marcas/hyundai.png",
+  "Mercedes-Benz": "/marcas/mercedes.png",
+};
 
 </script>
 
@@ -52,35 +95,49 @@ function logout() {
     </div>
 
     <!-- LISTAGEM -->
-    <div v-for="p in pedidos" :key="p.id" class="card">
+   <div v-for="p in pedidosAgrupados" :key="p.id" class="card">
 
-      <div class="volante">
-        <strong>{{ p.volante_codigo }}</strong>
-        <span>{{ p.volante_descricao }}</span>
+      <div class="pedido-header">
+        <div class="pedido-title">{{ p.numero_pedido}} - {{ p.title}}</div>
+        <div class="pedido-date">
+          {{ new Date(p.created_at).toLocaleString() }}
+        </div>
       </div>
 
-      <div class="nf">
-        NF: <strong>{{ p.numero_nota_fiscal }}</strong>
+      <div v-if="p.description" class="pedido-description">
+        {{ p.description }}
       </div>
 
-      <div class="qty">
-        Quantidade: <strong>{{ p.quantidade }}</strong>
+      <!-- Agrupado por marca -->
+      <div
+        v-for="(itensMarca, marcaNome) in p.marcas"
+        :key="marcaNome"
+        class="pedido-marca"
+      >
+        <div class="pedido-marca-header">
+          <img :src="logoMarcas[marcaNome]" class="marca-logo" />
+          <span>{{ marcaNome }}</span>
+        </div>
+
+        <div v-for="item in itensMarca" :key="item.codigo" class="pedido-item">
+          <div class="pedido-item-left">
+            <strong>{{ item.codigo }}</strong>
+            <span>{{ item.descricao }}</span>
+          </div>
+          <div class="pedido-item-right">
+            Qtde {{ item.quantidade }}
+          </div>
+        </div>
       </div>
-
-      <div class="title">{{ p.title }}</div>
-
-      <div class="desc" v-if="p.description">{{ p.description }}</div>
 
       <div class="footer">
-        <span class="status" :class="p.status">
-          {{ p.status }}
-        </span>
-        <span class="date">
-          {{ new Date(p.created_at).toLocaleString() }}
-        </span>
+        <span class="status" :class="p.status">{{ p.status }}</span>
       </div>
 
     </div>
+
+
+
   </div>
 </template>
 
@@ -211,6 +268,79 @@ h2 {
 
 .btn-logout:hover {
   background: #ffebee;
+}
+
+.pedido-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.pedido-title {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.pedido-date {
+  font-size: 12px;
+  color: #666;
+}
+
+.pedido-description {
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+.pedido-marca {
+  margin-bottom: 12px;
+  padding: 10px;
+  background: #fafafa;
+  border-radius: 8px;
+}
+
+.pedido-marca-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  color: #5e72a8;
+  margin-bottom: 6px;
+}
+
+.marca-logo {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+.pedido-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+  border-bottom: 1px dotted #ddd;
+}
+
+.pedido-item:last-child {
+  border-bottom: none;
+}
+
+.pedido-item-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.pedido-item-left strong {
+  font-size: 13px;
+}
+
+.pedido-item-left span {
+  font-size: 12px;
+  color: #555;
+}
+
+.pedido-item-right {
+  font-weight: 700;
+  font-size: 14px;
 }
 
 </style>
