@@ -98,14 +98,14 @@ const logoMarcas: Record<string, string> = {
    <div v-for="p in pedidosAgrupados" :key="p.id" class="card">
 
       <div class="pedido-header">
-        <div class="pedido-title">{{ p.numero_pedido}} - {{ p.title}}</div>
+        <div class="pedido-title">N.{{ p.numero_pedido}} - {{ p.title}}</div>
         <div class="pedido-date">
           {{ new Date(p.created_at).toLocaleString() }}
         </div>
       </div>
 
       <div v-if="p.description" class="pedido-description">
-        {{ p.description }}
+        Obs: {{ p.description }}
       </div>
 
       <!-- Agrupado por marca -->
