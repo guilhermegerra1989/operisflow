@@ -59,6 +59,16 @@ function logout() {
         <h3>Pedidos</h3>
         <p>Visualizar todos os pedidos dos clientes</p>
       </router-link>
+
+      <router-link to="/ev-volantes/admin/rotas" class="btn menu-card">
+        <h3>Rotas</h3>
+        <p>Visualizar/Configurar Rotas disponíveis</p>
+      </router-link>
+
+      <router-link to="/ev-volantes/admin/marcas" class="btn menu-card">
+        <h3>Marcas</h3>
+        <p>Visualizar/Configurar Marcas disponíveis</p>
+      </router-link>
     </div>
   </div>
 </template>

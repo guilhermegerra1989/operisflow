@@ -4,19 +4,19 @@ import { apiGet, apiPost, apiPatch, apiDelete } from "../../api/apiClient";
 
 const token = localStorage.getItem("token") ?? "";
 
-type Volante = {
+type Marca = {
   id: string;
-  codigo: string;
+  nome: string;
   descricao: string;
 };
 
-const volantes = ref<Volante[]>([]);
+const marcas = ref<Marca[]>([]);
 const loading = ref(false);
 const error = ref("");
 
 // formulário
 const editingId = ref<string | null>(null);
-const codigo = ref("");
+const nome = ref("");
 const descricao = ref("");
 
 
@@ -34,61 +34,61 @@ function voltarDashboard() {
   window.location.href = "/ev-volantes/admin";
 }
 
-// carregar volantes
-async function loadVolantes() {
+// carregar rotas
+async function loadMarcas() {
   try {
     loading.value = true;
     error.value = "";
-    volantes.value = await apiGet("/volantes", token);
+    marcas.value = await apiGet("/marcas", token);
   } catch (e: any) {
-    error.value = "Erro ao carregar volantes";
+    error.value = "Erro ao carregar marcas";
     console.error(e);
   } finally {
     loading.value = false;
   }
 }
 
-onMounted(loadVolantes);
+onMounted(loadMarcas);
 
 // limpar formulário
 function resetForm() {
   editingId.value = null;
-  codigo.value = "";
+  nome.value = "";
   descricao.value = "";
 }
 
 // criar ou atualizar
 async function salvar() {
-  if (!codigo.value || !descricao.value) {
-    alert("Código e descrição são obrigatórios.");
+  if (!nome.value || !descricao.value) {
+    alert("Nome e descrição são obrigatórios.");
     return;
   }
 
   try {
     if (editingId.value) {
-      await apiPatch(`/volantes/${editingId.value}`, token, {
-        codigo: codigo.value,
+      await apiPatch(`/marcas/${editingId.value}`, token, {
+        nome: nome.value,
         descricao: descricao.value,
       });
     } else {
-      await apiPost("/volantes", token, {
-        codigo: codigo.value,
+      await apiPost("/marcas", token, {
+        nome: nome.value,
         descricao: descricao.value,
       });
     }
 
     resetForm();
-    await loadVolantes();
+    await loadMarcas();
   } catch (e: any) {
-    error.value = "Erro ao salvar volante";
+    error.value = "Erro ao salvar marcas";
     console.error(e);
   }
 }
 
 // clicar em editar
-async function editar(v: Volante) {
+async function editar(v: Marca) {
   editingId.value = v.id;
-  codigo.value = v.codigo;
+  nome.value = v.nome;
   descricao.value = v.descricao;
 
   // espera a DOM atualizar (título do form, botões, etc.)
@@ -106,27 +106,27 @@ async function editar(v: Volante) {
 
 // remover
 async function remover(v: any) {
-  if (!confirm(`Remover volante ${v.codigo} - ${v.descricao}?`)) return;
+  if (!confirm(`Remover marca ${v.nome} - ${v.descricao}?`)) return;
 
   try {
-    await apiDelete(`/volantes/${v.id}`, token);
-    await loadVolantes();
+    await apiDelete(`/marcas/${v.id}`, token);
+    await loadMarcas();
   } catch (e: any) {
-    error.value = "Erro ao remover volante";
+    error.value = "Erro ao remover marca";
     console.error(e);
   }
 }
 
 function exportToCsv() {
-  if (!volantes.value.length) return;
+  if (!marcas.value.length) return;
 
   // Cabeçalhos
-  const headers = ["ID", "Código", "Descrição"];
+  const headers = ["ID", "Nome", "Descrição"];
 
   // Linhas
-  const rows = volantes.value.map((v) => [
+  const rows = marcas.value.map((v) => [
     v.id,
-    v.codigo,
+    v.nome,
     v.descricao,
   ]);
 
@@ -146,7 +146,7 @@ function exportToCsv() {
 
   const link = document.createElement("a");
   link.href = url;
-  link.setAttribute("download", "volantes.csv");
+  link.setAttribute("download", "marcas.csv");
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
@@ -178,19 +178,19 @@ function exportToCsv() {
       </div>
     </div>
 
-    <h2>Catálogo de Volantes</h2>
+    <h2>Listagem de Marcas</h2>
 
     <p v-if="error" class="error">{{ error }}</p>
 
     <!-- FORMULÁRIO -->
     <div class="card form-card" :class="{ editing: editingId }" ref="formRef">
-      <h3>{{ editingId ? "Editar Volante" : "Novo Volante" }}</h3>
+      <h3>{{ editingId ? "Editar Marca" : "Nova Marca" }}</h3>
 
       <label class="label">Código *</label>
       <input
-        v-model="codigo"
+        v-model="nome"
         class="input"
-        placeholder="Ex: EVR11"
+        placeholder="Ex: Chevrolet"
         ref="codigoInputRef"
       />
 
@@ -198,12 +198,12 @@ function exportToCsv() {
       <input
         v-model="descricao"
         class="input"
-        placeholder="Ex: VOL GM ONIX AB - APLIQUE"
+        placeholder="Ex: Gm Chevrolet"
       />
 
       <div class="form-actions">
         <button @click="salvar" class="btn-primary">
-          {{ editingId ? "Salvar Alterações" : "Cadastrar Volante" }}
+          {{ editingId ? "Salvar Alterações" : "Cadastrar Marca" }}
         </button>
         <button v-if="editingId" @click="resetForm" class="btn-secondary">
           Cancelar
@@ -213,22 +213,22 @@ function exportToCsv() {
 
     <!-- LISTA -->
     <div class="card list-card">
-      <h3>Volantes Cadastrados</h3>
+      <h3>Marcas Cadastradas</h3>
 
       <div v-if="loading">Carregando...</div>
-      <div v-else-if="volantes.length === 0">Nenhum volante cadastrado.</div>
+      <div v-else-if="marcas.length === 0">Nenhuma marca cadastrada.</div>
 
       <table v-else class="table">
         <thead>
           <tr>
             <th>Código</th>
-            <th>Descrição</th>
+            <th>Nome</th>
             <th style="width: 140px;">Ações</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="v in volantes" :key="v.id">
-            <td>{{ v.codigo }}</td>
+          <tr v-for="v in marcas" :key="v.id">
+            <td>{{ v.nome }}</td>
             <td>{{ v.descricao }}</td>
             <td class="actions">
               <button @click="editar(v)" class="btn-edit">Editar</button>

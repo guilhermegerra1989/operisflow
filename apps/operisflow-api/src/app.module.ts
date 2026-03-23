@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { VolantesModule } from './volantes/volantes.module';
 import { MarcasModule } from './marcas/marcas.module';
+import { RotasModule } from './rotas/rotas.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { MarcasModule } from './marcas/marcas.module';
     UsersModule, 
     VolantesModule,
     MarcasModule,
+    RotasModule
   ],
   controllers: [AppController],
   providers: [AppService],
