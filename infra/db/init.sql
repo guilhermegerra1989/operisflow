@@ -86,6 +86,8 @@ CREATE TABLE IF NOT EXISTS volantes (
   codigo VARCHAR(50) NOT NULL,
   descricao VARCHAR(255) NOT NULL,
 
+  img VARCHAR(255) NOT NULL DEFAULT '/volantes/',
+
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW(),
 
