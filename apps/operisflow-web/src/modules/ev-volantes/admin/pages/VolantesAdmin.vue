@@ -1,15 +1,27 @@
 <script setup lang="ts">
-import { ref,onMounted, nextTick } from "vue";
+import { ref,onMounted, nextTick, computed } from "vue";
 import { apiGet, apiPost, apiPatch, apiDelete } from "../../api/apiClient";
 
 const token = localStorage.getItem("token") ?? "";
+
+type Marca = {
+  id: string;
+  nome: string;
+  descricao?: string;
+};
 
 type Volante = {
   id: string;
   codigo: string;
   descricao: string;
+  img: string;
+  marcaId: string;       
+  marcaNome?: string;    
 };
 
+
+// Dados vindos da API
+const marcas = ref<Marca[]>([]);
 const volantes = ref<Volante[]>([]);
 const loading = ref(false);
 const error = ref("");
@@ -18,6 +30,8 @@ const error = ref("");
 const editingId = ref<string | null>(null);
 const codigo = ref("");
 const descricao = ref("");
+const img = ref("");
+const marca = ref(""); // id da marca selecionada
 
 
 // refs para scroll e foco
@@ -34,12 +48,67 @@ function voltarDashboard() {
   window.location.href = "/ev-volantes/admin";
 }
 
-// carregar volantes
+const logoMarcas: Record<string, string> = {
+  "Chevrolet": "/marcas/chevrolet.png",
+  "Fiat": "/marcas/fiat.png",
+  "Ford": "/marcas/ford.png",
+  "Renault": "/marcas/renault.png",
+  "Volkswagen": "/marcas/volkswagen.png",
+  "Hyundai": "/marcas/hyundai.png",
+  "Mercedes-Benz": "/marcas/mercedes.png",
+};
+
+// Helper para mapear volantes vindo da API
+function mapVolantes(volantesResponse: any[]): Volante[] {
+  return volantesResponse.map((v: any) => {
+    const marcaId = v.marca_id ?? v.marcaId;
+    const marcaObj = marcas.value.find((m: any) => m.id === marcaId);
+
+    return {
+      id: v.id,
+      codigo: v.codigo,
+      descricao: v.descricao,
+      img: v.img,
+      marcaId,
+      marcaNome: marcaObj?.nome ?? null,
+    };
+  });
+}
+
+const itensAgrupados = computed(() => {
+  const grupos: Record<string, any> = {};
+
+  volantes.value.forEach((it) => {
+    if (!grupos[it.marcaId]) {
+      grupos[it.marcaId] = {
+        marcaNome: it.marcaNome,
+        itens: [],
+      };
+    }
+    grupos[it.marcaId].itens.push(it);
+  });
+
+  return grupos;
+});
+
+const marcasAbertas = ref<string[]>([]);
+
+function toggleMarca(id: string) {
+  if (marcasAbertas.value.includes(id)) {
+    marcasAbertas.value = marcasAbertas.value.filter(m => m !== id);
+  } else {
+    marcasAbertas.value.push(id);
+  }
+}
+
 async function loadVolantes() {
   try {
     loading.value = true;
     error.value = "";
-    volantes.value = await apiGet("/volantes", token);
+
+    const volantesResponse = await apiGet("/volantes", token);
+    volantes.value = mapVolantes(volantesResponse);
+
   } catch (e: any) {
     error.value = "Erro ao carregar volantes";
     console.error(e);
@@ -48,13 +117,23 @@ async function loadVolantes() {
   }
 }
 
-onMounted(loadVolantes);
+onMounted(async () => {
+  const [marcasResponse, volantesResponse] = await Promise.all([
+    apiGet("/marcas", token),
+    apiGet("/volantes", token),
+  ]);
+
+  marcas.value = marcasResponse;
+  volantes.value = mapVolantes(volantesResponse);
+});
 
 // limpar formulário
 function resetForm() {
   editingId.value = null;
   codigo.value = "";
   descricao.value = "";
+  img.value = "";
+  marca.value = ""; // limpa marca selecionada
 }
 
 // criar ou atualizar
@@ -64,17 +143,23 @@ async function salvar() {
     return;
   }
 
+  if (!marca.value) {
+    alert("Marca é obrigatória.");
+    return;
+  }
+
   try {
+    const payload = {
+      codigo: codigo.value,
+      descricao: descricao.value,
+      img: img.value,
+      marca_id: marca.value, // importante: enviar a marca para o backend
+    };
+
     if (editingId.value) {
-      await apiPatch(`/volantes/${editingId.value}`, token, {
-        codigo: codigo.value,
-        descricao: descricao.value,
-      });
+      await apiPatch(`/volantes/${editingId.value}`, token, payload);
     } else {
-      await apiPost("/volantes", token, {
-        codigo: codigo.value,
-        descricao: descricao.value,
-      });
+      await apiPost("/volantes", token, payload);
     }
 
     resetForm();
@@ -90,6 +175,8 @@ async function editar(v: Volante) {
   editingId.value = v.id;
   codigo.value = v.codigo;
   descricao.value = v.descricao;
+  img.value = v.img;
+  marca.value = v.marcaId; // preenche select com a marca do volante
 
   // espera a DOM atualizar (título do form, botões, etc.)
   await nextTick();
@@ -135,8 +222,8 @@ function exportToCsv() {
     [headers, ...rows]
       .map((row) =>
         row
-          .map((cell) => `"${String(cell).replace(/"/g, '""')}"`) // escapa aspas
-          .join(";") // separador ; (mais comum em PT-BR)
+          .map((cell) => `"${String(cell).replace(/"/g, '""')}"`)
+          .join(";")
       )
       .join("\n");
 
@@ -152,13 +239,10 @@ function exportToCsv() {
   document.body.removeChild(link);
   URL.revokeObjectURL(url);
 }
-
 </script>
 
 <template>
   <div class="container">
-
-
     <div class="top-bar">
       <img
         src="../../../../assets/ev-volantes-logo.png"
@@ -201,6 +285,22 @@ function exportToCsv() {
         placeholder="Ex: VOL GM ONIX AB - APLIQUE"
       />
 
+      <label class="label">Imagem *</label>
+      <input
+        v-model="img"
+        class="input"
+        placeholder="Ex: /volantes/VOLKSWAGEN"
+      />
+
+      <!-- CAMPO DE MARCA -->
+      <label class="label">Marca *</label>
+      <select v-model="marca" class="input">
+        <option value="">Selecione a marca</option>
+        <option v-for="m in marcas" :key="m.id" :value="m.id">
+          {{ m.nome }}
+        </option>
+      </select>
+
       <div class="form-actions">
         <button @click="salvar" class="btn-primary">
           {{ editingId ? "Salvar Alterações" : "Cadastrar Volante" }}
@@ -218,29 +318,52 @@ function exportToCsv() {
       <div v-if="loading">Carregando...</div>
       <div v-else-if="volantes.length === 0">Nenhum volante cadastrado.</div>
 
-      <table v-else class="table">
-        <thead>
-          <tr>
-            <th>Código</th>
-            <th>Descrição</th>
-            <th style="width: 140px;">Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="v in volantes" :key="v.id">
-            <td>{{ v.codigo }}</td>
-            <td>{{ v.descricao }}</td>
-            <td class="actions">
-              <button @click="editar(v)" class="btn-edit">Editar</button>
-              <button @click="remover(v)" class="btn-small danger">
-                Remover
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+      <div v-else class="marcas-lista">
+        <div
+          class="marca-group"
+          v-for="(grupo, marcaId) in itensAgrupados"
+          :key="marcaId"
+        >
+          <div class="marca-header" @click="toggleMarca(marcaId)">
+            <div class="marca-info">
+              <!-- LOGO DA MARCA -->
+              <img
+                class="marca-logo"
+                :src="logoMarcas[grupo.marcaNome]"
+                :alt="grupo.marcaNome"
+              />
+              <span>{{ grupo.marcaNome }}</span>
+            </div>
 
+            <span class="seta">
+              {{ marcasAbertas.includes(marcaId) ? "▲" : "▼" }}
+            </span>
+          </div>
+
+          <transition name="fade">
+            <div class="volantes" v-if="marcasAbertas.includes(marcaId)">
+              <table class="table">
+                <tbody>
+                  <tr v-for="v in grupo.itens" :key="v.id">
+                    <td>
+                      <img :src="v.img" :alt="v.codigo" />
+                    </td>
+                    <td>{{ v.codigo }}</td>
+                    <td>{{ v.descricao }}</td>
+                    <td class="actions">
+                      <button @click="editar(v)" class="btn-edit">Editar</button>
+                      <button @click="remover(v)" class="btn-small danger">
+                        Remover
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </transition>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -323,6 +446,15 @@ h2 {
   text-align: left;
 }
 
+.table td img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 6px;
+  display: block;
+  margin: 0 auto;
+}
+
 .actions {
   display: flex;
   gap: 6px;
@@ -348,11 +480,11 @@ h2 {
 }
 
 .btn-edit:hover {
-  background: #465684; /* tom mais escuro no hover */
+  background: #465684;
 }
 
 .logo {
-  height: 36px;         /* tamanho ideal para mobile */
+  height: 36px;
   object-fit: contain;
 }
 
@@ -414,4 +546,56 @@ h2 {
   box-shadow: 0 0 0 2px rgba(94, 114, 168, 0.15);
 }
 
+.marcas-lista {
+  margin-top: 12px;
+}
+
+.marca-group {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+
+.marca-header {
+  padding: 12px;
+  background: #f7f7f7;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.marca-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.marca-logo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.seta {
+  opacity: 0.6;
+  font-size: 14px;
+}
+
+.volantes {
+  padding: 10px 12px;
+  background: #fff;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: translateY(-5px);
+}
 </style>

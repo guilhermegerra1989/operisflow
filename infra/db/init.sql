@@ -41,6 +41,7 @@ CREATE TABLE IF NOT EXISTS rotas (
   descricao TEXT,
 
   created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW(),
 
   CONSTRAINT fk_rotas_tenant
     FOREIGN KEY (tenant_id) REFERENCES tenants(id)
@@ -244,49 +245,49 @@ ON CONFLICT (id) DO NOTHING;
 -- SEED: Volantes iniciais para EV Volantes
 -- Agora com marca_id preenchido
 --------------------------------------------------------
-INSERT INTO volantes (tenant_id, marca_id, codigo, descricao) VALUES 
+INSERT INTO volantes (tenant_id, marca_id, codigo, descricao, img) VALUES 
 
 -- Chevrolet / GM
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR11', 'VOL GM ONIX AB - APLIQUE'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR12', 'VOL GM ONIX AB - PU'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR13', 'VOL GM COBALT AB - APLIQUE'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR14', 'VOL GM COBALT AB - PU'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR15', 'VOL GM CELTA NOVO'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR16', 'VOL GM PRISMA'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR17', 'VOL GM AGILE AB'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR18', 'VOL GM ONIX CONTROLE'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR19', 'VOL GM SPIN CONTROLE'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR11', 'VOL GM ONIX AB - APLIQUE','/volantes/CHEVROLET/EVR11.png'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR12', 'VOL GM ONIX AB - PU','/volantes/CHEVROLET/EVR12.png'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR13', 'VOL GM COBALT AB - APLIQUE','/volantes/CHEVROLET/EVR13.png'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR14', 'VOL GM COBALT AB - PU','/volantes/CHEVROLET/EVR14.png'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR15', 'VOL GM CELTA NOVO','/volantes/CHEVROLET/EVR15.png'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR16', 'VOL GM PRISMA','/volantes/CHEVROLET/EVR16.png'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR17', 'VOL GM AGILE AB','/volantes/CHEVROLET/EVR17.png'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR18', 'VOL GM ONIX CONTROLE','/volantes/CHEVROLET/EVR18.png'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR19', 'VOL GM SPIN CONTROLE','/volantes/CHEVROLET/EVR19.png'),
 
 -- Fiat
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2', 'EVR21', 'VOL FIAT UNO FIRE'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2', 'EVR22', 'VOL FIAT VIVACE'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2', 'EVR23', 'VOL FIAT IDEA AB'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2', 'EVR24', 'VOL FIAT PALIO NOVO'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2', 'EVR21', 'VOL FIAT UNO FIRE','/volantes/FIAT/EVR21.png'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2', 'EVR22', 'VOL FIAT VIVACE','/volantes/FIAT/EVR22.png'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2', 'EVR23', 'VOL FIAT IDEA AB','/volantes/FIAT/EVR23.png'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2', 'EVR24', 'VOL FIAT PALIO NOVO','/volantes/FIAT/EVR24.png'),
 
 -- Ford
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa3', 'EVR31', 'VOL FORD NEW KA'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa3', 'EVR32', 'VOL FORD FIESTA 2003'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa3', 'EVR33', 'VOL FORD ECO SPORT AB'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa3', 'EVR31', 'VOL FORD NEW KA','/volantes/FORD/EVR31.png'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa3', 'EVR32', 'VOL FORD FIESTA 2003','/volantes/FORD/EVR32.png'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa3', 'EVR33', 'VOL FORD ECO SPORT AB','/volantes/FORD/EVR33.png'),
 
 -- Renault
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa4', 'EVR41', 'VOL RENAULT LOGAN 3 TRAVAS'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa4', 'EVR42', 'VOL RENAULT SANDERO'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa4', 'EVR41', 'VOL RENAULT LOGAN 3 TRAVAS','/volantes/RENAULT/EVR41.png'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa4', 'EVR42', 'VOL RENAULT SANDERO','/volantes/RENAULT/EVR42.png'),
 
 -- Volkswagen
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVR51', 'VOL VW VOYAGE'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVR52', 'VOL VW GOL G4'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVR53', 'VOL VW GOL G5'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVR54', 'VOL VW GOL G7'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVR55', 'VOL VW GOL G6 TRÊS TRAVAS'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVR56', 'VOL VW GOL G6 DUAS TRAVAS'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVR57', 'VOL VW DELIVERY/CONSTELLATION'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVR51', 'VOL VW VOYAGE','/volantes/VOLKSWAGEN/EVR51.png'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVR52', 'VOL VW GOL G4','/volantes/VOLKSWAGEN/EVR52.png'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVR53', 'VOL VW GOL G5','/volantes/VOLKSWAGEN/EVR53.png'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVR54', 'VOL VW GOL G7','/volantes/VOLKSWAGEN/EVR54.png'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVR55', 'VOL VW GOL G6 TRÊS TRAVAS','/volantes/VOLKSWAGEN/EVR55.png'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVR56', 'VOL VW GOL G6 DUAS TRAVAS','/volantes/VOLKSWAGEN/EVR56.png'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVR57', 'VOL VW DELIVERY/CONSTELLATION','/volantes/VOLKSWAGEN/EVR57.png'),
 
 -- Hyundai
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa6', 'EVR61', 'VOL HYUNDAI HB20'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa6', 'EVR61', 'VOL HYUNDAI HB20','/volantes/HYUNDAI/EVR61.png'),
 
 -- Mercedes-Benz
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa7', 'EVR71', 'VOL MB 1620 PEQUENO'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa7', 'EVR72', 'VOL MB ATRON/EURO')
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa7', 'EVR71', 'VOL MB 1620 PEQUENO','/volantes/MERCEDES/EVR71.png'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa7', 'EVR72', 'VOL MB ATRON/EURO','/volantes/MERCEDES/EVR72.png')
 ON CONFLICT DO NOTHING;
 
 
