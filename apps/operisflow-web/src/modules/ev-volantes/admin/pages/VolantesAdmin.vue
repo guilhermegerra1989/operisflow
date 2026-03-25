@@ -16,7 +16,7 @@ type Volante = {
   descricao: string;
   img: string;
   marcaId: string;       
-  marcaNome?: string;    
+   marcaNome?: string | null;
 };
 
 

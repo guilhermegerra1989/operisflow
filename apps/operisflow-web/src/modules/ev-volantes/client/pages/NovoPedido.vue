@@ -148,11 +148,13 @@
           <span>{{ grupo.marcaNome }}</span>
         </div>
 
-        <div
-          class="grupo-item"
-          v-for="(it, idx) in grupo.itens"
-          :key="it.volanteId"
-        >
+        
+            <div
+              class="grupo-item"
+              v-for="it in grupo.itens"
+              :key="it.volanteId"
+            >
+
           <div class="grupo-item-info">
             <div class="grupo-item-codigo">{{ it.codigo }}  <div class="grupo-item-descricao">{{ it.descricao }}</div> </div>
           </div>
