@@ -83,6 +83,9 @@
             :key="volante.id"
             class="modelo-row"
           >
+          
+            <div class="div_image"><img :src="volante.img" :alt="volante.codigo" /></div>
+                    
             <div class="modelo-info">
               <div class="modelo-codigo">{{ volante.codigo }}</div>
               <div class="modelo-descricao">{{ volante.descricao }}</div>
@@ -184,6 +187,7 @@ type Volante = {
   id: string;
   codigo: string;
   descricao: string;
+  img: string;
   marcaId: string;       
   marcaNome?: string;    
 };
@@ -250,6 +254,7 @@ onMounted(async () => {
     id: v.id,
     codigo: v.codigo,
     descricao: v.descricao,
+    img: v.img,
     marcaId: v.marca_id ?? v.marcaId,       
     marcaNome: v.marca_nome ?? v.marcaNome, 
   }));
@@ -816,5 +821,25 @@ h4 {
 
 .grupo-item-remove:hover {
   background: #ffcccc;
+}
+
+.div_image {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;        
+  border-radius: 6px;
+  background: #fff;       
+  flex-shrink: 0;     
+  margin-right: 15px;     
+}
+
+.div_image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;    /* ou cover → depende do estilo */
+  display: block;
 }
 </style>

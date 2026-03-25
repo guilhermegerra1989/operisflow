@@ -2,25 +2,65 @@
 import { ref, onMounted, computed } from "vue";
 import { apiGet } from "../../api/apiClient";
 
-type Pedido = {
-  order_id: string;
-  title: string;
-  numero_pedido: string;
-  description: string | null;
-  status: string;
-  created_at: string;
-
-  marca_nome: string;
-  volante_codigo: string;
-  volante_descricao: string;
+type PedidoItem = {
+  volanteId: string;
+  codigo: string;
+  descricao: string;
   quantidade: number;
+  marcaNome?: string;
+  img: string;
 };
 
-const pedidos = ref<Pedido[]>([]);
+type Pedido = {
+  id: string;
+  title: string;
+  description: string | null;
+  status: string;
+  createdAt: string;
+  numeroPedido?: number;
+  items: PedidoItem[];
+};
+
 const token: string = localStorage.getItem("token") ?? "";
 
+// lista vinda da API (já agrupado por pedido)
+const pedidos = ref<Pedido[]>([]);
+
+// mapa de logos (igual você já usa)
+const logoMarcas: Record<string, string> = {
+  Chevrolet: "/marcas/chevrolet.png",
+  Fiat: "/marcas/fiat.png",
+  Ford: "/marcas/ford.png",
+  Renault: "/marcas/renault.png",
+  Volkswagen: "/marcas/volkswagen.png",
+  Hyundai: "/marcas/hyundai.png",
+  "Mercedes-Benz": "/marcas/mercedes.png",
+};
+
+// carrega pedidos do cliente
 onMounted(async () => {
   pedidos.value = await apiGet("/orders/my", token);
+});
+
+// agrupa itens de cada pedido por marca
+const pedidosAgrupados = computed(() => {
+  return pedidos.value.map((p) => {
+    const marcas: Record<string, PedidoItem[]> = {};
+
+    p.items.forEach((item) => {
+      const nomeMarca = item.marcaNome ?? "Outros";
+
+      if (!marcas[nomeMarca]) {
+        marcas[nomeMarca] = [];
+      }
+      marcas[nomeMarca].push(item);
+    });
+
+    return {
+      ...p,
+      marcas, // { [marcaNome]: PedidoItem[] }
+    };
+  });
 });
 
 function logout() {
@@ -28,61 +68,21 @@ function logout() {
   localStorage.removeItem("user");
   window.location.href = "/ev-volantes/login";
 }
-
-const pedidosAgrupados = computed(() => {
-  const map: Record<string, any> = {};
-
-  pedidos.value.forEach((row) => {
-    if (!map[row.order_id]) {
-      map[row.order_id] = {
-        id: row.order_id,
-        title: row.title,
-        numero_pedido: row.numero_pedido,
-        description: row.description,
-        status: row.status,
-        created_at: row.created_at,
-        marcas: {},
-      };
-    }
-
-    // agrupar por marca
-    if (!map[row.order_id].marcas[row.marca_nome]) {
-      map[row.order_id].marcas[row.marca_nome] = [];
-    }
-
-    map[row.order_id].marcas[row.marca_nome].push({
-      codigo: row.volante_codigo,
-      descricao: row.volante_descricao,
-      quantidade: row.quantidade,
-    });
-  });
-
-  return Object.values(map);
-});
-
-const logoMarcas: Record<string, string> = {
-  "Chevrolet": "/marcas/chevrolet.png",
-  "Fiat": "/marcas/fiat.png",
-  "Ford": "/marcas/ford.png",
-  "Renault": "/marcas/renault.png",
-  "Volkswagen": "/marcas/volkswagen.png",
-  "Hyundai": "/marcas/hyundai.png",
-  "Mercedes-Benz": "/marcas/mercedes.png",
-};
-
 </script>
 
 <template>
   <div class="container">
-
-
     <!-- HEADER COM NOME E LOGOUT -->
     <div class="top-bar">
-      <img src="../../../../assets/ev-volantes-logo.png" alt="EV Volantes" class="logo" />
+      <img
+        src="../../../../assets/ev-volantes-logo.png"
+        alt="EV Volantes"
+        class="logo"
+      />
       <button class="btn-logout" @click="logout">Sair</button>
     </div>
 
-    <!-- BOTÃO NOVO PEDIDO SEMPRE NO TOPO -->
+    <!-- BOTÃO NOVO PEDIDO -->
     <router-link to="/ev-volantes/client/novo" class="btn-novo">
       Novo Pedido
     </router-link>
@@ -94,58 +94,62 @@ const logoMarcas: Record<string, string> = {
       Você ainda não fez nenhum pedido.
     </div>
 
-    <!-- LISTAGEM -->
-   <div v-for="p in pedidosAgrupados" :key="p.id" class="card">
-
-      <div class="pedido-header">
-        <div class="pedido-title">N.{{ p.numero_pedido}} - {{ p.title}}</div>
-        <div class="pedido-date">
-          {{ new Date(p.created_at).toLocaleString() }}
-        </div>
-      </div>
-
-      <div v-if="p.description" class="pedido-description">
-        Obs: {{ p.description }}
-      </div>
-
-      <!-- Agrupado por marca -->
-      <div
-        v-for="(itensMarca, marcaNome) in p.marcas"
-        :key="marcaNome"
-        class="pedido-marca"
-      >
-        <div class="pedido-marca-header">
-          <img :src="logoMarcas[marcaNome]" class="marca-logo" />
-          <span>{{ marcaNome }}</span>
-        </div>
-
-        <div v-for="item in itensMarca" :key="item.codigo" class="pedido-item">
-          <div class="pedido-item-left">
-            <strong>{{ item.codigo }}</strong>
-            <span>{{ item.descricao }}</span>
+    <!-- LISTAGEM AGRUPADA -->
+    <div v-else>
+      <div v-for="p in pedidosAgrupados" :key="p.id" class="card">
+        <div class="pedido-header">
+          <div class="pedido-title">
+            N.{{ p.numeroPedido ?? "-" }} - {{ p.title }}
           </div>
-          <div class="pedido-item-right">
-            Qtde {{ item.quantidade }}
+          <div class="pedido-date">
+            {{ new Date(p.createdAt).toLocaleString("pt-BR") }}
           </div>
         </div>
-      </div>
 
-      <div class="footer">
-        <span class="status" :class="p.status">{{ p.status }}</span>
-      </div>
+        <div v-if="p.description" class="pedido-description">
+          Obs: {{ p.description }}
+        </div>
 
+        <!-- Agrupado por marca -->
+        <div
+          v-for="(itensMarca, marcaNome) in p.marcas"
+          :key="String(marcaNome)"
+          class="pedido-marca"
+        >
+          <div class="pedido-marca-header">
+            <img
+              :src="logoMarcas[marcaNome] || '/marcas/default.png'"
+              class="marca-logo"
+              :alt="marcaNome"
+            />
+            <span>{{ marcaNome }}</span>
+          </div>
+
+          <div
+            v-for="item in itensMarca"
+            :key="item.volanteId"
+            class="pedido-item"
+          >
+          <div class="div_image"><img :src="item.img" :alt="item.codigo" /></div>
+            <div class="pedido-item-left">
+              <strong>{{ item.codigo }}</strong>
+              <span>{{ item.descricao }}</span>
+            </div>
+            <div class="pedido-item-right">Qtde {{ item.quantidade }}</div>
+          </div>
+        </div>
+
+        <div class="footer">
+          <span class="status" :class="p.status">{{ p.status }}</span>
+        </div>
+      </div>
     </div>
-
-
-
   </div>
 </template>
 
 <style scoped>
-
-.qty {
-  font-size: 13px;
-  margin-bottom: 8px;
+.container {
+  padding: 16px;
 }
 
 h2 {
@@ -166,37 +170,6 @@ h2 {
   margin-bottom: 12px;
 }
 
-.volante {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 6px;
-}
-
-.volante strong {
-  font-size: 14px;
-}
-
-.volante span {
-  font-size: 13px;
-  color: #555;
-}
-
-.nf {
-  font-size: 13px;
-  margin-bottom: 8px;
-}
-
-.title {
-  font-weight: 600;
-  margin-bottom: 4px;
-}
-
-.desc {
-  font-size: 14px;
-  color: #444;
-  margin-bottom: 10px;
-}
-
 .footer {
   display: flex;
   justify-content: space-between;
@@ -212,23 +185,20 @@ h2 {
   font-size: 11px;
 }
 
-/* Exemplos de cores por status – pode ajustar depois */
-.status.pending {
+/* Exemplos de cores por status – ajuste se quiser */
+.status.aberto {
   background: #fff3cd;
   color: #856404;
 }
-
 .status.approved {
   background: #d4edda;
   color: #155724;
 }
-
 .status.done {
   background: #cce5ff;
   color: #004085;
 }
 
-/* se ainda não tiver */
 .btn-novo {
   display: block;
   text-align: center;
@@ -239,9 +209,9 @@ h2 {
   font-weight: 700;
   margin-bottom: 16px;
   text-decoration: none;
-} 
+}
 
-
+/* TOP BAR */
 .top-bar {
   display: flex;
   justify-content: space-between;
@@ -250,7 +220,7 @@ h2 {
 }
 
 .logo {
-  height: 36px;         /* tamanho ideal para mobile */
+  height: 36px;
   object-fit: contain;
 }
 
@@ -270,6 +240,7 @@ h2 {
   background: #ffebee;
 }
 
+/* PEDIDO */
 .pedido-header {
   display: flex;
   justify-content: space-between;
@@ -291,6 +262,7 @@ h2 {
   margin-bottom: 10px;
 }
 
+/* MARCAS E ITENS */
 .pedido-marca {
   margin-bottom: 12px;
   padding: 10px;
@@ -343,4 +315,23 @@ h2 {
   font-size: 14px;
 }
 
+.div_image {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;        
+  border-radius: 6px;
+  background: #fff;       
+  flex-shrink: 0;     
+  margin-right: 15px;     
+}
+
+.div_image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;    /* ou cover → depende do estilo */
+  display: block;
+}
 </style>

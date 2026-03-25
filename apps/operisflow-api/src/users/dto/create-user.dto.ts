@@ -4,4 +4,5 @@ export class CreateUserDto {
   password: string;
   role?: string;    // default: 'client'
   active?: boolean; // default: true
+  rota_id: string;
 }

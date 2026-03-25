@@ -2,17 +2,23 @@
 import { ref, onMounted, computed } from "vue";
 import { apiGet } from "../../api/apiClient";
 
+type PedidoItem = {
+  volanteId: string;
+  codigo: string;
+  descricao: string;
+  quantidade: number;
+  marcaNome?: string;
+};
+
 type Pedido = {
   id: string;
   title: string;
   description: string;
   status: string;
-  created_at: string;
-  numero_nota_fiscal: string;
-  volante_codigo: string;
-  volante_descricao: string;
-  quantidade: number;
-  client_name?: string;
+  createdAt: string;
+  numeroPedido?: number;
+  clientName?: string;
+  items: PedidoItem[];
 };
 
 const token: string = localStorage.getItem("token") ?? "";
@@ -27,29 +33,30 @@ const searchTerm = ref<string>("");
 // pedidos filtrados para exibição na tabela
 const filteredPedidos = computed(() => {
   return pedidos.value.filter((p) => {
+
     // filtro por status
     if (statusFilter.value && p.status !== statusFilter.value) {
       return false;
     }
 
-    // filtro de busca (nf, título, código, descrição)
+    // filtro de busca
     if (searchTerm.value.trim()) {
       const term = searchTerm.value.toLowerCase();
-      const haystack = [
-        p.numero_nota_fiscal,
-        p.title,
-        p.description,
-        p.volante_codigo,
-        p.volante_descricao,
-        p.client_name,
-      ]
-        .filter(Boolean)
-        .join(" ")
-        .toLowerCase();
 
-      if (!haystack.includes(term)) {
-        return false;
-      }
+      const fields = [
+        p.numeroPedido ?? "",
+        p.title ?? "",
+        p.description ?? "",
+        p.clientName ?? "",
+        ...p.items.map((i) => i.codigo ?? ""),
+        ...p.items.map((i) => i.descricao ?? ""),
+        ...p.items.map((i) => i.marcaNome ?? ""),
+        ...p.items.map((i) => String(i.quantidade)),
+      ]
+      .join(" ")
+      .toLowerCase();
+
+      if (!fields.includes(term)) return false;
     }
 
     return true;
@@ -59,6 +66,8 @@ const filteredPedidos = computed(() => {
 async function loadPedidos() {
   // ADMIN → GET /orders (já garantido no controller)
   pedidos.value = await apiGet("/orders", token);
+
+  console.log(pedidos.value[0])
 }
 
 function logout() {
@@ -87,33 +96,38 @@ function exportPedidosToCsv() {
 
   // Cabeçalhos
   const headers = [
-    "NF",
-    "Código Volante",
-    "Descrição Volante",
-    "Observações",
+    "Nº Pedido",
+    "Cliente",
+    "Código",
+    "Descrição",
+    "Marca",
     "Quantidade",
     "Status",
     "Criado em",
-    "Cliente",
+    "Observações"
   ];
 
-  // Linhas
-  const rows = data.map((p) => [
-    p.numero_nota_fiscal || "",
-    p.volante_codigo || "",
-    p.volante_descricao || "",
-    p.description || "",
-    String(p.quantidade ?? ""),
-    p.status || "",
-    formatDate(p.created_at),
-    p.client_name || "",
-  ]);
+  const rows: string[][] = [];
+
+  data.forEach((pedido) => {
+    pedido.items.forEach((item) => {
+      rows.push([
+        String(pedido.numeroPedido ?? ""),
+        pedido.clientName ?? "",
+        item.codigo ?? "",
+        item.descricao ?? "",
+        item.marcaNome ?? "",
+        String(item.quantidade ?? ""),
+        pedido.status ?? "",
+        formatDate(pedido.createdAt),
+        pedido.description ?? "",
+      ]);
+    });
+  });
 
   const csvContent = [headers, ...rows]
     .map((row) =>
-      row
-        .map((cell) => `"${String(cell).replace(/"/g, '""')}"`)
-        .join(";") // separador ; (PT-BR)
+      row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(";")
     )
     .join("\n");
 
@@ -175,7 +189,7 @@ onMounted(loadPedidos);
         <input
           v-model="searchTerm"
           type="text"
-          placeholder="NF, título, código ou descrição..."
+          placeholder="quantidade, código ou descrição..."
         />
       </div>
     </div>     
@@ -185,7 +199,7 @@ onMounted(loadPedidos);
       <table>
         <thead>
           <tr>
-            <th>NF</th>
+            <th>Pedido</th>
             <th>Código</th>
             <th>Descrição</th>
             <th>Observação</th>
@@ -195,18 +209,36 @@ onMounted(loadPedidos);
           </tr>
         </thead>
         <tbody>
-          <tr v-for="p in filteredPedidos" :key="p.id">
-            <td>{{ p.numero_nota_fiscal || "-" }}</td>
-            <td>{{ p.volante_codigo }}</td>
-            <td>{{ p.volante_descricao }}</td>
-            <td>{{ p.description }}</td>
-            <td>{{ p.quantidade }}</td>
+          <tr v-for="pedido in filteredPedidos" :key="pedido.id" class="pedido-row">
+            <td>{{ pedido.numeroPedido ?? "-" }}</td>
             <td>
-              <span class="badge">
-                {{ p.status }}
-              </span>
+              <div class="pedido-codigo-lista">
+                <div v-for="item in pedido.items" :key="item.volanteId">
+                  <strong>{{ item.codigo }}</strong>
+                  <span>({{ item.marcaNome }})</span>
+                </div>
+              </div>
             </td>
-            <td>{{ formatDate(p.created_at) }}</td>
+
+            <td>
+              <div v-for="item in pedido.items" :key="item.volanteId">
+                {{ item.descricao }}
+              </div>
+            </td>
+
+            <td>{{ pedido.description || "-" }}</td>
+
+            <td>
+              <div v-for="item in pedido.items" :key="item.volanteId">
+                {{ item.quantidade }}
+              </div>
+            </td>
+
+            <td>
+              <span class="badge">{{ pedido.status }}</span>
+            </td>
+
+            <td>{{ formatDate(pedido.createdAt) }}</td>
           </tr>
         </tbody>
       </table>

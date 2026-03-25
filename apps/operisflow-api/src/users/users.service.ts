@@ -47,14 +47,15 @@ export class UsersService {
   async create(tenantId: string, dto: CreateUserDto) {
     const role = dto.role || 'client';
     const active = dto.active ?? true;
+    const rota_id = dto.rota_id;
 
     const result = await this.db.query(
       `
-      INSERT INTO users (tenant_id, name, email, password, role, active)
-      VALUES ($1, $2, $3, $4, $5, $6)
-      RETURNING id, tenant_id, name, email, role, active, created_at, updated_at
+      INSERT INTO users (tenant_id, name, email, password, role, active, rota_id)
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
+      RETURNING id, tenant_id, name, email, role, active, rota_id, created_at, updated_at
       `,
-      [tenantId, dto.name, dto.email, dto.password, role, active],
+      [tenantId, dto.name, dto.email, dto.password, role, active, rota_id],
     );
 
     return result.rows[0];
@@ -71,9 +72,10 @@ export class UsersService {
         password = COALESCE($5, password),
         role = COALESCE($6, role),
         active = COALESCE($7, active),
+        rota_id = COALESCE($8, rota_id),
         updated_at = NOW()
       WHERE tenant_id = $1 AND id = $2
-      RETURNING id, tenant_id, name, email, role, active, created_at, updated_at
+      RETURNING id, tenant_id, name, email, role, active, rota_id, updated_at
       `,
       [
         tenantId,
@@ -83,6 +85,7 @@ export class UsersService {
         dto.password ?? null,
         dto.role ?? null,
         dto.active ?? null,
+        dto.rota_id,
       ],
     );
 

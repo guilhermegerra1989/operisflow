@@ -4,4 +4,5 @@ export class UpdateUserDto {
   password?: string;
   role?: string;
   active?: boolean;
+  rota_id: string;
 }

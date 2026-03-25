@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS users (
   password VARCHAR(255) NOT NULL,
   role VARCHAR(50) DEFAULT 'client',
   active BOOLEAN DEFAULT TRUE,
-  rota_id UUID NULL,
+  rota_id UUID NOT NULL,
 
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW(),
@@ -115,7 +115,7 @@ CREATE TABLE IF NOT EXISTS orders (
 
   title VARCHAR(255) NOT NULL,
   description TEXT,
-  status VARCHAR(50) DEFAULT 'pending',
+  status VARCHAR(50) DEFAULT 'aberto',
 
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW(),

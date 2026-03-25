@@ -13,6 +13,8 @@ type User = {
 };
 
 const users = ref<User[]>([]);
+const rotas = ref<{ id: string; nome: string }[]>([]);
+const rotaId = ref<string>(""); // rota selecionada
 
 const name = ref<string>("");
 const email = ref<string>("");
@@ -24,7 +26,15 @@ const active = ref<boolean>(true);
 const editingUserId = ref<string | null>(null);
 
 async function loadUsers() {
-  users.value = await apiGet("/users", token);
+  
+ const [usersRes, rotasRes] = await Promise.all([
+    apiGet("/users", token),
+    apiGet("/rotas", token),
+  ]);
+
+  users.value = usersRes;
+  rotas.value = rotasRes;
+
 }
 
 function logout() {
@@ -43,8 +53,10 @@ function resetForm() {
   password.value = "";
   role.value = "client";
   active.value = true;
+  rotaId.value = "";       // <--- limpa
   editingUserId.value = null;
 }
+
 
 type UserPayload = {
   name: string;
@@ -55,16 +67,29 @@ type UserPayload = {
 };
 
 async function salvarUsuario() {
-  if (!name.value.trim() || !email.value.trim() || !password.value.trim()) {
-    alert("Nome, Email e Senha são obrigatórios!");
+  if (!name.value.trim() || !email.value.trim()) {
+    alert("Nome e Email são obrigatórios!");
     return;
   }
 
-  const payload: UserPayload = {
+  // Se for criar um usuário novo, senha é obrigatória
+  if (!editingUserId.value && !password.value.trim()) {
+    alert("Senha é obrigatória para criação!");
+    return;
+  }
+
+  // ROTA OBRIGATÓRIA
+  if (!rotaId.value) {
+    alert("Selecione uma rota!");
+    return;
+  }
+
+  const payload: UserPayload & { rota_id: string } = {
     name: name.value,
     email: email.value,
     role: role.value,
     active: active.value,
+    rota_id: rotaId.value,  // <--- IMPORTANTE
   };
 
   if (password.value.trim()) {
@@ -74,22 +99,20 @@ async function salvarUsuario() {
   if (editingUserId.value) {
     await apiPatch(`/users/${editingUserId.value}`, token, payload);
   } else {
-    await apiPost("/users", token, {
-      ...payload,
-      password: password.value, // ainda obrigatório pra criar
-    });
+    await apiPost("/users", token, payload);
   }
 
   resetForm();
   await loadUsers();
 }
 
-function começarEditarUsuario(user: User) {
+function começarEditarUsuario(user: User & { rota_id?: string }) {
   editingUserId.value = user.id;
   name.value = user.name;
   email.value = user.email;
   role.value = user.role;
   active.value = user.active;
+  rotaId.value = (user as any).rota_id || ""; 
   password.value = "";
 }
 
@@ -129,6 +152,17 @@ onMounted(loadUsers);
     <input v-model="name" placeholder="Nome" />
     <input v-model="email" placeholder="Email" />
     <input v-model="password" placeholder="Senha" type="password" />
+
+    <div class="field required">
+      <label>Rota</label>
+      <select v-model="rotaId" class="input">
+        <option value="">Selecione uma rota</option>
+        <option v-for="r in rotas" :key="r.id" :value="r.id">
+          {{ r.nome }}
+        </option>
+      </select>
+    </div>
+
 
     <div class="field">
       <label>Tipo</label>
@@ -381,5 +415,60 @@ h2 {
 
 .btn-cancelar:hover {
   background: #f5f5f5;
+}
+
+/* Campo padrão */
+.field {
+  margin: 12px 0;
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* Label do campo */
+.field label {
+  margin-bottom: 6px;
+  color: #444;
+}
+
+/* Select estilizado */
+.input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  font-size: 14px;
+  background: #fff;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+/* Seta personalizada no select */
+.input {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg width='12' height='8' viewBox='0 0 12 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 12px;
+}
+
+/* Hover e foco */
+.input:hover {
+  border-color: #5e72a8;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #5e72a8;
+  box-shadow: 0 0 0 2px rgba(94, 114, 168, 0.1);
+}
+
+/* Torna o campo obrigatório fácil de perceber */
+.field.required label::after {
+  content: " *";
+  color: #e53935;
+  font-weight: bold;
 }
 </style>
