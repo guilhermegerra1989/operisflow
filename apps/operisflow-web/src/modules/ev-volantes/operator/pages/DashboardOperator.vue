@@ -1,25 +1,4 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
-import { apiGet } from "../../api/apiClient";
-
-type Pedido = {
-  id: string;
-  title: string;
-  description: string;
-  status: string;
-  created_at: string;
-  numero_nota_fiscal: string;
-  volante_codigo: string;
-  volante_descricao: string;
-  quantidade: number;
-};
-
-const pedidos = ref<Pedido[]>([]);
-const token: string = localStorage.getItem("token") ?? "";
-
-onMounted(async () => {
-  pedidos.value = await apiGet("/orders/my", token);
-});
 
 function logout() {
   localStorage.removeItem("token");
@@ -45,19 +24,9 @@ function logout() {
 
     <!-- GRID DE BOTÕES / CARDS PRINCIPAIS -->
     <div class="menu-grid">
-      <!-- <router-link to="/ev-volantes/admin/users" class="btn menu-card">
-        <h3>Usuários</h3>
-        <p>Gerenciar clientes e administradores</p>
-      </router-link>
-
-      <router-link to="/ev-volantes/admin/volantes" class="btn menu-card">
-        <h3>Tipos de Volantes</h3>
-        <p>Configurar tipos de volantes disponíveis</p>
-      </router-link>
--->
-      <router-link to="/ev-volantes/operator/pedidos" class="btn menu-card">
-        <h3>Pedidos</h3>
-        <p>Visualizar pedidos</p>
+      <router-link to="/ev-volantes/operator/estoque" class="btn menu-card">
+        <h3>Estoque</h3>
+        <p>Visualizar pedidos Abertos</p>
       </router-link> 
     </div>
   </div>

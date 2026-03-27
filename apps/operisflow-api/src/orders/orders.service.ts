@@ -215,35 +215,35 @@ async groupOrdersWithItems(rows: any[]) {
     return result.rows[0];
   }
 
-  async update(tenantId: string, id: string, dto: UpdateOrderDto) {
-    const result = await this.db.query(
-      `
-      UPDATE orders
-      SET
-        title = COALESCE($3, title),
-        description = COALESCE($4, description),
-        status = COALESCE($5, status),
-        volante_id = COALESCE($6, volante_id),
-        numero_nota_fiscal = COALESCE($7, numero_nota_fiscal),
-        quantidade = COALESCE($6, quantidade),
-        updated_at = NOW()
-      WHERE tenant_id = $1 AND id = $2
-      RETURNING *
-      `,
-      [
-        tenantId,
-        id,
-        dto.title ?? null,
-        dto.description ?? null,
-        dto.status ?? null,
-        dto.volanteId ?? null,
-        dto.numeroNotaFiscal ?? null,
-        dto.quantidade ?? null,
-      ],
-    );
+async update(tenantId: string, id: string, dto: UpdateOrderDto) {
+  const result = await this.db.query(
+    `
+    UPDATE orders
+    SET
+      title = COALESCE($3, title),
+      description = COALESCE($4, description),
+      status = COALESCE($5, status),
+      volante_id = COALESCE($6, volante_id),
+      numero_nota_fiscal = COALESCE($7, numero_nota_fiscal),
+      quantidade = COALESCE($8, quantidade),
+      updated_at = NOW()
+    WHERE tenant_id = $1 AND id = $2
+    RETURNING *
+    `,
+    [
+      tenantId,
+      id,
+      dto.title ?? null,
+      dto.description ?? null,
+      dto.status ?? null,
+      dto.volanteId ?? null,
+      dto.numeroNotaFiscal ?? null,
+      dto.quantidade ?? null,
+    ],
+  );
 
-    return result.rows[0];
-  } 
+  return result.rows[0];
+}
 
   async remove(tenantId: string, id: string) {
     await this.db.query(
@@ -255,4 +255,21 @@ async groupOrdersWithItems(rows: any[]) {
     );
     return true;
   }
+
+  async updateStatus(tenantId: string, id: string, status: string) {
+    const result = await this.db.query(
+      `
+      UPDATE orders
+      SET status = $3,
+          updated_at = NOW()
+      WHERE tenant_id = $1 AND id = $2
+      RETURNING *
+      `,
+      [tenantId, id, status],
+    );
+
+    return result.rows[0];
+  }
+
+  
 }

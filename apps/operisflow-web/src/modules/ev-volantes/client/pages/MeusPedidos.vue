@@ -130,13 +130,22 @@ function logout() {
             :key="item.volanteId"
             class="pedido-item"
           >
-          <div class="div_image"><img :src="item.img" :alt="item.codigo" /></div>
-            <div class="pedido-item-left">
-              <strong>{{ item.codigo }}</strong>
-              <span>{{ item.descricao }}</span>
+
+            <!-- AQUI -->
+            <div class="pedido-item">
+              <div class="div_image"><img :src="item.img" :alt="item.codigo" /></div>
+             
+              <div class="pedido-item-left">
+                  <strong>{{ item.codigo }}</strong>
+                  <span>{{ item.descricao }}</span>
+              </div>
+              
+              <div class="pedido-item-right">
+                Qtde {{ item.quantidade }}
+              </div>
             </div>
-            <div class="pedido-item-right">Qtde {{ item.quantidade }}</div>
           </div>
+
         </div>
 
         <div class="footer">
@@ -285,10 +294,15 @@ h2 {
   object-fit: contain;
 }
 
+
 .pedido-item {
-  display: flex;
-  justify-content: space-between;
-  padding: 4px 0;
+  display: grid;
+  grid-template-columns: 60px 1fr auto;
+  align-items: center;
+  column-gap: 12px;
+
+  width: 100%;              /* MUITO IMPORTANTE */
+  padding: 6px 0;
   border-bottom: 1px dotted #ddd;
 }
 
@@ -296,10 +310,31 @@ h2 {
   border-bottom: none;
 }
 
+.div_image {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 6px;
+  background: #fff;
+  flex-shrink: 0;
+}
+
+.div_image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 .pedido-item-left {
   display: flex;
   flex-direction: column;
+  min-width: 170px; /* permite quebrar texto sem empurrar qtde */
 }
+
 
 .pedido-item-left strong {
   font-size: 13px;
@@ -311,27 +346,12 @@ h2 {
 }
 
 .pedido-item-right {
+  justify-self: end;      /* grid magic */
   font-weight: 700;
   font-size: 14px;
+  white-space: nowrap;
+  text-align: right;
+  min-width: 60px;
 }
 
-.div_image {
-  width: 60px;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;        
-  border-radius: 6px;
-  background: #fff;       
-  flex-shrink: 0;     
-  margin-right: 15px;     
-}
-
-.div_image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;    /* ou cover → depende do estilo */
-  display: block;
-}
 </style>

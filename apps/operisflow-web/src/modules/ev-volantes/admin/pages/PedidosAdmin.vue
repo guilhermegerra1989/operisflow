@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from "vue";
-import { apiGet } from "../../api/apiClient";
+import { apiGet, apiPatch } from "../../api/apiClient";
 
 type PedidoItem = {
   volanteId: string;
@@ -30,16 +30,13 @@ const pedidos = ref<Pedido[]>([]);
 const statusFilter = ref<string>(""); // "" = todos
 const searchTerm = ref<string>("");
 
-// pedidos filtrados para exibição na tabela
+// pedidos filtrados
 const filteredPedidos = computed(() => {
   return pedidos.value.filter((p) => {
-
-    // filtro por status
     if (statusFilter.value && p.status !== statusFilter.value) {
       return false;
     }
 
-    // filtro de busca
     if (searchTerm.value.trim()) {
       const term = searchTerm.value.toLowerCase();
 
@@ -53,8 +50,8 @@ const filteredPedidos = computed(() => {
         ...p.items.map((i) => i.marcaNome ?? ""),
         ...p.items.map((i) => String(i.quantidade)),
       ]
-      .join(" ")
-      .toLowerCase();
+        .join(" ")
+        .toLowerCase();
 
       if (!fields.includes(term)) return false;
     }
@@ -64,10 +61,7 @@ const filteredPedidos = computed(() => {
 });
 
 async function loadPedidos() {
-  // ADMIN → GET /orders (já garantido no controller)
   pedidos.value = await apiGet("/orders", token);
-
-  console.log(pedidos.value[0])
 }
 
 function logout() {
@@ -86,7 +80,38 @@ function formatDate(dateStr: string): string {
   return d.toLocaleString("pt-BR");
 }
 
-// NOVO: exportar pedidos para CSV
+/**
+ * FINALIZAR PEDIDO
+ */
+
+async function finalizarPedido(pedidoId: string) {
+  const confirmar = confirm("Deseja realmente finalizar este pedido?");
+  if (!confirmar) return;
+
+  try {
+
+    const payload = {
+       status: "Finalizado"
+    };
+
+    await apiPatch(
+      `/orders/${pedidoId}`,
+      token, payload
+    );
+
+    // atualiza status local
+    const pedido = pedidos.value.find(p => p.id === pedidoId);
+    if (pedido) {
+      pedido.status = "Finalizado";
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Erro ao finalizar o pedido.");
+  }
+}
+
+
+// export CSV (igual você já tem)
 function exportPedidosToCsv() {
   const data = filteredPedidos.value.length
     ? filteredPedidos.value
@@ -94,9 +119,9 @@ function exportPedidosToCsv() {
 
   if (!data.length) return;
 
-  // Cabeçalhos
   const headers = [
     "Nº Pedido",
+    "Rota",
     "Cliente",
     "Código",
     "Descrição",
@@ -104,7 +129,7 @@ function exportPedidosToCsv() {
     "Quantidade",
     "Status",
     "Criado em",
-    "Observações"
+    "Observações",
   ];
 
   const rows: string[][] = [];
@@ -113,6 +138,7 @@ function exportPedidosToCsv() {
     pedido.items.forEach((item) => {
       rows.push([
         String(pedido.numeroPedido ?? ""),
+        pedido.title ?? "",
         pedido.clientName ?? "",
         item.codigo ?? "",
         item.descricao ?? "",
@@ -158,7 +184,7 @@ onMounted(loadPedidos);
         class="logo"
       />
       <div class="top-actions">
-         <button class="btn-secondary" @click="exportPedidosToCsv">
+        <button class="btn-secondary" @click="exportPedidosToCsv">
           Exportar
         </button>
         <button class="btn-secondary" @click="voltarDashboard">
@@ -174,16 +200,6 @@ onMounted(loadPedidos);
 
     <!-- FILTROS -->
     <div class="filters">
-      <!-- <div class="filter-group">
-        <label>Status</label>
-        <select v-model="statusFilter">
-          <option value="">Todos</option>
-          <option v-for="s in statusOptions" :key="s" :value="s">
-            {{ s }}
-          </option>
-        </select>
-      </div> -->
-
       <div class="filter-group">
         <label>Busca</label>
         <input
@@ -192,7 +208,7 @@ onMounted(loadPedidos);
           placeholder="quantidade, código ou descrição..."
         />
       </div>
-    </div>     
+    </div>
 
     <!-- TABELA -->
     <div class="table-container" v-if="filteredPedidos.length">
@@ -200,23 +216,26 @@ onMounted(loadPedidos);
         <thead>
           <tr>
             <th>Pedido</th>
+            <th>Rota</th>
             <th>Código</th>
             <th>Descrição</th>
             <th>Observação</th>
             <th>Qtd</th>
             <th>Status</th>
             <th>Criado em</th>
+            <th>Ações</th>
           </tr>
         </thead>
+
         <tbody>
-          <tr v-for="pedido in filteredPedidos" :key="pedido.id" class="pedido-row">
+          <tr v-for="pedido in filteredPedidos" :key="pedido.id">
             <td>{{ pedido.numeroPedido ?? "-" }}</td>
+            <td>{{ pedido.title }}</td>
+
             <td>
-              <div class="pedido-codigo-lista">
-                <div v-for="item in pedido.items" :key="item.volanteId">
-                  <strong>{{ item.codigo }}</strong>
-                  <span>({{ item.marcaNome }})</span>
-                </div>
+              <div v-for="item in pedido.items" :key="item.volanteId">
+                <strong>{{ item.codigo }}</strong>
+                <span> ({{ item.marcaNome }})</span>
               </div>
             </td>
 
@@ -239,6 +258,19 @@ onMounted(loadPedidos);
             </td>
 
             <td>{{ formatDate(pedido.createdAt) }}</td>
+
+            <!-- AÇÕES -->
+            <td>
+              <button
+                v-if="pedido.status === 'aberto'"
+                class="btn-finalizar"
+                @click="finalizarPedido(pedido.id)"
+              >
+                Finalizar
+              </button>
+
+              <span v-else class="acao-desabilitada">—</span>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -250,19 +282,22 @@ onMounted(loadPedidos);
   </div>
 </template>
 
-
 <style scoped>
+
+/* =========================
+   CONTAINER / LAYOUT
+   ========================= */
 .container {
   padding: 16px;
   width: 100%;
-  max-width: 1200px;   /* largura boa p/ desktop */
-  margin: 0 auto;      /* centraliza no monitor */
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 @media (min-width: 900px) {
   .container {
-    padding: 24px 32px;     /* mais respiro em desktop */
-    max-width: 1300px;      /* aumenta a largura útil */
+    padding: 24px 32px;
+    max-width: 1300px;
   }
 
   h2 {
@@ -280,35 +315,27 @@ onMounted(loadPedidos);
 
   table {
     font-size: 14px;
-    min-width: 900px;       /* tabela mais larga em PC */
+    min-width: 900px;
   }
 
-  th, td {
+  th,
+  td {
     padding: 12px 14px;
   }
 }
 
-.table-container {
-  width: 100%;
-  overflow-x: auto;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+h2 {
+  margin-bottom: 16px;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  min-width: 700px;
-}
-
-/* TOPO */
+/* =========================
+   TOP BAR
+   ========================= */
 .top-bar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 16px;
-  margin-right: 15px;
 }
 
 .logo {
@@ -321,7 +348,9 @@ table {
   gap: 8px;
 }
 
-/* Botões */
+/* =========================
+   BOTÕES
+   ========================= */
 .btn-secondary {
   background: transparent;
   border: 1px solid #0759a0;
@@ -352,11 +381,9 @@ table {
   background: #ffebee;
 }
 
-h2 {
-  margin-bottom: 16px;
-}
-
-/* FILTROS */
+/* =========================
+   FILTROS
+   ========================= */
 .filters {
   display: flex;
   flex-wrap: wrap;
@@ -375,7 +402,6 @@ h2 {
   margin-bottom: 4px;
 }
 
-.filter-group select,
 .filter-group input {
   padding: 6px 8px;
   border-radius: 6px;
@@ -383,19 +409,21 @@ h2 {
   font-size: 14px;
 }
 
-/* TABELA */
+/* =========================
+   TABELA
+   ========================= */
 .table-container {
   width: 100%;
-  overflow-x: auto; /* RESPONSIVO: rolagem horizontal em telas pequenas */
-  background: white;
+  overflow-x: auto;
+  background: #fff;
   border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 700px; /* força layout de tabela em desktop */
+  min-width: 700px;
 }
 
 thead {
@@ -408,6 +436,7 @@ td {
   border-bottom: 1px solid #eee;
   font-size: 13px;
   text-align: left;
+  vertical-align: middle;
 }
 
 th {
@@ -419,22 +448,27 @@ tbody tr:hover {
   background: #fafafa;
 }
 
-/* Info do volante na célula */
-.volante-info {
+/* =========================
+   LISTAS DENTRO DA TABELA
+   ========================= */
+.pedido-codigo-lista {
   display: flex;
   flex-direction: column;
+  gap: 2px;
 }
 
-.volante-info strong {
+.pedido-codigo-lista strong {
   font-size: 13px;
 }
 
-.volante-info span {
+.pedido-codigo-lista span {
   font-size: 12px;
   color: #666;
 }
 
-/* Status */
+/* =========================
+   STATUS
+   ========================= */
 .badge {
   display: inline-block;
   padding: 3px 8px;
@@ -442,15 +476,47 @@ tbody tr:hover {
   background: #e3f2fd;
   color: #1565c0;
   font-size: 12px;
+  font-weight: 700;
+  text-transform: capitalize;
 }
 
+/* =========================
+   AÇÕES
+   ========================= */
+.btn-finalizar {
+  background: #2e7d32;
+  color: #fff;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn-finalizar:hover {
+  background: #1b5e20;
+}
+
+.acao-desabilitada {
+  color: #aaa;
+  font-size: 13px;
+  text-align: center;
+}
+
+/* =========================
+   ESTADO VAZIO
+   ========================= */
 .empty {
   text-align: center;
   color: #777;
   margin-top: 20px;
 }
 
-/* MOBILE */
+/* =========================
+   MOBILE
+   ========================= */
 @media (max-width: 600px) {
   .container {
     padding: 12px;
@@ -459,26 +525,9 @@ tbody tr:hover {
   h2 {
     font-size: 18px;
   }
-}
 
-.export-row {
-  margin-bottom: 12px;
-  display: flex;
-  justify-content: flex-end;
-}
-
-.btn-export {
-  background: #5e72a8;
-  color: #fff;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.btn-export:hover {
-  background: #1565c0;
+  .filter-group {
+    min-width: 100%;
+  }
 }
 </style>

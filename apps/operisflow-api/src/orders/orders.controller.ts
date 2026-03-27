@@ -62,8 +62,7 @@ export class OrdersController {
     return this.ordersService.findOne(tenantId, id);
   }
 
-  // ADMIN → alterar pedido (ex: status)
-  @Patch(':id')
+ @Patch(':id')
   update(
     @Tenant() tenantId: string,
     @CurrentUser() user: any,
@@ -73,6 +72,13 @@ export class OrdersController {
     if (user.role !== 'admin') {
       throw new ForbiddenException('Apenas administrador pode atualizar pedidos');
     }
+
+    // ✅ CASO: apenas mudança de status (finalizar pedido)
+    if (dto.status && Object.keys(dto).length === 1) {
+      return this.ordersService.updateStatus(tenantId, id, dto.status);
+    }
+
+    // ✅ CASO: update "completo"
     return this.ordersService.update(tenantId, id, dto);
   }
 

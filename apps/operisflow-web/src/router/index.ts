@@ -11,7 +11,7 @@ import MarcasAdmin from "../modules/ev-volantes/admin/pages/MarcasAdmin.vue";
 import PedidosAdmin from "../modules/ev-volantes/admin/pages/PedidosAdmin.vue";
 import DashboardAdmin from "../modules/ev-volantes/admin/pages/DashboardAdmin.vue";
 import DashboardOperator from "../modules/ev-volantes/operator/pages/DashboardOperator.vue";
-import PedidosOperator from "../modules/ev-volantes/operator/pages/PedidosOperator.vue";
+import StockOperator from "../modules/ev-volantes/operator/pages/StockOperator.vue";
 
 export const router = createRouter({
   history: createWebHistory(),
@@ -76,8 +76,8 @@ export const router = createRouter({
       meta: { requiresAuth: true, role: "operator" },
     },
     {
-      path: "/ev-volantes/operator/pedidos",
-      component: PedidosOperator,
+      path: "/ev-volantes/operator/estoque",
+      component: StockOperator,
       meta: { requiresAuth: true, role: "operator" },
     },
   ],
