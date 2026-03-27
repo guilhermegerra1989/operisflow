@@ -186,9 +186,6 @@ function abrirFecharDropdown() {
   rotaDropdownOpen.value = !rotaDropdownOpen.value;
 }
 
-function closeDropdown() {
-  rotaDropdownOpen.value = false;
-}
 
 // fecha ao clicar fora
 function onClickOutsideRoutes(e: MouseEvent) {
