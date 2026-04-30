@@ -12,6 +12,7 @@ type User = {
   active: boolean;
 };
 
+const showPassword = ref(false);
 const users = ref<User[]>([]);
 const rotas = ref<{ id: string; nome: string }[]>([]);
 const rotaId = ref<string>(""); // rota selecionada
@@ -151,7 +152,24 @@ onMounted(loadUsers);
 
     <input v-model="name" placeholder="Nome" />
     <input v-model="email" placeholder="Email" />
-    <input v-model="password" placeholder="Senha" type="password" />
+       
+    <div class="field">
+      <div class="pill-group">
+        <div >
+            <input v-model="password" :type="showPassword ? 'text' : 'password'" placeholder="Senha" />
+        </div>
+        <div >
+            <button 
+              type="button"
+              class="toggle-password"
+              @click="showPassword = !showPassword"
+            >
+              {{ showPassword ? 'Ocultar' : 'Mostrar' }}
+            </button>
+        </div>
+      </div>
+    </div>
+    
 
     <div class="field required">
       <label>Rota</label>
@@ -470,5 +488,26 @@ h2 {
   content: " *";
   color: #e53935;
   font-weight: bold;
+}
+
+.password-field {
+  display: flex;
+  align-items: center;
+  width: 100%; /* garante largura total */
+}
+
+.password-field input {
+  flex: 1;
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+.toggle-password {
+  margin-left: 8px;
+  white-space: nowrap; /* evita quebrar linha */
 }
 </style>
