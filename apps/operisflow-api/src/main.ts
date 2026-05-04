@@ -10,10 +10,12 @@ async function bootstrap() {
       'https://evvolantes.com.br',
       'https://www.evvolantes.com.br',
     ],
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Authorization', 'Content-Type'],
     credentials: true,
   });
 
   await app.listen(process.env.PORT ?? 3000);
 }
+
 bootstrap();
