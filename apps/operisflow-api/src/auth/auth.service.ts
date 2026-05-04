@@ -63,44 +63,44 @@ export class AuthService {
    * incluindo nome e rota (nome da rota).
    */
   async getMe(payload: any) {
-    const userId = payload.sub;       // ✅ correto
-    const tenantId = payload.tenantId;
+  const userId = payload.id;      // ✅ CORRETO
+  const tenantId = payload.tenantId;
 
-    const result = await this.db.query(
-      `
-      SELECT 
-        u.id,
-        u.email,
-        u.name,
-        u.role,
-        u.tenant_id,
-        u.rota_id,
-        r.nome AS rota_nome
-      FROM users u
-      LEFT JOIN rotas r 
-        ON r.id = u.rota_id 
-      AND r.tenant_id = u.tenant_id
-      WHERE u.id = $1
-        AND u.tenant_id = $2
-      `,
-      [userId, tenantId],
-    );
+  const result = await this.db.query(
+    `
+    SELECT 
+      u.id,
+      u.email,
+      u.name,
+      u.role,
+      u.tenant_id,
+      u.rota_id,
+      r.nome AS rota_nome
+    FROM users u
+    LEFT JOIN rotas r 
+      ON r.id = u.rota_id 
+     AND r.tenant_id = u.tenant_id
+    WHERE u.id = $1
+      AND u.tenant_id = $2
+    `,
+    [userId, tenantId],
+  );
 
-    const row = result.rows[0];
+  const row = result.rows[0];
 
-    if (!row) {
-      throw new UnauthorizedException('Sessão inválida');
-    }
+  if (!row) {
+    throw new UnauthorizedException('Sessão inválida');
+  }
 
-    return {
-      id: row.id,
-      email: row.email,
-      role: row.role,
-      tenantId: row.tenant_id,
-      name: row.name,
-      rotaId: row.rota_id,
-      rotaNome: row.rota_nome,
-    };
+  return {
+    id: row.id,
+    email: row.email,
+    role: row.role,
+    tenantId: row.tenant_id,
+    name: row.name,
+    rotaId: row.rota_id,
+    rotaNome: row.rota_nome,
+  };
 }
 
 }
