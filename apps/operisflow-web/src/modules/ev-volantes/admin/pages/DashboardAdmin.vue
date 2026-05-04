@@ -18,15 +18,16 @@ const pedidos = ref<Pedido[]>([]);
 // onMounted(async () => {
 //   pedidos.value = await apiGet("/orders/my");
 // });
+
+const user = JSON.parse(localStorage.getItem("user")!);
+
 onMounted(async () => {
-  try {
+  if (user.role === "admin" || user.role === "operator") {
+    pedidos.value = await apiGet("/orders");
+  } else {
     pedidos.value = await apiGet("/orders/my");
-  } catch (e: any) {
-    // ✅ NÃO FAZ LOGOUT AQUI
-    console.warn("Erro ao carregar pedidos do admin", e);
   }
 });
-
 
 
 function logout() {
