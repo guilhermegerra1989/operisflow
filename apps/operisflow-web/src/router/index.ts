@@ -87,28 +87,26 @@ export const router = createRouter({
 
 router.beforeEach((to, _from, next) => {
 
-  if (!session.validated) {
-      console.log("sessaooooooooooooooooooooooooooo::::::" + session.validated)
-  }else{
-    console.log("sessaooooooooooooooooooooooooooo::::::" + session.validated)
+  // ainda validando sessão → deixa passar sem redirecionar
+  if (session.validating) {
+    return next();
   }
 
   const token = localStorage.getItem("token");
   const userRaw = localStorage.getItem("user");
   const user = userRaw ? JSON.parse(userRaw) : null;
 
-  const isAuthenticated = !!token;
-  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
-  const requiredRole = to.meta.role as "client" | "admin" | "operator" | undefined;
+  const isAuthenticated = !!token && !!user;
+  const requiresAuth = to.matched.some(
+    (record) => record.meta.requiresAuth
+  );
+  const requiredRole = to.meta.role as
+    | "client"
+    | "admin"
+    | "operator"
+    | undefined;
 
-  console.log("[ROUTER GUARD]");
-  console.log("-> indo para:", to.fullPath);
-  console.log("-> requiresAuth:", requiresAuth);
-  console.log("-> isAuthenticated:", isAuthenticated);
-  console.log("-> requiredRole:", requiredRole);
-  console.log("-> user:", user);
-
-  // 1) Tentando acessar rota protegida SEM estar logado
+  // 1) rota protegida sem sessão válida
   if (requiresAuth && !isAuthenticated) {
     return next({
       path: "/ev-volantes/login",
@@ -116,33 +114,22 @@ router.beforeEach((to, _from, next) => {
     });
   }
 
-  // 2) Se a rota exige role e o usuário não tem
+  // 2) role incorreta
   if (requiresAuth && requiredRole && user?.role !== requiredRole) {
-    if (user?.role === "client") {
-      return next("/ev-volantes/client");
-    }
-
-    if (user?.role === "admin") {
-      return next("/ev-volantes/admin");
-    }
-
-    if (user?.role === "operator") {
-      return next("/ev-volantes/operator");
-    }
+    if (user?.role === "client") return next("/ev-volantes/client");
+    if (user?.role === "admin") return next("/ev-volantes/admin");
+    if (user?.role === "operator") return next("/ev-volantes/operator");
 
     return next("/ev-volantes/login");
   }
 
-  // 3) Usuário já logado tentando ir pra tela de login
+  // 3) usuário logado tentando acessar login
   if (to.path === "/ev-volantes/login" && isAuthenticated) {
-    if (user?.role === "client") {
-      return next("/ev-volantes/client");
-    }
-    if (user?.role === "admin") {
-      return next("/ev-volantes/admin");
-    }
+    if (user.role === "client") return next("/ev-volantes/client");
+    if (user.role === "admin") return next("/ev-volantes/admin");
+    if (user.role === "operator") return next("/ev-volantes/operator");
   }
 
-  // 4) Caso normal
   return next();
 });
+

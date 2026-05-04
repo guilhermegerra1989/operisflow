@@ -7,31 +7,26 @@ import "./styles/base.css";
 // estado simples de sessão
 export const session = {
   validated: false,
+  validating: true,
 };
 
 async function bootstrap() {
   const token = localStorage.getItem("token");
 
-  if (token) {
-    try {
-      // 🔒 valida sessão ANTES de montar a app
-      const { data } = await apiGet("/auth/me",token);
+  try {
+    if (token) {
+      const { data } = await apiGet("/auth/me", token);
       localStorage.setItem("user", JSON.stringify(data));
-    } catch (error) {
-      // token expirado ou inválido
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-
-      // evita manter rota antiga
-      await router.replace("/ev-volantes/login");
     }
+  } catch {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+  } finally {
+    session.validated = true;
+    session.validating = false;
   }
 
-  session.validated = true;
-
-  createApp(App)
-    .use(router)
-    .mount("#app");
+  createApp(App).use(router).mount("#app");
 }
 
 bootstrap();
