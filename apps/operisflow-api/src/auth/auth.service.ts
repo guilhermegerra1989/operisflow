@@ -63,6 +63,8 @@ export class AuthService {
    * incluindo nome e rota (nome da rota).
    */
   async getMe(payload: any) {
+
+    
   const userId = payload.id;      // ✅ CORRETO
   const tenantId = payload.tenantId;
 
@@ -87,6 +89,19 @@ export class AuthService {
   );
 
   const row = result.rows[0];
+
+  console.log('PAYLOAD:', payload);
+
+console.log('QUERY PARAMS:', { userId, tenantId });
+
+console.log('QUERY BY ID:', result.rows);
+
+const resultTenant = await this.db.query(
+  'SELECT id, tenant_id FROM users WHERE id = $1 AND tenant_id = $2',
+  [userId, tenantId],
+);
+
+console.log('QUERY BY ID + TENANT:', resultTenant.rows);
 
   if (!row) {
     throw new UnauthorizedException('Sessão inválida');
