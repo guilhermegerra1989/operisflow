@@ -129,7 +129,6 @@ router.beforeEach((to, _from, next) => {
     if (user.role === "admin") return next("/ev-volantes/admin");
     if (user.role === "operator") return next("/ev-volantes/operator");
   }
-
   return next();
 });
 

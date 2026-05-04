@@ -13,9 +13,7 @@ export class OrdersService {
     });
   }
 
-  
-  
-  async create(tenantId: string, userId: string, dto: CreateOrderDto) {
+async create(tenantId: string, userId: string, dto: CreateOrderDto) {
     const client = await this.db.connect();
 
     try {
@@ -78,11 +76,9 @@ export class OrdersService {
     } finally {
       client.release();
     }
-  }
+}
 
-
-
- async findMyOrders(tenantId: string, userId: string) {
+async findMyOrders(tenantId: string, userId: string) {
   const result = await this.db.query(
     `
     SELECT
@@ -202,7 +198,7 @@ async groupOrdersWithItems(rows: any[]) {
   return Array.from(ordersMap.values());
 }
 
-  async findOne(tenantId: string, id: string) {
+async findOne(tenantId: string, id: string) {
     const result = await this.db.query(
       `
       SELECT *
@@ -213,7 +209,7 @@ async groupOrdersWithItems(rows: any[]) {
     );
 
     return result.rows[0];
-  }
+}
 
 async update(tenantId: string, id: string, dto: UpdateOrderDto) {
   const result = await this.db.query(
@@ -245,7 +241,7 @@ async update(tenantId: string, id: string, dto: UpdateOrderDto) {
   return result.rows[0];
 }
 
-  async remove(tenantId: string, id: string) {
+async remove(tenantId: string, id: string) {
     await this.db.query(
       `
       DELETE FROM orders
@@ -254,9 +250,9 @@ async update(tenantId: string, id: string, dto: UpdateOrderDto) {
       [tenantId, id],
     );
     return true;
-  }
+}
 
-  async updateStatus(tenantId: string, id: string, status: string) {
+async updateStatus(tenantId: string, id: string, status: string) {
     const result = await this.db.query(
       `
       UPDATE orders
@@ -269,7 +265,6 @@ async update(tenantId: string, id: string, dto: UpdateOrderDto) {
     );
 
     return result.rows[0];
-  }
-
-  
+}
+ 
 }

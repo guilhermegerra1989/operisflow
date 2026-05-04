@@ -11,12 +11,8 @@ async function fetchWithAuth(
     headers.set("Authorization", `Bearer ${token}`);
   }
 
-  const res = await fetch(`${API_URL}${path}`, {
-    ...options,
-    headers,
-  });
+  const res = await fetch(`${API_URL}${path}`, { ...options, headers, });
 
-  // NÃO limpar token aqui
   if (!res.ok) {
     const text = await res.text();
     throw {

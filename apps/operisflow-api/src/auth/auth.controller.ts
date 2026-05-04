@@ -27,7 +27,6 @@ export class AuthController {
  @UseGuards(JwtAuthGuard)
   @Get('me')
   async getMe(@CurrentUser() user: any) {
-    // user aqui é o payload do JWT (id, email, role, tenantId, etc.)
     return this.authService.getMe(user);
   }
 

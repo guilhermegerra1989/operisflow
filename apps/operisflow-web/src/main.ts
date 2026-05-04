@@ -7,23 +7,10 @@ import { validateSession } from "./auth/authApi";
 
 async function bootstrap() {
   try {
-    
-    console.log(
-  JSON.stringify(
-    {
-      token: localStorage.getItem("token"),
-      user: JSON.parse(localStorage.getItem("user") || "null"),
-    },
-    null,
-    2
-  )
-);
     const user = await validateSession();
-    console.log("user::::::::::::::::::"+user)
     localStorage.setItem("user", JSON.stringify(user));
   } catch (error: any) {
     if (error.status === 401) {
-      // ✅ AQUI sim é logout
       localStorage.removeItem("token");
       localStorage.removeItem("user");
     }
