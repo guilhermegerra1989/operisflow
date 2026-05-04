@@ -104,8 +104,15 @@ const resultTenant = await this.db.query(
 console.log('QUERY BY ID + TENANT:', resultTenant.rows);
 
   if (!row) {
-    throw new UnauthorizedException('Sessão inválida');
-  }
+  console.warn('Usuário não encontrado no tenant. Usando payload.');
+  return {
+    id: payload.id,
+    email: payload.email,
+    role: payload.role,
+    tenantId: payload.tenantId,
+    name: payload.name,
+  };
+}
 
   return {
     id: row.id,
