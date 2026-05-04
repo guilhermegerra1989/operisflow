@@ -20,7 +20,7 @@ const pedidos = ref<Pedido[]>([]);
 // });
 onMounted(async () => {
   try {
-    pedidos.value = await apiGet("/admin/orders");
+    pedidos.value = await apiGet("/orders/my");
   } catch (e: any) {
     // ✅ NÃO FAZ LOGOUT AQUI
     console.warn("Erro ao carregar pedidos do admin", e);
