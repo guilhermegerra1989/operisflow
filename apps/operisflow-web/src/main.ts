@@ -8,7 +8,7 @@ import { validateSession } from "./auth/authApi";
 async function bootstrap() {
   try {
     debugger
-    console.log("local::::::::::::::::::"+localStorage)
+JSON.stringify(localStorage, null, 2);
     const user = await validateSession();
     console.log("user::::::::::::::::::"+user)
     localStorage.setItem("user", JSON.stringify(user));
