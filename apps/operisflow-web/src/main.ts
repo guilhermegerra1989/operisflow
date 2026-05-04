@@ -7,7 +7,7 @@ import { validateSession } from "./auth/authApi";
 
 async function bootstrap() {
   try {
-    // ✅ NÃO passa token
+    // NÃO passa token
     const data = await validateSession();
     if (data) {
       localStorage.setItem("user", JSON.stringify(data));

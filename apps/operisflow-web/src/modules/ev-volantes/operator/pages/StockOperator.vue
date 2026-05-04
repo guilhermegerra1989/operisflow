@@ -29,7 +29,6 @@ type EstoqueRow = {
   quantidadeTotal: number; // soma da quantidade em pedidos abertos
 };
 
-const token: string = localStorage.getItem("token") ?? "";
 
 // =======================
 // DADOS
@@ -139,7 +138,7 @@ function setEstoqueValue(row: EstoqueRow, raw: string) {
 // LOAD
 // =======================
 async function loadPedidos() {
-  pedidos.value = await apiGet("/orders", token);
+  pedidos.value = await apiGet("/orders");
 }
 
 // =======================

@@ -2,8 +2,6 @@
 import { ref, onMounted } from "vue";
 import { apiPost, apiGet, apiDelete, apiPatch } from "../../api/apiClient";
 
-const token: string = localStorage.getItem("token") ?? "";
-
 type User = {
   id: string;
   name: string;
@@ -29,8 +27,8 @@ const editingUserId = ref<string | null>(null);
 async function loadUsers() {
   
  const [usersRes, rotasRes] = await Promise.all([
-    apiGet("/users", token),
-    apiGet("/rotas", token),
+    apiGet("/users"),
+    apiGet("/rotas"),
   ]);
 
   users.value = usersRes;
@@ -98,9 +96,9 @@ async function salvarUsuario() {
   }
 
   if (editingUserId.value) {
-    await apiPatch(`/users/${editingUserId.value}`, token, payload);
+    await apiPatch(`/users/${editingUserId.value}`, payload);
   } else {
-    await apiPost("/users", token, payload);
+    await apiPost("/users", payload);
   }
 
   resetForm();
@@ -121,7 +119,7 @@ async function excluirUsuario(id: string) {
   const confirmado = window.confirm("Tem certeza que deseja excluir este usuário?");
   if (!confirmado) return;
 
-  await apiDelete(`/users/${id}`, token);
+  await apiDelete(`/users/${id}`);
   await loadUsers();
 }
 

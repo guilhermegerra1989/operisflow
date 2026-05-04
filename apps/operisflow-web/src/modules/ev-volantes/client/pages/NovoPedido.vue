@@ -215,8 +215,6 @@ const logoMarcas: Record<string, string> = {
 
 type UIStep = "idle" | "marcas" | "modelos";
 
-const token: string = localStorage.getItem("token") ?? "";
-
 // Dados vindos da API
 const marcas = ref<Marca[]>([]);
 const volantes = ref<Volante[]>([]);
@@ -243,9 +241,9 @@ const itens = ref<ItemPedido[]>([]);
 // Carrega marcas e volantes ao montar a tela
 onMounted(async () => {
   const [marcasResponse, volantesResponse, meResponse] = await Promise.all([
-    apiGet("/marcas", token),
-    apiGet("/volantes", token),
-    apiGet("/auth/me", token), 
+    apiGet("/marcas"),
+    apiGet("/volantes"),
+    apiGet("/auth/me"), 
 
   ]);
 
@@ -445,7 +443,7 @@ async function criar() {
 
   console.log("Payload do front:", payload);
 
-  await apiPost("/orders", token, payload);
+  await apiPost("/orders", payload);
 
   window.location.href = "/ev-volantes/client";
 }

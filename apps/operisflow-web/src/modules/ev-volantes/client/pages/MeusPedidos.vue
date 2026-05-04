@@ -21,8 +21,6 @@ type Pedido = {
   items: PedidoItem[];
 };
 
-const token: string = localStorage.getItem("token") ?? "";
-
 // lista vinda da API (já agrupado por pedido)
 const pedidos = ref<Pedido[]>([]);
 
@@ -39,7 +37,7 @@ const logoMarcas: Record<string, string> = {
 
 // carrega pedidos do cliente
 onMounted(async () => {
-  pedidos.value = await apiGet("/orders/my", token);
+  pedidos.value = await apiGet("/orders/my");
 });
 
 // agrupa itens de cada pedido por marca

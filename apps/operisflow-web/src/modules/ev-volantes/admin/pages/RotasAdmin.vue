@@ -2,7 +2,6 @@
 import { ref,onMounted, nextTick } from "vue";
 import { apiGet, apiPost, apiPatch, apiDelete } from "../../api/apiClient";
 
-const token = localStorage.getItem("token") ?? "";
 
 type Rota = {
   id: string;
@@ -39,7 +38,7 @@ async function loadRotas() {
   try {
     loading.value = true;
     error.value = "";
-    rotas.value = await apiGet("/rotas", token);
+    rotas.value = await apiGet("/rotas");
   } catch (e: any) {
     error.value = "Erro ao carregar rotas";
     console.error(e);
@@ -66,12 +65,12 @@ async function salvar() {
 
   try {
     if (editingId.value) {
-      await apiPatch(`/rotas/${editingId.value}`, token, {
+      await apiPatch(`/rotas/${editingId.value}`, {
         nome: nome.value,
         descricao: descricao.value,
       });
     } else {
-      await apiPost("/rotas", token, {
+      await apiPost("/rotas", {
         nome: nome.value,
         descricao: descricao.value,
       });
@@ -109,7 +108,7 @@ async function remover(v: any) {
   if (!confirm(`Remover rota ${v.nome} - ${v.descricao}?`)) return;
 
   try {
-    await apiDelete(`/rotas/${v.id}`, token);
+    await apiDelete(`/rotas/${v.id}`);
     await loadRotas();
   } catch (e: any) {
     error.value = "Erro ao remover rota";

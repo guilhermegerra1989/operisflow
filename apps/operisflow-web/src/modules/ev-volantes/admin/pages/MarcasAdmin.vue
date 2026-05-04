@@ -2,8 +2,6 @@
 import { ref,onMounted, nextTick } from "vue";
 import { apiGet, apiPost, apiPatch, apiDelete } from "../../api/apiClient";
 
-const token = localStorage.getItem("token") ?? "";
-
 type Marca = {
   id: string;
   nome: string;
@@ -39,7 +37,7 @@ async function loadMarcas() {
   try {
     loading.value = true;
     error.value = "";
-    marcas.value = await apiGet("/marcas", token);
+    marcas.value = await apiGet("/marcas");
   } catch (e: any) {
     error.value = "Erro ao carregar marcas";
     console.error(e);
@@ -66,12 +64,12 @@ async function salvar() {
 
   try {
     if (editingId.value) {
-      await apiPatch(`/marcas/${editingId.value}`, token, {
+      await apiPatch(`/marcas/${editingId.value}`, {
         nome: nome.value,
         descricao: descricao.value,
       });
     } else {
-      await apiPost("/marcas", token, {
+      await apiPost("/marcas", {
         nome: nome.value,
         descricao: descricao.value,
       });
@@ -109,7 +107,7 @@ async function remover(v: any) {
   if (!confirm(`Remover marca ${v.nome} - ${v.descricao}?`)) return;
 
   try {
-    await apiDelete(`/marcas/${v.id}`, token);
+    await apiDelete(`/marcas/${v.id}`);
     await loadMarcas();
   } catch (e: any) {
     error.value = "Erro ao remover marca";

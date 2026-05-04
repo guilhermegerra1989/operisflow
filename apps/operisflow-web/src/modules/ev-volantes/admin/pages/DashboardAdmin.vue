@@ -15,10 +15,8 @@ type Pedido = {
 };
 
 const pedidos = ref<Pedido[]>([]);
-const token: string = localStorage.getItem("token") ?? "";
-
 onMounted(async () => {
-  pedidos.value = await apiGet("/orders/my", token);
+  pedidos.value = await apiGet("/orders/my");
 });
 
 function logout() {

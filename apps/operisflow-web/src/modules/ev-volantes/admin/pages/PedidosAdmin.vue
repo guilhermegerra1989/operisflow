@@ -21,8 +21,6 @@ type Pedido = {
   items: PedidoItem[];
 };
 
-const token: string = localStorage.getItem("token") ?? "";
-
 // lista completa vinda da API
 const pedidos = ref<Pedido[]>([]);
 
@@ -61,7 +59,7 @@ const filteredPedidos = computed(() => {
 });
 
 async function loadPedidos() {
-  pedidos.value = await apiGet("/orders", token);
+  pedidos.value = await apiGet("/orders");
 }
 
 function logout() {
@@ -95,8 +93,7 @@ async function finalizarPedido(pedidoId: string) {
     };
 
     await apiPatch(
-      `/orders/${pedidoId}`,
-      token, payload
+      `/orders/${pedidoId}`, payload
     );
 
     // atualiza status local

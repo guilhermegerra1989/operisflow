@@ -2,8 +2,6 @@
 import { ref,onMounted, nextTick, computed } from "vue";
 import { apiGet, apiPost, apiPatch, apiDelete } from "../../api/apiClient";
 
-const token = localStorage.getItem("token") ?? "";
-
 type Marca = {
   id: string;
   nome: string;
@@ -106,7 +104,7 @@ async function loadVolantes() {
     loading.value = true;
     error.value = "";
 
-    const volantesResponse = await apiGet("/volantes", token);
+    const volantesResponse = await apiGet("/volantes");
     volantes.value = mapVolantes(volantesResponse);
 
   } catch (e: any) {
@@ -119,8 +117,8 @@ async function loadVolantes() {
 
 onMounted(async () => {
   const [marcasResponse, volantesResponse] = await Promise.all([
-    apiGet("/marcas", token),
-    apiGet("/volantes", token),
+    apiGet("/marcas"),
+    apiGet("/volantes"),
   ]);
 
   marcas.value = marcasResponse;
@@ -157,9 +155,9 @@ async function salvar() {
     };
 
     if (editingId.value) {
-      await apiPatch(`/volantes/${editingId.value}`, token, payload);
+      await apiPatch(`/volantes/${editingId.value}`, payload);
     } else {
-      await apiPost("/volantes", token, payload);
+      await apiPost("/volantes", payload);
     }
 
     resetForm();
@@ -196,7 +194,7 @@ async function remover(v: any) {
   if (!confirm(`Remover volante ${v.codigo} - ${v.descricao}?`)) return;
 
   try {
-    await apiDelete(`/volantes/${v.id}`, token);
+    await apiDelete(`/volantes/${v.id}`);
     await loadVolantes();
   } catch (e: any) {
     error.value = "Erro ao remover volante";
