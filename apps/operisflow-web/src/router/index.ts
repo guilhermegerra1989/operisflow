@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import { session } from "../main.ts";
+import { session } from "../auth/session.ts";
 
 import Home from "../modules/ev-volantes/home/pages/Home.vue";
 import Login from "../modules/ev-volantes/client/pages/Login.vue";

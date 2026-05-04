@@ -3,12 +3,7 @@ import App from "./App.vue";
 import { router } from "./router";
 import { apiGet } from "../../operisflow-web/src/modules/ev-volantes/api/apiClient";
 import "./styles/base.css";
-
-// estado simples de sessão
-export const session = {
-  validated: false,
-  validating: true,
-};
+import { session  } from "./auth/session";
 
 async function bootstrap() {
   const token = localStorage.getItem("token");
