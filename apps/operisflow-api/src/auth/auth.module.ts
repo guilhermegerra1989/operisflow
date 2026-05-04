@@ -9,7 +9,7 @@ import { DatabaseModule } from '../database/database.module';
   imports: [
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'dev-secret-operisflow',
-      signOptions: { expiresIn: '1h' },
+      signOptions: { expiresIn: '8h' },
     }),
     DatabaseModule, // 👈 AGORA SIM
   ],
