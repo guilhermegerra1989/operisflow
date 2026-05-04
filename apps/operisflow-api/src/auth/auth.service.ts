@@ -43,16 +43,18 @@ export class AuthService {
       tenantId: user.tenantId,
       role: user.role,
       name: user.name,
-      rota: user.rota
+      rota: user.rota,
     };
 
-    const accessToken = await this.jwtService.signAsync(payload);
+    const accessToken = await this.jwtService.signAsync(payload, {
+      expiresIn: '30m', // ✅ FUNDAMENTAL
+    });
 
     return {
       access_token: accessToken,
       user,
     };
-  }
+}
 
 
 
@@ -61,7 +63,8 @@ export class AuthService {
    * incluindo nome e rota (nome da rota).
    */
   async getMe(payload: any) {
-    const { id, tenantId } = payload;
+    const userId = payload.sub;       // ✅ correto
+    const tenantId = payload.tenantId;
 
     const result = await this.db.query(
       `
@@ -76,18 +79,17 @@ export class AuthService {
       FROM users u
       LEFT JOIN rotas r 
         ON r.id = u.rota_id 
-       AND r.tenant_id = u.tenant_id
+      AND r.tenant_id = u.tenant_id
       WHERE u.id = $1
         AND u.tenant_id = $2
       `,
-      [id, tenantId],
+      [userId, tenantId],
     );
 
     const row = result.rows[0];
 
     if (!row) {
-      // fallback: se por algum motivo não achar o user, devolve o payload
-      return payload;
+      throw new UnauthorizedException('Sessão inválida');
     }
 
     return {
@@ -99,7 +101,6 @@ export class AuthService {
       rotaId: row.rota_id,
       rotaNome: row.rota_nome,
     };
-  }
-
+}
 
 }
