@@ -1,46 +1,59 @@
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
 
-export async function apiGet(path: string, token: string) {
+async function fetchWithAuth(
+  path: string,
+  options: RequestInit = {}
+) {
+  const token = localStorage.getItem("token");
+
+  const headers = new Headers(options.headers || {});
+  if (token) {
+    headers.set("Authorization", `Bearer ${token}`);
+  }
+
   const res = await fetch(`${API_URL}${path}`, {
-    headers: { Authorization: `Bearer ${token}` },
+    ...options,
+    headers,
   });
-  if (!res.ok) throw new Error(await res.text());
+
+  // NÃO limpar token aqui
+  if (!res.ok) {
+    const text = await res.text();
+    throw {
+      status: res.status,
+      message: text,
+    };
+  }
+
+  return res;
+}
+
+export async function apiGet(path: string) {
+  const res = await fetchWithAuth(path);
   return res.json();
 }
 
-export async function apiPost(path: string, token: string, body: any) {
-  const res = await fetch(`${API_URL}${path}`, {
+export async function apiPost(path: string, body: any) {
+  const res = await fetchWithAuth(path, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
   });
-  if (!res.ok) throw new Error(await res.text());
   return res.json();
 }
 
-export async function apiPatch(path: string, token: string, body: any) {
-  const res = await fetch(`${API_URL}${path}`, {
+export async function apiPatch(path: string, body: any) {
+  const res = await fetchWithAuth(path, {
     method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
   });
-  if (!res.ok) throw new Error(await res.text());
   return res.json();
 }
 
-export async function apiDelete(path: string, token: string) {
-  const res = await fetch(`${API_URL}${path}`, {
+export async function apiDelete(path: string) {
+  const res = await fetchWithAuth(path, {
     method: "DELETE",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
   });
-  if (!res.ok) throw new Error(await res.text());
   return res.text();
 }

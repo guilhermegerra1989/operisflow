@@ -1,13 +1,10 @@
-
-
 import { apiGet } from "../modules/ev-volantes/api/apiClient";
 
-
-export async function validateSession(token: string) {
+export async function validateSession() {
   try {
-    return await apiGet("/auth/me", token);
+    return await apiGet("/auth/me");
   } catch (error: any) {
-    if (error.response?.status === 401) {
+    if (error.status === 401) {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
     }
