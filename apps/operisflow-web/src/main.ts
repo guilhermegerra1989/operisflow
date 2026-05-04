@@ -7,10 +7,13 @@ import { validateSession } from "./auth/authApi";
 
 async function bootstrap() {
   try {
-    // NÃO passa token
-    const data = await validateSession();
-    if (data) {
-      localStorage.setItem("user", JSON.stringify(data));
+    const user = await validateSession();
+    localStorage.setItem("user", JSON.stringify(user));
+  } catch (error: any) {
+    if (error.status === 401) {
+      // ✅ AQUI sim é logout
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
     }
   } finally {
     session.validated = true;
