@@ -88,7 +88,9 @@ export const router = createRouter({
 router.beforeEach((to, _from, next) => {
 
   if (!session.validated) {
-      return next(false); 
+      console.log("sessaooooooooooooooooooooooooooo::::::" + session.validated)
+  }else{
+    console.log("sessaooooooooooooooooooooooooooo::::::" + session.validated)
   }
 
   const token = localStorage.getItem("token");
