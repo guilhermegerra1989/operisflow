@@ -15,9 +15,19 @@ type Pedido = {
 };
 
 const pedidos = ref<Pedido[]>([]);
+// onMounted(async () => {
+//   pedidos.value = await apiGet("/orders/my");
+// });
 onMounted(async () => {
-  pedidos.value = await apiGet("/orders/my");
+  try {
+    pedidos.value = await apiGet("/admin/orders");
+  } catch (e: any) {
+    // ✅ NÃO FAZ LOGOUT AQUI
+    console.warn("Erro ao carregar pedidos do admin", e);
+  }
 });
+
+
 
 function logout() {
   localStorage.removeItem("token");
