@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { session } from "../main.ts";
 
 import Home from "../modules/ev-volantes/home/pages/Home.vue";
 import Login from "../modules/ev-volantes/client/pages/Login.vue";
@@ -85,6 +86,11 @@ export const router = createRouter({
 });
 
 router.beforeEach((to, _from, next) => {
+
+  if (!session.validated) {
+      return next(false); 
+  }
+
   const token = localStorage.getItem("token");
   const userRaw = localStorage.getItem("user");
   const user = userRaw ? JSON.parse(userRaw) : null;
