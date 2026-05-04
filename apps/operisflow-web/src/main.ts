@@ -7,7 +7,7 @@ import { validateSession } from "./auth/authApi";
 
 async function bootstrap() {
   try {
-    debugger
+    
     console.log(
   JSON.stringify(
     {
