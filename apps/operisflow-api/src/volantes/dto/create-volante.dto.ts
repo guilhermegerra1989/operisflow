@@ -3,4 +3,5 @@ export class CreateVolanteDto {
   descricao: string;
   img: string;
   marca_id: string;
+  tipo: string;
 }

@@ -14,7 +14,8 @@ type Volante = {
   descricao: string;
   img: string;
   marcaId: string;       
-   marcaNome?: string | null;
+  marcaNome?: string | null;
+  tipo: TipoVolante;
 };
 
 
@@ -24,12 +25,16 @@ const volantes = ref<Volante[]>([]);
 const loading = ref(false);
 const error = ref("");
 
+type TipoVolante = "volante" | "esportivo" | "acessorio";
+
 // formulário
 const editingId = ref<string | null>(null);
 const codigo = ref("");
 const descricao = ref("");
 const img = ref("");
 const marca = ref(""); // id da marca selecionada
+const tipo = ref<TipoVolante | "">("");
+
 
 
 // refs para scroll e foco
@@ -69,6 +74,7 @@ function mapVolantes(volantesResponse: any[]): Volante[] {
       img: v.img,
       marcaId,
       marcaNome: marcaObj?.nome ?? null,
+      tipo: v.tipo,
     };
   });
 }
@@ -132,6 +138,7 @@ function resetForm() {
   descricao.value = "";
   img.value = "";
   marca.value = ""; // limpa marca selecionada
+  tipo.value = "";
 }
 
 // criar ou atualizar
@@ -146,12 +153,18 @@ async function salvar() {
     return;
   }
 
+  if (!tipo.value) {
+    alert("Tipo é obrigatório.");
+    return;
+  }
+
   try {
     const payload = {
       codigo: codigo.value,
       descricao: descricao.value,
       img: img.value,
       marca_id: marca.value, // importante: enviar a marca para o backend
+      tipo: tipo.value
     };
 
     if (editingId.value) {
@@ -175,6 +188,7 @@ async function editar(v: Volante) {
   descricao.value = v.descricao;
   img.value = v.img;
   marca.value = v.marcaId; // preenche select com a marca do volante
+  tipo.value = v.tipo;
 
   // espera a DOM atualizar (título do form, botões, etc.)
   await nextTick();
@@ -299,6 +313,14 @@ function exportToCsv() {
         </option>
       </select>
 
+      <label class="label">Tipo *</label>
+      <select v-model="tipo" class="input">
+        <option value="">Selecione o tipo</option>
+        <option value="volante">Volante</option>
+        <option value="esportivo">Volante Esportivo</option>
+        <option value="acessorio">Acessório</option>
+      </select>
+
       <div class="form-actions">
         <button @click="salvar" class="btn-primary">
           {{ editingId ? "Salvar Alterações" : "Cadastrar Volante" }}
@@ -311,7 +333,7 @@ function exportToCsv() {
 
     <!-- LISTA -->
     <div class="card list-card">
-      <h3>Volantes Cadastrados</h3>
+      <h3>Itens Cadastrados</h3>
 
       <div v-if="loading">Carregando...</div>
       <div v-else-if="volantes.length === 0">Nenhum volante cadastrado.</div>

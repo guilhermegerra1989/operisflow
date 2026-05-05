@@ -37,17 +37,40 @@
       <button
         v-if="uiStep === 'idle'"
         class="btn-outline"
-        @click="iniciarAdicionarItem"
+        @click="uiStep = 'tipos'"
       >
         + Adicionar item
       </button>
+
+      <!-- Etapa tipos -->
+      <div v-else-if="uiStep === 'tipos'">
+        <p class="mensagem-passos">Escolha o tipo de item:</p>
+
+        <div class="marcas-grid">
+          <button class="btn-marca" @click="selecionarTipo('volante')">
+            Volantes
+          </button>
+
+          <button class="btn-marca" @click="selecionarTipo('esportivo')">
+            Volantes Esportivos
+          </button>
+
+          <button class="btn-marca" @click="selecionarTipo('acessorio')">
+            Acessórios / Acionadores de Buzina
+          </button>
+        </div>
+
+        <button class="btn-secundario" @click="uiStep = 'idle'">
+          Voltar
+        </button>
+      </div>
 
       <!-- Etapa marcas: mostra as marcas como botões -->
       <div v-else-if="uiStep === 'marcas'">
         <p class="mensagem-passos">Escolha uma marca:</p>
         <div class="marcas-grid">
           <button
-            v-for="marca in marcas"
+            v-for="marca in marcasFiltradas"
             :key="marca.id"
             class="btn-marca"
             @click="selecionarMarca(marca.id)"
@@ -175,6 +198,13 @@
     </button>
   </div>
 </template>
+
+
+
+
+
+
+
 <script setup lang="ts">
 import { ref, onMounted, computed } from "vue";
 import { apiGet, apiPost } from "../../api/apiClient";
@@ -191,7 +221,8 @@ type Volante = {
   descricao: string;
   img: string;
   marcaId: string;       
-  marcaNome?: string;    
+  marcaNome?: string;
+  tipo: string;      
 };
 
 type ItemPedido = {
@@ -213,7 +244,7 @@ const logoMarcas: Record<string, string> = {
   "Mercedes-Benz": "/marcas/mercedes.png",
 };
 
-type UIStep = "idle" | "marcas" | "modelos";
+type UIStep = "idle" | "tipos" | "marcas" | "modelos";
 
 // Dados vindos da API
 const marcas = ref<Marca[]>([]);
@@ -238,6 +269,10 @@ const quantidadesSelecionadas = ref<Record<string, number>>({}); // { [volanteId
 // Lista de itens do pedido (JSON)
 const itens = ref<ItemPedido[]>([]);
 
+type TipoVolante = "volante" | "esportivo" | "acessorio";
+
+const tipoSelecionado = ref<TipoVolante | null>(null);
+
 // Carrega marcas e volantes ao montar a tela
 onMounted(async () => {
   const [marcasResponse, volantesResponse, meResponse] = await Promise.all([
@@ -257,6 +292,7 @@ onMounted(async () => {
     img: v.img,
     marcaId: v.marca_id ?? v.marcaId,       
     marcaNome: v.marca_nome ?? v.marcaNome, 
+    tipo: v.tipo,
   }));
 
  // usuário + rota
@@ -275,14 +311,17 @@ onMounted(async () => {
 
 // Volantes filtrados pela marca selecionada
 const volantesFiltrados = computed(() =>
-  volantes.value.filter((v) => v.marcaId === selectedMarcaId.value)
+  volantes.value.filter((v) => v.marcaId === selectedMarcaId.value && v.tipo === tipoSelecionado.value)
 );
 
 function voltar() {
   window.location.href = "/ev-volantes/client";
 }
 
-
+function selecionarTipo(tipo: TipoVolante) {
+  tipoSelecionado.value = tipo;
+  uiStep.value = "marcas";
+}
 
 // Agrupa itens por marca
 const itensAgrupados = computed(() => {
@@ -301,6 +340,18 @@ const itensAgrupados = computed(() => {
   return grupos;
 });
 
+const marcasFiltradas = computed(() => {
+  if (!tipoSelecionado.value) return [];
+
+  const marcasValidas = new Set(
+    volantes.value
+      .filter(v => v.tipo === tipoSelecionado.value)
+      .map(v => v.marcaId)
+  );
+
+  return marcas.value.filter(m => marcasValidas.has(m.id));
+});
+
 
 
 function removerItemPorId(id: string) {
@@ -308,20 +359,6 @@ function removerItemPorId(id: string) {
 }
 
 
-/**
- * Etapa 1: começar fluxo de adicionar item
- */
-function iniciarAdicionarItem() {
-  if (!marcas.value.length) {
-    alert("Nenhuma marca cadastrada para este cliente.");
-    return;
-  }
-  uiStep.value = "marcas";
-}
-
-/**
- * Etapa 2: selecionar uma marca
- */
 function selecionarMarca(marcaId: string) {
   selectedMarcaId.value = marcaId;
   quantidadesSelecionadas.value = {};
@@ -347,7 +384,7 @@ function selecionarMarca(marcaId: string) {
 function cancelarSelecaoMarca() {
   selectedMarcaId.value = "";
   quantidadesSelecionadas.value = {};
-  uiStep.value = "idle";
+  uiStep.value = "tipos";
 }
 
 /**

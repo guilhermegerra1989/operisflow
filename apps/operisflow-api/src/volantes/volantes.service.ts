@@ -16,11 +16,11 @@ export class VolantesService {
   async create(tenantId: string, dto: CreateVolanteDto) {
     const result = await this.db.query(
       `
-      INSERT INTO volantes (tenant_id, codigo, descricao, img, marca_id)
-      VALUES ($1, $2, $3, $4, $5)
+      INSERT INTO volantes (tenant_id, codigo, descricao, img, marca_id, tipo)
+      VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING *
       `,
-      [tenantId, dto.codigo, dto.descricao,dto.img, dto.marca_id],
+      [tenantId, dto.codigo, dto.descricao, dto.img, dto.marca_id, dto.tipo],
     );
 
     return result.rows[0];
@@ -62,11 +62,12 @@ export class VolantesService {
         descricao = COALESCE($4, descricao),
         img = COALESCE($5, img),
         marca_id = COALESCE($6, marca_id),
+        tipo = COALESCE($7, tipo),
         updated_at = NOW()
       WHERE tenant_id = $1 AND id = $2
       RETURNING *
       `,
-      [tenantId, id, dto.codigo, dto.descricao, dto.img, dto.marca_id],
+      [tenantId, id, dto.codigo, dto.descricao, dto.img, dto.marca_id, dto.tipo],
     );
 
     return result.rows[0];
