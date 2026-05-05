@@ -65,7 +65,7 @@ export class AuthService {
   async getMe(payload: any) {
 
     
-  const userId = payload.id;      // ✅ CORRETO
+  const userId = payload.sub;      
   const tenantId = payload.tenantId;
 
   const result = await this.db.query(
@@ -91,22 +91,20 @@ export class AuthService {
   const row = result.rows[0];
 
   console.log('PAYLOAD:', payload);
+  console.log('QUERY PARAMS:', { userId, tenantId });
+  console.log('QUERY BY ID:', result.rows);
 
-console.log('QUERY PARAMS:', { userId, tenantId });
+  const resultTenant = await this.db.query(
+    'SELECT id, tenant_id FROM users WHERE id = $1 AND tenant_id = $2',
+    [userId, tenantId],
+  );
 
-console.log('QUERY BY ID:', result.rows);
-
-const resultTenant = await this.db.query(
-  'SELECT id, tenant_id FROM users WHERE id = $1 AND tenant_id = $2',
-  [userId, tenantId],
-);
-
-console.log('QUERY BY ID + TENANT:', resultTenant.rows);
+  console.log('QUERY BY ID + TENANT:', resultTenant.rows);
 
   if (!row) {
   console.warn('Usuário não encontrado no tenant. Usando payload.');
   return {
-    id: payload.id,
+    id: payload.sub,
     email: payload.email,
     role: payload.role,
     tenantId: payload.tenantId,

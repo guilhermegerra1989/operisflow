@@ -28,7 +28,7 @@ export class OrdersController {
     @CurrentUser() user: any,
     @Body() dto: CreateOrderDto,
   ) {
-    return this.ordersService.create(tenantId, user.id, dto);
+    return this.ordersService.create(tenantId, user.sub, dto);
   }
 
   // CLIENTE → vê só os próprios pedidos
@@ -37,7 +37,7 @@ export class OrdersController {
     @Tenant() tenantId: string,
     @CurrentUser() user: any,
   ) {
-    return this.ordersService.findMyOrders(tenantId, user.id);
+    return this.ordersService.findMyOrders(tenantId, user.sub);
   }
 
   // ADMIN → vê todos os pedidos do tenant
