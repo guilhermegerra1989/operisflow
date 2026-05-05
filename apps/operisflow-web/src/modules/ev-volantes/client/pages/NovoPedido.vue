@@ -48,7 +48,7 @@
 
         <div class="marcas-grid">
           <button class="btn-marca" @click="selecionarTipo('volante')">
-            Volantes
+            Volantes Remanufaturados
           </button>
 
           <button class="btn-marca" @click="selecionarTipo('esportivo')">
