@@ -33,19 +33,23 @@ function shouldSkipValidation() {
     "https://evvolantes.com.br",
     "https://evvolantes.com.br/",
     "https://evvolantes.com.br/login",
+    "https://evvolantes.com.br/ev-volantes",
 
     "https://www.evvolantes.com.br",
     "https://www.evvolantes.com.br/",
     "https://www.evvolantes.com.br/login",
+    "https://www.evvolantes.com.br/ev-volantes",
 
     // se tiver http também, já garante:
     "http://evvolantes.com.br",
     "http://evvolantes.com.br/",
     "http://evvolantes.com.br/login",
+    "http://evvolantes.com.br/ev-volantes",
 
     "http://www.evvolantes.com.br",
     "http://www.evvolantes.com.br/",
     "http://www.evvolantes.com.br/login",
+    "http://www.evvolantes.com.br/ev-volantes",
   ].includes(url);
 }
 
