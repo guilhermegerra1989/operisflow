@@ -7,8 +7,11 @@ import { validateSession } from "./auth/authApi";
 
 async function bootstrap() {
   try {
-    const user = await validateSession();
-    localStorage.setItem("user", JSON.stringify(user));
+    // NÃO valida sessão no site público
+    if (!isPublicSite()) {
+      const user = await validateSession();
+      localStorage.setItem("user", JSON.stringify(user));
+    }
   } catch (error: any) {
     if (error.status === 401) {
       localStorage.removeItem("token");
@@ -20,6 +23,15 @@ async function bootstrap() {
   }
 
   createApp(App).use(router).mount("#app");
+}
+
+function isPublicSite() {
+  const host = window.location.hostname;
+
+  return [
+    "evvolantes.com.br",
+    "www.evvolantes.com.br"
+  ].includes(host);
 }
 
 bootstrap();
