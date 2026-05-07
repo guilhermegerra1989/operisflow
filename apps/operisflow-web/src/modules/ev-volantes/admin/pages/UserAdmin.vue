@@ -8,21 +8,32 @@ type User = {
   email: string;
   role: "client" | "admin" | "operator";
   active: boolean;
+  rota_id?: string;
+};
+
+type Rota = {
+  id: string;
+  nome: string;
 };
 
 const loading = ref(false);
 
 const users = ref<User[]>([]);
-const rotas = ref<{ id: string; nome: string }[]>([]);
+const rotas = ref<Rota[]>([]);
 
+// ✅ rota padrão (UUID válido da API)
+const defaultRotaId = ref<string | null>(null);
+
+// FORM
 const name = ref("");
 const email = ref("");
 const password = ref("");
 
-const role = ref<"client" | "admin" | "operator">("client");
+const role = ref<"client" | "admin" | "operator">("admin"); // ✅ DEFAULT ADMIN
 const active = ref(true);
 const rotaId = ref("");
 
+// CAMPOS CLIENTE
 const endereco = ref("");
 const cnpj = ref("");
 const telefone = ref("");
@@ -31,21 +42,35 @@ const editingUserId = ref<string | null>(null);
 
 const showPassword = ref(false);
 
+// =========================
+// LOAD
+// =========================
 async function loadUsers() {
   const [usersRes, rotasRes] = await Promise.all([
     apiGet("/users"),
     apiGet("/rotas"),
   ]);
+
   users.value = usersRes;
   rotas.value = rotasRes;
+
+  // ✅ pega primeira rota como padrão (UUID válido)
+  if (rotasRes.length > 0 && !defaultRotaId.value) {
+    defaultRotaId.value = rotasRes[0].id;
+  }
 }
 
+// =========================
+// RESET
+// =========================
 function resetForm() {
   name.value = "";
   email.value = "";
   password.value = "";
-  role.value = "client";
+
+  role.value = "admin"; // ✅ default admin
   active.value = true;
+
   rotaId.value = "";
 
   endereco.value = "";
@@ -55,6 +80,9 @@ function resetForm() {
   editingUserId.value = null;
 }
 
+// =========================
+// WATCH
+// =========================
 watch(role, (r) => {
   if (r !== "client") {
     endereco.value = "";
@@ -63,6 +91,9 @@ watch(role, (r) => {
   }
 });
 
+// =========================
+// SALVAR
+// =========================
 async function salvarUsuario() {
   if (!name.value || !email.value) {
     alert("Nome e email obrigatórios");
@@ -74,11 +105,24 @@ async function salvarUsuario() {
     return;
   }
 
-  if (!rotaId.value) {
-    alert("Selecione a rota");
-    return;
+  // ✅ resolve rota corretamente (SEM erro TS)
+  let rotaFinal: string;
+
+  if (role.value === "client") {
+    if (!rotaId.value) {
+      alert("Selecione a rota");
+      return;
+    }
+    rotaFinal = rotaId.value;
+  } else {
+    if (!defaultRotaId.value) {
+      alert("Erro: rota padrão não carregada.");
+      return;
+    }
+    rotaFinal = defaultRotaId.value;
   }
 
+  // valida cliente
   if (role.value === "client") {
     if (!endereco.value || !cnpj.value || !telefone.value) {
       alert("Preencha os dados do cliente");
@@ -91,7 +135,7 @@ async function salvarUsuario() {
     email: email.value,
     role: role.value,
     active: active.value,
-    rota_id: rotaId.value,
+    rota_id: rotaFinal, // ✅ SEM ERRO
   };
 
   if (password.value) payload.password = password.value;
@@ -118,25 +162,38 @@ async function salvarUsuario() {
   }
 }
 
+// =========================
+// EDITAR
+// =========================
 function começarEditarUsuario(user: any) {
   editingUserId.value = user.id;
   name.value = user.name;
   email.value = user.email;
   role.value = user.role;
   active.value = user.active;
+
   rotaId.value = user.rota_id || "";
 
   endereco.value = user.endereco || "";
   cnpj.value = user.cnpj || "";
   telefone.value = user.telefone || "";
+
+  password.value = "";
 }
 
+// =========================
+// DELETE
+// =========================
 async function excluirUsuario(id: string) {
   if (!confirm("Excluir usuário?")) return;
+
   await apiDelete(`/users/${id}`);
   await loadUsers();
 }
 
+// =========================
+// NAV
+// =========================
 function logout() {
   localStorage.clear();
   window.location.href = "/ev-volantes/login";
@@ -148,7 +205,6 @@ function voltarDashboard() {
 
 onMounted(loadUsers);
 </script>
-
 
 <template>
   <div class="container">
@@ -200,7 +256,7 @@ onMounted(loadUsers);
     </div>
 
     <!-- ROTA -->
-    <div class="field required">
+    <div v-if="role === 'client'" class="field required">
       <label>Rota</label>
       <select v-model="rotaId" class="input">
         <option value="">Selecione</option>
