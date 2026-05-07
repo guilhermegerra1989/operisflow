@@ -8,7 +8,7 @@ import { validateSession } from "./auth/authApi";
 async function bootstrap() {
   try {
     // NÃO valida sessão no site público
-    if (!isPublicSite()) {
+    if (!shouldSkipValidation()) {
       const user = await validateSession();
       localStorage.setItem("user", JSON.stringify(user));
     }
@@ -25,13 +25,27 @@ async function bootstrap() {
   createApp(App).use(router).mount("#app");
 }
 
-function isPublicSite() {
-  const host = window.location.hostname;
+function shouldSkipValidation() {
+  const url = window.location.origin + window.location.pathname;
 
   return [
-    "evvolantes.com.br",
-    "www.evvolantes.com.br"
-  ].includes(host);
+    "https://evvolantes.com.br",
+    "https://evvolantes.com.br/",
+    "https://evvolantes.com.br/login",
+
+    "https://www.evvolantes.com.br",
+    "https://www.evvolantes.com.br/",
+    "https://www.evvolantes.com.br/login",
+
+    // se tiver http também, já garante:
+    "http://evvolantes.com.br",
+    "http://evvolantes.com.br/",
+    "http://evvolantes.com.br/login",
+
+    "http://www.evvolantes.com.br",
+    "http://www.evvolantes.com.br/",
+    "http://www.evvolantes.com.br/login",
+  ].includes(url);
 }
 
 bootstrap();
