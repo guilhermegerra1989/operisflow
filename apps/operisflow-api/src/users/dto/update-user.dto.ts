@@ -4,5 +4,11 @@ export class UpdateUserDto {
   password?: string;
   role?: string;
   active?: boolean;
+
   rota_id: string;
+
+  // 👇 novos campos (somente cliente)
+  endereco?: string;
+  cnpj?: string;
+  telefone?: string;
 }

@@ -22,7 +22,9 @@ export class UsersService {
   async findAll(tenantId: string) {
     const result = await this.db.query(
       `
-      SELECT id, tenant_id, name, email, role, active, created_at, updated_at
+      SELECT id, tenant_id, name, email, role, active, rota_id,
+       endereco, cnpj, telefone,
+       created_at, updated_at
       FROM users
       WHERE tenant_id = $1
       ORDER BY created_at DESC
@@ -35,7 +37,9 @@ export class UsersService {
   async findOne(tenantId: string, id: string) {
     const result = await this.db.query(
       `
-      SELECT id, tenant_id, name, email, role, active, created_at, updated_at
+      SELECT id, tenant_id, name, email, role, active, rota_id,
+       endereco, cnpj, telefone,
+       created_at, updated_at
       FROM users
       WHERE tenant_id = $1 AND id = $2
       `,
@@ -47,22 +51,66 @@ export class UsersService {
   async create(tenantId: string, dto: CreateUserDto) {
     const role = dto.role || 'client';
     const active = dto.active ?? true;
-    const rota_id = dto.rota_id;
+
+    let endereco = '';
+    let cnpj = '';
+    let telefone = '';
+
+    // ✅ regra: só cliente pode ter esses campos
+    if (role === 'client') {
+      if (!dto.endereco || !dto.cnpj || !dto.telefone) {
+        throw new ForbiddenException('Dados do cliente incompletos');
+      }
+
+      endereco = dto.endereco;
+      cnpj = dto.cnpj;
+      telefone = dto.telefone;
+    }
 
     const result = await this.db.query(
       `
-      INSERT INTO users (tenant_id, name, email, password, role, active, rota_id)
-      VALUES ($1, $2, $3, $4, $5, $6, $7)
-      RETURNING id, tenant_id, name, email, role, active, rota_id, created_at, updated_at
+      INSERT INTO users 
+      (tenant_id, name, email, password, role, active, rota_id, endereco, cnpj, telefone)
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
+      RETURNING id, tenant_id, name, email, role, active, rota_id, endereco, cnpj, telefone, created_at, updated_at
       `,
-      [tenantId, dto.name, dto.email, dto.password, role, active, rota_id],
+      [
+        tenantId,
+        dto.name,
+        dto.email,
+        dto.password,
+        role,
+        active,
+        dto.rota_id,
+        endereco,
+        cnpj,
+        telefone,
+      ],
     );
 
-    return result.rows[0];
+    return this.sanitize(result.rows[0]);
   }
 
   async update(tenantId: string, id: string, dto: UpdateUserDto) {
-    // Se quiser, pode bloquear alteração de email ou role aqui.
+
+    let endereco = dto.endereco ?? null;
+    let cnpj = dto.cnpj ?? null;
+    let telefone = dto.telefone ?? null;
+
+    // ✅ Se vier role e não for client → limpa tudo
+    if (dto.role && dto.role !== 'client') {
+      endereco = null;
+      cnpj = null;
+      telefone = null;
+    }
+
+    // ✅ Se for client → valida
+    if (dto.role === 'client') {
+      if (!dto.endereco || !dto.cnpj || !dto.telefone) {
+        throw new ForbiddenException('Dados do cliente incompletos');
+      }
+    }
+
     const result = await this.db.query(
       `
       UPDATE users
@@ -73,9 +121,12 @@ export class UsersService {
         role = COALESCE($6, role),
         active = COALESCE($7, active),
         rota_id = COALESCE($8, rota_id),
+        endereco = $9,
+        cnpj = $10,
+        telefone = $11,
         updated_at = NOW()
       WHERE tenant_id = $1 AND id = $2
-      RETURNING id, tenant_id, name, email, role, active, rota_id, updated_at
+      RETURNING id, tenant_id, name, email, role, active, rota_id, endereco, cnpj, telefone, updated_at
       `,
       [
         tenantId,
@@ -86,10 +137,13 @@ export class UsersService {
         dto.role ?? null,
         dto.active ?? null,
         dto.rota_id,
+        endereco,
+        cnpj,
+        telefone,
       ],
     );
 
-    return result.rows[0];
+    return this.sanitize(result.rows[0]);
   }
 
   async remove(tenantId: string, id: string) {

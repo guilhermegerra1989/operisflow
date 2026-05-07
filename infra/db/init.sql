@@ -63,6 +63,10 @@ CREATE TABLE IF NOT EXISTS users (
   active BOOLEAN DEFAULT TRUE,
   rota_id UUID NOT NULL,
 
+  endereco VARCHAR(255),
+  cnpj VARCHAR(50),
+  telefone VARCHAR(50),
+
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW(),
 

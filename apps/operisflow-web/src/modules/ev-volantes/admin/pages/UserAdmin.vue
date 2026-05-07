@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { apiPost, apiGet, apiDelete, apiPatch } from "../../api/apiClient";
 
 type User = {
@@ -10,40 +10,34 @@ type User = {
   active: boolean;
 };
 
-const showPassword = ref(false);
+const loading = ref(false);
+
 const users = ref<User[]>([]);
 const rotas = ref<{ id: string; nome: string }[]>([]);
-const rotaId = ref<string>(""); // rota selecionada
 
-const name = ref<string>("");
-const email = ref<string>("");
-const password = ref<string>("");
+const name = ref("");
+const email = ref("");
+const password = ref("");
 
 const role = ref<"client" | "admin" | "operator">("client");
-const active = ref<boolean>(true);
+const active = ref(true);
+const rotaId = ref("");
+
+const endereco = ref("");
+const cnpj = ref("");
+const telefone = ref("");
 
 const editingUserId = ref<string | null>(null);
 
+const showPassword = ref(false);
+
 async function loadUsers() {
-  
- const [usersRes, rotasRes] = await Promise.all([
+  const [usersRes, rotasRes] = await Promise.all([
     apiGet("/users"),
     apiGet("/rotas"),
   ]);
-
   users.value = usersRes;
   rotas.value = rotasRes;
-
-}
-
-function logout() {
-  localStorage.removeItem("token");
-  localStorage.removeItem("user");
-  window.location.href = "/ev-volantes/login";
-}
-
-function voltarDashboard() {
-  window.location.href = "/ev-volantes/admin";
 }
 
 function resetForm() {
@@ -52,223 +46,259 @@ function resetForm() {
   password.value = "";
   role.value = "client";
   active.value = true;
-  rotaId.value = "";       // <--- limpa
+  rotaId.value = "";
+
+  endereco.value = "";
+  cnpj.value = "";
+  telefone.value = "";
+
   editingUserId.value = null;
 }
 
-
-type UserPayload = {
-  name: string;
-  email: string;
-  role: "client" | "admin" | "operator";
-  active: boolean;
-  password?: string;
-};
+watch(role, (r) => {
+  if (r !== "client") {
+    endereco.value = "";
+    cnpj.value = "";
+    telefone.value = "";
+  }
+});
 
 async function salvarUsuario() {
-  if (!name.value.trim() || !email.value.trim()) {
-    alert("Nome e Email são obrigatórios!");
+  if (!name.value || !email.value) {
+    alert("Nome e email obrigatórios");
     return;
   }
 
-  // Se for criar um usuário novo, senha é obrigatória
-  if (!editingUserId.value && !password.value.trim()) {
-    alert("Senha é obrigatória para criação!");
+  if (!editingUserId.value && !password.value) {
+    alert("Senha obrigatória");
     return;
   }
 
-  // ROTA OBRIGATÓRIA
   if (!rotaId.value) {
-    alert("Selecione uma rota!");
+    alert("Selecione a rota");
     return;
   }
 
-  const payload: UserPayload & { rota_id: string } = {
+  if (role.value === "client") {
+    if (!endereco.value || !cnpj.value || !telefone.value) {
+      alert("Preencha os dados do cliente");
+      return;
+    }
+  }
+
+  const payload: any = {
     name: name.value,
     email: email.value,
     role: role.value,
     active: active.value,
-    rota_id: rotaId.value,  // <--- IMPORTANTE
+    rota_id: rotaId.value,
   };
 
-  if (password.value.trim()) {
-    payload.password = password.value;
+  if (password.value) payload.password = password.value;
+
+  if (role.value === "client") {
+    payload.endereco = endereco.value;
+    payload.cnpj = cnpj.value;
+    payload.telefone = telefone.value;
   }
 
-  if (editingUserId.value) {
-    await apiPatch(`/users/${editingUserId.value}`, payload);
-  } else {
-    await apiPost("/users", payload);
-  }
+  try {
+    loading.value = true;
 
-  resetForm();
-  await loadUsers();
+    if (editingUserId.value) {
+      await apiPatch(`/users/${editingUserId.value}`, payload);
+    } else {
+      await apiPost("/users", payload);
+    }
+
+    resetForm();
+    await loadUsers();
+  } finally {
+    loading.value = false;
+  }
 }
 
-function começarEditarUsuario(user: User & { rota_id?: string }) {
+function começarEditarUsuario(user: any) {
   editingUserId.value = user.id;
   name.value = user.name;
   email.value = user.email;
   role.value = user.role;
   active.value = user.active;
-  rotaId.value = (user as any).rota_id || ""; 
-  password.value = "";
+  rotaId.value = user.rota_id || "";
+
+  endereco.value = user.endereco || "";
+  cnpj.value = user.cnpj || "";
+  telefone.value = user.telefone || "";
 }
 
 async function excluirUsuario(id: string) {
-  const confirmado = window.confirm("Tem certeza que deseja excluir este usuário?");
-  if (!confirmado) return;
-
+  if (!confirm("Excluir usuário?")) return;
   await apiDelete(`/users/${id}`);
   await loadUsers();
+}
+
+function logout() {
+  localStorage.clear();
+  window.location.href = "/ev-volantes/login";
+}
+
+function voltarDashboard() {
+  window.location.href = "/ev-volantes/admin";
 }
 
 onMounted(loadUsers);
 </script>
 
+
 <template>
   <div class="container">
+
+    <!-- TOPO -->
     <div class="top-bar">
-      <img
-        src="../../../../assets/ev-volantes-logo.png"
-        alt="EV Volantes"
-        class="logo"
-      />
+      <img src="../../../../assets/ev-volantes-logo.png" class="logo" />
       <div class="top-actions">
-        <button class="btn-secondary" @click="voltarDashboard">
-          Dashboard
-        </button>
-        <button class="btn-logout" @click="logout">
-          Sair
-        </button>
+        <button class="btn-secondary" @click="voltarDashboard">Dashboard</button>
+        <button class="btn-logout" @click="logout">Sair</button>
       </div>
     </div>
 
-    <h2>Usuários Clientes</h2>
+    <h2>Usuários</h2>
 
     <h3>{{ editingUserId ? 'Editar Usuário' : 'Novo Usuário' }}</h3>
 
+    <!-- CAMPOS BASE -->
     <input v-model="name" placeholder="Nome" />
     <input v-model="email" placeholder="Email" />
-       
+
+    <!-- SENHA -->
     <div class="field">
       <div class="pill-group">
-        <div >
-            <input v-model="password" :type="showPassword ? 'text' : 'password'" placeholder="Senha" />
-        </div>
-        <div >
-            <button 
-              type="button"
-              class="toggle-password"
-              @click="showPassword = !showPassword"
-            >
-              {{ showPassword ? 'Ocultar' : 'Mostrar' }}
-            </button>
-        </div>
+        <input v-model="password" :type="showPassword ? 'text' : 'password'" placeholder="Senha" />
+        <button type="button" class="toggle-password" @click="showPassword = !showPassword">
+          {{ showPassword ? 'Ocultar' : 'Mostrar' }}
+        </button>
       </div>
     </div>
-    
 
-    <div class="field required">
-      <label>Rota</label>
-      <select v-model="rotaId" class="input">
-        <option value="">Selecione uma rota</option>
-        <option v-for="r in rotas" :key="r.id" :value="r.id">
-          {{ r.nome }}
-        </option>
-      </select>
-    </div>
-
-
+    <!-- TIPO -->
     <div class="field">
       <label>Tipo</label>
       <div class="pill-group">
-        <div 
-          class="pill" 
-          :class="{ active: role === 'client' }"
-          @click="role = 'client'"
-        >
-          Cliente
-        </div>
-        <div 
-          class="pill" 
-          :class="{ active: role === 'admin' }"
-          @click="role = 'admin'"
-        >
-          Admin
-        </div>
-        <div 
-          class="pill" 
-          :class="{ active: role === 'operator' }"
-          @click="role = 'operator'"
-        >
-          Operador
-        </div>
+        <div class="pill" :class="{ active: role === 'client' }" @click="role = 'client'">Cliente</div>
+        <div class="pill" :class="{ active: role === 'admin' }" @click="role = 'admin'">Admin</div>
+        <div class="pill" :class="{ active: role === 'operator' }" @click="role = 'operator'">Operador</div>
       </div>
     </div>
 
+    <!-- STATUS -->
     <div class="field">
       <label>Status</label>
       <div class="pill-group">
-        <div 
-          class="pill" 
-          :class="{ active: active === true }"
-          @click="active = true"
-        >
-          Ativo
-        </div>
-        <div 
-          class="pill" 
-          :class="{ active: active === false }"
-          @click="active = false"
-        >
-          Inativo
-        </div>
+        <div class="pill" :class="{ active: active }" @click="active = true">Ativo</div>
+        <div class="pill" :class="{ active: !active }" @click="active = false">Inativo</div>
       </div>
     </div>
 
+    <!-- ROTA -->
+    <div class="field required">
+      <label>Rota</label>
+      <select v-model="rotaId" class="input">
+        <option value="">Selecione</option>
+        <option v-for="r in rotas" :key="r.id" :value="r.id">{{ r.nome }}</option>
+      </select>
+    </div>
+
+    <!-- CAMPOS CLIENTE -->
+    <div v-if="role === 'client'" class="client-section">
+
+      <div class="field">
+        <label>Endereço</label>
+        <input v-model="endereco" placeholder="Endereço completo" />
+      </div>
+
+      <div class="field">
+        <label>CNPJ</label>
+        <input v-model="cnpj" placeholder="CNPJ" />
+      </div>
+
+      <div class="field">
+        <label>Telefone / Contato</label>
+        <input v-model="telefone" placeholder="Telefone ou contato" />
+      </div>
+
+    </div>
+
+    <!-- BOTÕES -->
     <div class="actions-form">
-      <button @click="salvarUsuario">
-        {{ editingUserId ? 'Salvar Alterações' : 'Criar Usuário' }}
+      <button @click="salvarUsuario" :disabled="loading">
+
+        <span v-if="loading" class="btn-loading">
+          <span class="spinner"></span>
+          Salvando...
+        </span>
+
+        <span v-else>
+          {{ editingUserId ? 'Salvar Alterações' : 'Criar Usuário' }}
+        </span>
+
       </button>
 
-      <button
-        v-if="editingUserId"
-        class="btn-cancelar"
-        @click="resetForm"
-      >
-        Cancelar edição
+      <button v-if="editingUserId" class="btn-cancelar" @click="resetForm">
+        Cancelar Edição
       </button>
     </div>
 
+    <!-- TABELA -->
     <h3>Lista</h3>
-    <div v-for="u in users" :key="u.id" class="card">
-      <strong>{{ u.name }}</strong><br />
-      {{ u.email }}<br />
-      <small>
-        Role: {{ u.role }} |
-        Ativo: {{ u.active ? "Sim" : "Não" }}
-      </small>
-      <br />
-      <div class="card-actions">
-        <button class="btn-editar" @click="começarEditarUsuario(u)">
-          Editar
-        </button>
-        <button class="btn-excluir" @click="excluirUsuario(u.id)">
-          Excluir
-        </button>
-      </div>
+
+    <div class="table-wrapper">
+      <table class="user-table">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Tipo</th>
+            <th>Status</th>
+            <th class="actions-col"></th>
+            <th class="actions-col">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="u in users" :key="u.id">
+            <td>{{ u.name }}</td>
+            <td>{{ u.role }}</td>
+            <td>{{ u.active ? 'Ativo' : 'Inativo' }}</td>
+            <td class="actions-col">
+
+              <button class="icon-btn edit" @click="começarEditarUsuario(u)" title="Editar">
+                ✏️
+              </button>
+
+            </td>
+            <td class="actions-col">
+
+              <button class="icon-btn delete" @click="excluirUsuario(u.id)" title="Excluir">
+                🗑️
+              </button>
+
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+
   </div>
 </template>
 
-
 <style scoped>
+
 .container {
   padding: 16px;
+  font-family: Arial, sans-serif;
 }
 
-/* TOPO */
+/* =========================
+   TOPO
+========================= */
 .top-bar {
   display: flex;
   justify-content: space-between;
@@ -278,7 +308,6 @@ onMounted(loadUsers);
 
 .logo {
   height: 36px;
-  object-fit: contain;
 }
 
 .top-actions {
@@ -286,15 +315,15 @@ onMounted(loadUsers);
   gap: 8px;
 }
 
-/* Botões topo */
+/* =========================
+   BOTÕES TOPO
+========================= */
 .btn-secondary {
   background: transparent;
   border: 1px solid #1e88e5;
   color: #5e72a8;
-  padding: 4px 10px;
+  padding: 5px 10px;
   border-radius: 6px;
-  font-size: 14px;
-  font-weight: 600;
   cursor: pointer;
 }
 
@@ -306,10 +335,8 @@ onMounted(loadUsers);
   background: transparent;
   border: 1px solid #e53935;
   color: #e53935;
-  padding: 4px 10px;
+  padding: 5px 10px;
   border-radius: 6px;
-  font-size: 14px;
-  font-weight: 600;
   cursor: pointer;
 }
 
@@ -317,64 +344,65 @@ onMounted(loadUsers);
   background: #ffebee;
 }
 
+/* =========================
+   HEADINGS
+========================= */
 h2 {
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
-/* Cards de usuário */
-.card {
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  padding: 8px 12px;
-  margin-bottom: 8px;
+h3 {
+  margin-top: 10px;
 }
 
-.card-actions {
-  display: flex;
-  gap: 8px;
+/* =========================
+   INPUTS
+========================= */
+input {
+  width: 100%;
+  padding: 10px;
   margin-top: 6px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
 }
 
-/* Botões de ação na lista */
-.btn-excluir {
-  background: #e53935;
-  border: none;
-  color: #fff;
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-size: 12px;
-  cursor: pointer;
-}
-
-.btn-excluir:hover {
-  background: #b71c1c;
-}
-
-.btn-editar {
-  background: #5e72a8;
-  border: none;
-  color: #fff;
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-size: 12px;
-  cursor: pointer;
-}
-
-.btn-editar:hover {
-  background: #0d47a1;
-}
-
-/* Form */
+/* =========================
+   FIELD
+========================= */
 .field {
   margin: 12px 0;
+  display: flex;
+  flex-direction: column;
   font-size: 14px;
   font-weight: 600;
 }
 
+.field label {
+  margin-bottom: 6px;
+}
+
+/* obrigatório */
+.field.required label::after {
+  content: " *";
+  color: #e53935;
+}
+
+/* =========================
+   SELECT
+========================= */
+.input {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+/* =========================
+   PILLS
+========================= */
 .pill-group {
   display: flex;
   gap: 10px;
-  margin-top: 6px;
 }
 
 .pill {
@@ -383,7 +411,6 @@ h2 {
   border: 1px solid #ccc;
   cursor: pointer;
   background: #fafafa;
-  transition: 0.2s;
   font-size: 13px;
 }
 
@@ -397,11 +424,31 @@ h2 {
   border-color: #5e72a8;
 }
 
-/* Botões do formulário (criar/editar + cancelar) */
+/* =========================
+   SENHA
+========================= */
+.toggle-password {
+  margin-left: 8px;
+}
+
+/* =========================
+   CLIENTE SECTION
+========================= */
+.client-section {
+  margin-top: 10px;
+  padding: 12px;
+  border: 1px dashed #ccc;
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+/* =========================
+   BOTÕES FORM
+========================= */
 .actions-form {
   display: flex;
   gap: 10px;
-  margin: 12px 0 20px;
+  margin: 14px 0;
 }
 
 .actions-form > button:first-child {
@@ -410,102 +457,130 @@ h2 {
   border: none;
   padding: 8px 16px;
   border-radius: 6px;
-  font-weight: 600;
   cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
 }
 
-.actions-form > button:first-child:hover {
-  background: #5e72a8;
+.actions-form > button:first-child:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
 .btn-cancelar {
   background: transparent;
-  border: 1px solid #aaa;
-  color: #555;
+  border: 2px solid #aaa;
   padding: 8px 14px;
   border-radius: 6px;
-  font-size: 13px;
-  font-weight: 500;
+  background: #f5dddd;
   cursor: pointer;
 }
 
 .btn-cancelar:hover {
-  background: #f5f5f5;
+  background: #aaa;
 }
 
-/* Campo padrão */
-.field {
-  margin: 12px 0;
-  display: flex;
-  flex-direction: column;
-  font-size: 14px;
-  font-weight: 600;
+/* =========================
+   SPINNER
+========================= */
+.spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255,255,255,0.5);
+  border-top: 2px solid #ffffff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
 }
 
-/* Label do campo */
-.field label {
-  margin-bottom: 6px;
-  color: #444;
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
-/* Select estilizado */
-.input {
-  width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-  font-size: 14px;
-  background: #fff;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-}
-
-/* Seta personalizada no select */
-.input {
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg width='12' height='8' viewBox='0 0 12 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  background-size: 12px;
-}
-
-/* Hover e foco */
-.input:hover {
-  border-color: #5e72a8;
-}
-
-.input:focus {
-  outline: none;
-  border-color: #5e72a8;
-  box-shadow: 0 0 0 2px rgba(94, 114, 168, 0.1);
-}
-
-/* Torna o campo obrigatório fácil de perceber */
-.field.required label::after {
-  content: " *";
-  color: #e53935;
-  font-weight: bold;
-}
-
-.password-field {
+.btn-loading {
   display: flex;
   align-items: center;
-  width: 100%; /* garante largura total */
+  gap: 8px;
 }
 
-.password-field input {
-  flex: 1;
+/* =========================
+   TABELA
+========================= */
+.table-wrapper {
+  margin-top: 10px;
+  overflow-x: auto;
+}
+
+.user-table {
   width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
+  border-collapse: collapse;
+  font-size: 13px;
+  background: #fff;
+}
+
+.user-table thead {
+  background: #f5f7fa;
+}
+
+.user-table th,
+.user-table td {
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+}
+
+.user-table tbody tr:hover {
+  background: #fafafa;
+}
+
+.actions-col {
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* =========================
+   ICON BUTTONS
+========================= */
+.icon-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  transition: 0.2s;
   font-size: 14px;
 }
 
-.toggle-password {
-  margin-left: 8px;
-  white-space: nowrap; /* evita quebrar linha */
+.icon-btn:hover {
+  background: #f0f0f0;
 }
+
+.icon-btn.edit {
+  color: #5e72a8;
+}
+
+.icon-btn.delete {
+  color: #e53935;
+}
+
+/* =========================
+   RESPONSIVO
+========================= */
+@media (max-width: 600px) {
+  .pill-group {
+    flex-wrap: wrap;
+  }
+
+  .actions-form {
+    flex-direction: column;
+  }
+
+  .actions-col {
+    text-align: left;
+  }
+}
+
 </style>
