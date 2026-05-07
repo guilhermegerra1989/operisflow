@@ -31,32 +31,43 @@
     <!-- Seção de itens -->
     <h3>Itens do Pedido</h3>
 
+    <div v-if="tipoPedido" class="tipo-pedido-box">
+      Tipo do pedido:
+      <strong>
+        {{ tipoPedido === 'remanufaturado' ? 'Remanufaturado' : 'Esportivos / Acessórios' }}
+      </strong>
+    </div>
+
     <!-- Fluxo de adicionar item -->
     <div class="card-add-item">
       <!-- Etapa idle: só botão adicionar -->
       <button
-        v-if="uiStep === 'idle'"
-        class="btn-outline"
-        @click="uiStep = 'tipos'"
-      >
-        + Adicionar item
-      </button>
+          v-if="uiStep === 'idle'"
+          class="btn-outline"
+          @click="iniciarAdicaoItem"
+        >
+          + Adicionar item
+        </button>
 
       <!-- Etapa tipos -->
       <div v-else-if="uiStep === 'tipos'">
         <p class="mensagem-passos">Escolha o tipo de item:</p>
 
         <div class="marcas-grid">
-          <button class="btn-marca" @click="selecionarTipo('volante')">
+          <button
+            v-if="!tipoPedido || tipoPedido === 'remanufaturado'"
+            class="btn-marca"
+            @click="selecionarTipo('volante')"
+          >
             Volantes Remanufaturados
           </button>
 
-          <button class="btn-marca" @click="selecionarTipo('esportivo')">
-            Volantes Esportivos
-          </button>
-
-          <button class="btn-marca" @click="selecionarTipo('acessorio')">
-            Acessórios / Acionadores de Buzina
+          <button 
+            v-if="!tipoPedido || tipoPedido === 'esportivo'"
+            class="btn-marca"
+            @click="selecionarTipo('esportivo')"
+          >
+            Esportivos / Acessórios
           </button>
         </div>
 
@@ -270,6 +281,7 @@ const quantidadesSelecionadas = ref<Record<string, number>>({}); // { [volanteId
 const itens = ref<ItemPedido[]>([]);
 
 type TipoVolante = "volante" | "esportivo" | "acessorio";
+const tipoPedido = ref<"remanufaturado" | "esportivo" | null>(null);
 
 const tipoSelecionado = ref<TipoVolante | null>(null);
 
@@ -305,20 +317,58 @@ onMounted(async () => {
     "";
 
 
-  tituloPedido.value = `Pedido / ${currentUserName.value || 'Usuário'} / ${currentRouteName.value || 'Rota'}`;
+  tituloPedido.value = `${currentUserName.value || 'Usuário'} / ${currentRouteName.value || 'Rota'}`;
   console.log("Volantes adaptados para front:", volantes.value);
 });
 
 // Volantes filtrados pela marca selecionada
 const volantesFiltrados = computed(() =>
-  volantes.value.filter((v) => v.marcaId === selectedMarcaId.value && v.tipo === tipoSelecionado.value)
+  volantes.value.filter((v) => {
+    if (tipoPedido.value === "remanufaturado") {
+      return v.marcaId === selectedMarcaId.value && v.tipo === "volante";
+    }
+
+    if (tipoPedido.value === "esportivo") {
+      return v.marcaId === selectedMarcaId.value &&
+        (v.tipo === "esportivo" || v.tipo === "acessorio");
+    }
+
+    return false;
+  })
 );
 
 function voltar() {
   window.location.href = "/ev-volantes/client";
 }
 
+function iniciarAdicaoItem() {
+
+  // 👉 se já tem tipo definido → pula direto
+  if (tipoPedido.value) {
+
+    // define tipoSelecionado automático
+    if (tipoPedido.value === "remanufaturado") {
+      tipoSelecionado.value = "volante";
+    } else {
+      // aqui você pode escolher estratégia (explico abaixo)
+      tipoSelecionado.value = "esportivo";
+    }
+
+    uiStep.value = "marcas";
+    return;
+  }
+
+  // fluxo normal
+  uiStep.value = "tipos";
+}
+
 function selecionarTipo(tipo: TipoVolante) {
+
+  if (!tipoPedido.value) {
+    tipoPedido.value = tipo === "volante" ? "remanufaturado" : "esportivo";
+  }
+
+  // continua usando normalmente
   tipoSelecionado.value = tipo;
   uiStep.value = "marcas";
 }
@@ -356,6 +406,11 @@ const marcasFiltradas = computed(() => {
 
 function removerItemPorId(id: string) {
   itens.value = itens.value.filter((i) => i.volanteId !== id);
+
+  // ✅ libera o tipo novamente
+  if (itens.value.length === 0) {
+    tipoPedido.value = null;
+  }
 }
 
 
@@ -469,6 +524,21 @@ async function criar() {
     tituloPedido.value = "Pedido EV Volantes";
   }
 
+    const tipos = new Set(
+      itens.value.map((i) => {
+        const v = volantes.value.find(v => v.id === i.volanteId);
+        return v?.tipo;
+      })
+    );
+
+    const temVolante = tipos.has("volante");
+    const temOutros = tipos.has("esportivo") || tipos.has("acessorio");
+
+    if (temVolante && temOutros) {
+      alert("Não é permitido misturar remanufaturados com esportivos/acessórios.");
+      return;
+    }
+
   const payload = {
     title: tituloPedido.value,
     description: observacoesPedido.value,
@@ -485,6 +555,10 @@ async function criar() {
   window.location.href = "/ev-volantes/client";
 }
 </script>
+
+
+
+
 <style scoped>
 .container {
   max-width: 480px;
@@ -878,5 +952,14 @@ h4 {
   height: 100%;
   object-fit: cover;    /* ou cover → depende do estilo */
   display: block;
+}
+
+.tipo-pedido-box {
+  background: #eef1ff;
+  border: 1px solid #5e72a8;
+  padding: 8px;
+  border-radius: 8px;
+  margin: 8px 0 12px;
+  font-size: 13px;
 }
 </style>
