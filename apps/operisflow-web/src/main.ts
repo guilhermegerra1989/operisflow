@@ -11,6 +11,7 @@ async function bootstrap() {
     if (!shouldSkipValidation()) {
       const user = await validateSession();
       localStorage.setItem("user", JSON.stringify(user));
+      console.log('VALIDADO ---------->>> '+JSON.stringify(user))
     }
   } catch (error: any) {
     if (error.status === 401) {
