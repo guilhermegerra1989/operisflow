@@ -129,7 +129,10 @@ function calcInjetar(row: EstoqueRow): number {
 ======================= */
 function updateEstoque(codigo: string, value: string) {
   if (tabelaBloqueada.value) return;
-  estoqueInputMap.value[codigo] = value.replace(",", ".");
+
+  const onlyNumbers = value.replace(/\D+/g, "");
+  estoqueInputMap.value[codigo] =
+    onlyNumbers === "" ? "" : onlyNumbers;
 }
 
 /* =======================
@@ -185,6 +188,35 @@ function voltarDashboard() {
   window.location.href = "/ev-volantes/operator";
 }
 
+function onFocusEstoque(codigo: string, event: FocusEvent) {
+  if (tabelaBloqueada.value) return;
+
+  const input = event.target as HTMLInputElement;
+
+  if (estoqueInputMap.value[codigo] === "0") {
+    estoqueInputMap.value[codigo] = "";
+
+    // ✅ força o cursor e seleção (Firefox friendly)
+    requestAnimationFrame(() => {
+      input.value = "";
+      input.setSelectionRange(0, 0);
+    });
+  }
+}
+
+
+function onBlurEstoque(codigo: string) {
+  if (tabelaBloqueada.value) return;
+
+  // Se ficou vazio, volta para zero
+  if (
+    estoqueInputMap.value[codigo] == null ||
+    estoqueInputMap.value[codigo] === ""
+  ) {
+    estoqueInputMap.value[codigo] = "0";
+  }
+}
+
 /* =======================
    LIFECYCLE
 ======================= */
@@ -228,29 +260,32 @@ onMounted(async () => {
       <table>
         <thead>
           <tr>
-            <th>Código</th>
-            <th>Descrição</th>
-            <th>Marca</th>
-            <th>Qtde Pedido</th>
-            <th>Qtde Estoque</th>
+            <th>Cod.</th>
+            <!-- <th>Descrição</th>
+            <th>Marca</th> -->
+            <th>Qtd Ped</th>
+            <th>Qtd Est</th>
             <th>Injetar</th>
           </tr>
         </thead>
 
         <tbody>
           <tr v-for="row in estoqueRows" :key="row.codigo">
-            <td>{{ row.codigo }}</td>
+            <!-- <td>{{ row.codigo }}</td> -->
             <td>{{ row.descricao }}</td>
-            <td>{{ row.marcaNome || "-" }}</td>
+            <!-- <td>{{ row.marcaNome || "-" }}</td> -->
             <td><strong>{{ row.quantidadeTotal }}</strong></td>
 
             <td>
               <input
                 class="estoque-input"
                 type="text"
-                placeholder="0"
+                inputmode="numeric"
+                pattern="[0-9]*"
                 :disabled="tabelaBloqueada"
                 :value="estoqueInputMap[row.codigo] ?? '0'"
+                @focus="onFocusEstoque(row.codigo, $event)"
+                @blur="onBlurEstoque(row.codigo)"
                 @input="updateEstoque(row.codigo, ($event.target as HTMLInputElement).value)"
               />
             </td>
@@ -429,7 +464,13 @@ h2 {
 table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 980px;
+  min-width: 600px; /* desktop confortável */
+}
+
+@media (max-width: 600px) {
+  table {
+    min-width: 100%; /* mobile não força scroll gigante */
+  }
 }
 
 thead {
@@ -458,6 +499,18 @@ tbody tr:hover {
   text-align: center;
   color: #777;
   margin-top: 20px;
+}
+
+@media (max-width: 600px) {
+  th,
+  td {
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+
+  th {
+    font-size: 11px;
+  }
 }
 
 /* MOBILE */
@@ -511,6 +564,28 @@ tbody tr:hover {
   cursor: not-allowed;
 }
 
+@media (max-width: 600px) {
+  .estoque-input {
+    width: 68px;
+    height: 32px;
+    font-size: 12px;
+    text-align: center;
+  }
+}
+
+/* Chrome, Edge */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+
 .injetar-cell {
   width: 120px;
 }
@@ -559,15 +634,21 @@ tbody tr:hover {
    ============================ */
 .table-actions {
   display: flex;
-  align-items: center;
-  width: 33%;
-  margin-left: auto;      /* 👈 empurra para a direita */
   justify-content: flex-end;
   gap: 12px;
   padding: 14px 16px;
-  border-top: 1px solid #eee;
-  background: #fafafa;
-  border-radius: 0 0 10px 10px;
+}
+
+@media (max-width: 600px) {
+  .table-actions {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .table-actions button {
+    flex: 1;
+    max-width: 160px;
+  }
 }
 
 .saving-overlay {
