@@ -21,8 +21,6 @@ export class OrdersExportService {
 
     const templatePath = path.join(
       process.cwd(),
-      "apps",
-      "operisflow-api",
       "templates",
       "template_pedido.xlsx"
     );
