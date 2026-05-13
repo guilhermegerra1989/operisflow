@@ -8,18 +8,23 @@ import {
   Delete,
   UseGuards,
   ForbiddenException,
+  Res,
 } from '@nestjs/common';
 import { OrdersService } from './orders.service';
+import { OrdersExportService } from './orders_export.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
+import { ExportEstoqueDto } from './dto/export-estoque.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { Tenant } from '../common/decorators/tenant.decorator';
+import type { Response } from "express";
+
 
 @Controller('orders')
 @UseGuards(JwtAuthGuard) // 👈 todas as rotas daqui exigem JWT
 export class OrdersController {
-  constructor(private readonly ordersService: OrdersService) {}
+  constructor(private readonly ordersService: OrdersService, private readonly ordersExportService: OrdersExportService) {}
 
   // CLIENTE e ADMIN → criar pedido (mas na prática só o client vai usar)
   @Post()
@@ -94,4 +99,46 @@ export class OrdersController {
     }
     return this.ordersService.remove(tenantId, id);
   }
+
+
+
+  
+// ✅ EXPORTAÇÃO DE ORDER (FINAL)
+  @Post('export')
+  async exportOrder(@Body() order: any, @Res() res: Response) {
+    const fileBuffer =
+      await this.ordersExportService.generateOrderExcel(order);
+
+    res.setHeader(
+      'Content-Disposition',
+      `attachment; filename=order-${order.orderNumber}.xlsx`,
+    );
+    res.setHeader(
+      'Content-Type',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    );
+
+    res.end(fileBuffer);
+  }
+
+
+ // ✅ EXPORTAÇÃO DE ESTOQUE
+  @Post('export-estoque')
+  async exportEstoque( @Body() dto: ExportEstoqueDto, @Res() res: Response) {
+    const fileBuffer =
+      await this.ordersExportService.generateEstoqueExcel(dto.estoque);
+
+    res.setHeader(
+      'Content-Disposition',
+      `attachment; filename=estoque.xlsx`,
+    );
+    res.setHeader(
+      'Content-Type',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    );
+
+    res.end(fileBuffer);
+  }
+
+
 }

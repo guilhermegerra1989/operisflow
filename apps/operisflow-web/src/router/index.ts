@@ -7,6 +7,7 @@ import MeusPedidos from "../modules/ev-volantes/client/pages/MeusPedidos.vue";
 import NovoPedido from "../modules/ev-volantes/client/pages/NovoPedido.vue";
 import UsersAdmin from "../modules/ev-volantes/admin/pages/UserAdmin.vue";
 import VolantesAdmin from "../modules/ev-volantes/admin/pages/VolantesAdmin.vue";
+import StockAdmin from "../modules/ev-volantes/admin/pages/StockAdmin.vue";
 import RotasAdmin from "../modules/ev-volantes/admin/pages/RotasAdmin.vue";
 import MarcasAdmin from "../modules/ev-volantes/admin/pages/MarcasAdmin.vue";
 import PedidosAdmin from "../modules/ev-volantes/admin/pages/PedidosAdmin.vue";
@@ -69,6 +70,11 @@ export const router = createRouter({
       component: MarcasAdmin,
       meta: { requiresAuth: true, role: "admin" },
     },
+    {
+      path: "/ev-volantes/admin/estoque",
+      component: StockAdmin,
+      meta: { requiresAuth: true, role: "admin" },
+    },
 
     // OPERADOR
     {
@@ -80,7 +86,8 @@ export const router = createRouter({
       path: "/ev-volantes/operator/estoque",
       component: StockOperator,
       meta: { requiresAuth: true, role: "operator" },
-    },
+    }
+
   ],
   
 });

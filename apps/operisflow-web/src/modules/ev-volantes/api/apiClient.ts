@@ -11,7 +11,10 @@ async function fetchWithAuth(
     headers.set("Authorization", `Bearer ${token}`);
   }
 
-  const res = await fetch(`${API_URL}${path}`, { ...options, headers, });
+  const res = await fetch(`${API_URL}${path}`, {
+    ...options,
+    headers,
+  });
 
   if (!res.ok) {
     const text = await res.text();
@@ -23,6 +26,10 @@ async function fetchWithAuth(
 
   return res;
 }
+
+/* ===========================
+   JSON (padrão do sistema)
+   =========================== */
 
 export async function apiGet(path: string) {
   const res = await fetchWithAuth(path);
@@ -52,4 +59,18 @@ export async function apiDelete(path: string) {
     method: "DELETE",
   });
   return res.text();
+}
+
+/* ===========================
+   BLOB (arquivos)
+   =========================== */
+
+export async function apiPostBlob(path: string, body: any) {
+  const res = await fetchWithAuth(path, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+
+  return res.blob();
 }

@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { Pool } from 'pg';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
+import ExcelJS from "exceljs";
+import path from "path";
 
 @Injectable()
 export class OrdersService {
@@ -128,12 +130,17 @@ async findAll(tenantId: string) {
       o.numero_pedido,
 
       u.name AS client_name,
+      u.endereco AS endereco,
+      u.cnpj AS cnpj,
+      u.telefone AS telefone,
+      u.email AS email,
 
       oi.quantidade,
       v.id AS volante_id,
       v.codigo AS volante_codigo,
       v.descricao AS volante_descricao,
       v.img AS img,
+      v.tipo AS tipo,
       m.nome AS marca_nome
 
     FROM orders o
@@ -171,10 +178,15 @@ async groupOrdersWithItems(rows: any[]) {
         id: row.order_id,
         title: row.title,
         description: row.description,
+        tipo: row.tipo,
         status: row.status,
         createdAt: row.created_at,
         numeroPedido: row.numero_pedido,
-        clientName: row.client_name,   // no findMyOrders não vem, tudo bem
+        clientName: row.client_name,  
+        cnpj: row.cnpj,
+        phone: row.telefone,
+        address: row.endereco,
+        email: row.email, 
         items: [] as any[],
       };
 
@@ -266,5 +278,6 @@ async updateStatus(tenantId: string, id: string, status: string) {
 
     return result.rows[0];
 }
- 
+
+
 }

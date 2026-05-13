@@ -223,8 +223,8 @@ onMounted(loadUsers);
     <h3>{{ editingUserId ? 'Editar Usuário' : 'Novo Usuário' }}</h3>
 
     <!-- CAMPOS BASE -->
-    <input v-model="name" placeholder="Nome" />
-    <input v-model="email" placeholder="Email" />
+    <input v-model="name" placeholder="Nome do usuário" />
+    <input v-model="email" placeholder="Email (login do sistema)" />
 
     <!-- SENHA -->
     <div class="field">

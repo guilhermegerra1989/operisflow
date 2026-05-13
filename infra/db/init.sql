@@ -136,6 +136,28 @@ CREATE INDEX IF NOT EXISTS idx_orders_tenant ON orders(tenant_id);
 CREATE INDEX IF NOT EXISTS idx_orders_client ON orders(client_user_id);
 
 --------------------------------------------------------
+-- TABELA: estoque (estoque para poder injetar)
+--------------------------------------------------------
+CREATE TABLE IF NOT EXISTS estoque (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  tenant_id UUID NOT NULL,
+  codigo VARCHAR(100),
+  descricao VARCHAR(100),
+  qtd_pedidos VARCHAR(100),
+  qtd_estoque VARCHAR(100),
+  qtd_injetar VARCHAR(100),
+
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW(),
+
+   CONSTRAINT fk_estoque_tenant
+    FOREIGN KEY (tenant_id) REFERENCES tenants(id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_estoque_tenant_ ON estoque(tenant_id);
+
+
+--------------------------------------------------------
 -- TABELA: order_items (itens do pedido)
 --------------------------------------------------------
 CREATE TABLE IF NOT EXISTS order_items (

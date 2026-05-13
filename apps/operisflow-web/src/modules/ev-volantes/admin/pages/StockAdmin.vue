@@ -1,33 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
-import { apiGet, apiPost, apiDelete } from "../../api/apiClient";
-
-/* =======================
-   TIPOS
-======================= */
-type PedidoItem = {
-  volanteId: string;
-  codigo: string;
-  descricao: string;
-  quantidade: number;
-  marcaNome?: string;
-};
-
-type Pedido = {
-  id: string;
-  title: string;
-  tipo: string;
-  status: string;
-  items: PedidoItem[];
-};
-
-type EstoqueRow = {
-  volanteId: string;
-  codigo: string;
-  descricao: string;
-  marcaNome?: string;
-  quantidadeTotal: number;
-};
+import { apiGet, apiPostBlob } from "../../api/apiClient";
 
 type EstoqueSalvo = {
   id: string;
@@ -39,130 +12,42 @@ type EstoqueSalvo = {
 };
 
 /* =======================
-   USUÁRIO / ROLE
-======================= */
-const user = ref<any>(null);
-const isOperador = computed(() => user.value?.role === "operador");
-
-/* =======================
    ESTADOS
 ======================= */
-const pedidos = ref<Pedido[]>([]);
+const user = ref<any>(null);
 const estoqueSalvo = ref<EstoqueSalvo[]>([]);
-const estoqueInputMap = ref<Record<string, string>>({});
 
 /* =======================
    LOADERS
 ======================= */
-async function loadPedidos() {
-  pedidos.value = await apiGet("/orders");
-}
-
 async function loadEstoqueSalvo() {
   estoqueSalvo.value = await apiGet("/estoque");
-
-  if (estoqueSalvo.value.length) {
-    estoqueInputMap.value = {};
-    estoqueSalvo.value.forEach((item) => {
-      estoqueInputMap.value[item.codigo] = item.qtd_estoque;
-    });
-  }
 }
 
 /* =======================
    COMPUTEDS
 ======================= */
-const pedidosAbertos = computed(() =>
-  pedidos.value.filter(
-    (p) => p.status === "aberto" && p.tipo === "volante"
-  )
-);
-
-const estoqueRows = computed<EstoqueRow[]>(() => {
-  const map = new Map<string, EstoqueRow>();
-
-  pedidosAbertos.value.forEach((pedido) => {
-    pedido.items.forEach((item) => {
-      const existing = map.get(item.codigo);
-      if (!existing) {
-        map.set(item.codigo, {
-          volanteId: item.volanteId,
-          codigo: item.codigo,
-          descricao: item.descricao,
-          marcaNome: item.marcaNome,
-          quantidadeTotal: item.quantidade,
-        });
-      } else {
-        existing.quantidadeTotal += item.quantidade;
-      }
-    });
-  });
-
-  return Array.from(map.values()).sort((a, b) =>
-    a.codigo.localeCompare(b.codigo)
-  );
-});
-
 const snapshotExiste = computed(() => estoqueSalvo.value.length > 0);
-const tabelaBloqueada = computed(
-  () => snapshotExiste.value
-);
-
-/* =======================
-   CÁLCULOS
-======================= */
-function parseNumber(raw?: string): number {
-  if (!raw) return 0;
-  const n = Number(raw.replace(",", "."));
-  return Number.isFinite(n) ? n : 0;
-}
-
-function calcInjetar(row: EstoqueRow): number {
-  const estoque = parseNumber(estoqueInputMap.value[row.codigo]);
-  return Math.max(0, row.quantidadeTotal - estoque);
-}
-
-/* =======================
-   INPUT HANDLER (CORRETO)
-======================= */
-function updateEstoque(codigo: string, value: string) {
-  if (tabelaBloqueada.value) return;
-  estoqueInputMap.value[codigo] = value.replace(",", ".");
-}
 
 /* =======================
    AÇÕES
 ======================= */
-async function salvarEstoque() {
-  const agora = new Date().toISOString();
+async function exportarEstoque() {
+  const payload = {
+    estoque: estoqueSalvo.value
+  };
 
-  for (const row of estoqueRows.value) {
-    const qtdEstoqueRaw =
-      estoqueInputMap.value[row.codigo] ?? "0";
+  const blob = await apiPostBlob(
+    "/orders/export-estoque",
+    payload
+  );
 
-    const dto = {
-      codigo: row.codigo,
-      descricao: row.descricao,
-      qtd_pedidos: String(row.quantidadeTotal),
-      qtd_estoque: qtdEstoqueRaw,
-      qtd_injetar: String(calcInjetar(row)),
-      created_at: agora,
-      updated_at: agora,
-    };
-
-    await apiPost("/estoque", dto);
-  }
-
-  await loadEstoqueSalvo();
-}
-
-async function limparEstoque() {
-  await apiDelete("/estoque");
-
-  estoqueSalvo.value = [];
-  estoqueInputMap.value = {};
-
-  await loadPedidos();
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "controle_estoque.xlsx";
+  a.click();
+  URL.revokeObjectURL(url);
 }
 
 function logout() {
@@ -172,7 +57,7 @@ function logout() {
 }
 
 function voltarDashboard() {
-  window.location.href = "/ev-volantes/operator";
+  window.location.href = "/ev-volantes/admin";
 }
 
 /* =======================
@@ -180,43 +65,46 @@ function voltarDashboard() {
 ======================= */
 onMounted(async () => {
   user.value = JSON.parse(localStorage.getItem("user") || "null");
-  await loadPedidos();
   await loadEstoqueSalvo();
 });
 </script>
 
 <template>
   <div class="container">
-
     <div class="top-bar">
       <img
         src="../../../../assets/ev-volantes-logo.png"
         alt="EV Volantes"
         class="logo"
       />
+
       <div class="top-actions">
-        <!-- <button class="btn-secondary" @click="exportToCsv">
+        <button
+          v-if="snapshotExiste"
+          class="btn-secondary"
+          @click="exportarEstoque"
+        >
           Exportar
-        </button> -->
+        </button>
+
         <button class="btn-secondary" @click="voltarDashboard">
           Dashboard
         </button>
+
         <button class="btn-logout" @click="logout">
           Sair
         </button>
       </div>
     </div>
 
+    <h2>Estoque - Snapshot Salvo</h2>
 
-    <h2>Estoque - Pedidos em Aberto</h2>
-
-    <div class="table-container" v-if="estoqueRows.length">
+    <div class="table-container" v-if="snapshotExiste">
       <table>
         <thead>
           <tr>
             <th>Código</th>
             <th>Descrição</th>
-            <th>Marca</th>
             <th>Qtde Pedido</th>
             <th>Qtde Estoque</th>
             <th>Injetar</th>
@@ -224,55 +112,24 @@ onMounted(async () => {
         </thead>
 
         <tbody>
-          <tr v-for="row in estoqueRows" :key="row.codigo">
-            <td>{{ row.codigo }}</td>
-            <td>{{ row.descricao }}</td>
-            <td>{{ row.marcaNome || "-" }}</td>
-            <td><strong>{{ row.quantidadeTotal }}</strong></td>
-
+          <tr v-for="item in estoqueSalvo" :key="item.id">
+            <td>{{ item.codigo }}</td>
+            <td>{{ item.descricao }}</td>
+            <td><strong>{{ item.qtd_pedidos }}</strong></td>
+            <td>{{ item.qtd_estoque }}</td>
             <td>
-              <input
-                class="estoque-input"
-                type="text"
-                placeholder="0"
-                :disabled="tabelaBloqueada"
-                :value="estoqueInputMap[row.codigo] ?? '0'"
-                @input="updateEstoque(row.codigo, ($event.target as HTMLInputElement).value)"
-              />
-            </td>
-
-            <td>
-              <strong>{{ calcInjetar(row) }}</strong>
+              <strong>{{ item.qtd_injetar }}</strong>
             </td>
           </tr>
         </tbody>
       </table>
-
-      <div class="table-actions">
-        <button
-          v-if="!snapshotExiste"
-          class="btn-secondary"
-          @click="salvarEstoque"
-        >
-          Salvar
-        </button>
-
-        <button
-          v-if="snapshotExiste"
-          class="btn-secondary"
-          @click="limparEstoque"
-        >
-          Limpar
-        </button>
-      </div>
     </div>
 
     <div v-else class="empty">
-      Nenhum item encontrado.
+      Nenhum snapshot de estoque encontrado.
     </div>
   </div>
 </template>
-
 
 <style scoped>
 

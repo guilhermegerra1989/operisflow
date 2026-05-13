@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from "vue";
-import { apiGet, apiPatch } from "../../api/apiClient";
+import { apiGet, apiPatch, apiPostBlob } from "../../api/apiClient";
 
 type PedidoItem = {
   volanteId: string;
@@ -18,8 +18,32 @@ type Pedido = {
   createdAt: string;
   numeroPedido?: number;
   clientName?: string;
+  address?: string;
+  cnpj?: string;
+  email?: string;
+  phone?: string;
+  tipo?: string;
   items: PedidoItem[];
 };
+
+interface Order {
+  orderNumber: string;
+  createdAt: string;
+  tipo: string;
+  client: {
+    name: string;
+    address: string;
+    cnpj: string;
+    email: string;
+    phone: string;
+  };
+  items: Array<{
+    code: string;
+    description: string;
+    quantity: number;
+    unitPrice: number;
+  }>;
+}
 
 // lista completa vinda da API
 const pedidos = ref<Pedido[]>([]);
@@ -43,6 +67,10 @@ const filteredPedidos = computed(() => {
         p.title ?? "",
         p.description ?? "",
         p.clientName ?? "",
+        p.tipo ?? "",
+        p.address ?? "",
+        p.cnpj ?? "",
+        p.phone ?? "",
         ...p.items.map((i) => i.codigo ?? ""),
         ...p.items.map((i) => i.descricao ?? ""),
         ...p.items.map((i) => i.marcaNome ?? ""),
@@ -108,6 +136,46 @@ async function finalizarPedido(pedidoId: string) {
 }
 
 
+async function exportOrder(pedido: Pedido) {
+  const order = mapPedidoToOrder(pedido);
+  
+  const blob = await apiPostBlob("/orders/export", order);
+
+  const url = URL.createObjectURL(blob);
+
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `order-${order.orderNumber}.xlsx`;
+  a.click();
+
+  URL.revokeObjectURL(url);
+}
+
+function mapPedidoToOrder(pedido: Pedido): Order {
+
+  return {
+    orderNumber: String(pedido.numeroPedido ?? pedido.id),
+    createdAt: pedido.createdAt,
+    tipo: pedido.tipo ?? "",
+
+    client: {
+      name: pedido.clientName ?? "",
+      address: pedido.address ?? "", 
+      cnpj: pedido.cnpj ?? "",    
+      email: pedido.email ?? "",   
+      phone: pedido.phone ?? "",   
+    },
+
+    items: pedido.items.map((item) => ({
+      code: item.codigo,
+      description: item.descricao,
+      quantity: item.quantidade,
+      unitPrice: 0, // não existe no Pedido
+    })),
+  };
+}
+
 // export CSV (igual você já tem)
 function exportPedidosToCsv() {
   const data = filteredPedidos.value.length
@@ -117,16 +185,16 @@ function exportPedidosToCsv() {
   if (!data.length) return;
 
   const headers = [
-    "Nº Pedido",
+    "Ped",
     "Rota",
     "Cliente",
-    "Código",
-    "Descrição",
+    "Cod",
+    "Desc",
     "Marca",
     "Quantidade",
     "Status",
-    "Criado em",
-    "Observações",
+    "Criado",
+    "Obs",
   ];
 
   const rows: string[][] = [];
@@ -181,7 +249,7 @@ onMounted(loadPedidos);
         class="logo"
       />
       <div class="top-actions">
-        <button class="btn-secondary" @click="exportPedidosToCsv">
+        <button class="btn-secondary" @click="exportPedidosToCsv()">
           Exportar
         </button>
         <button class="btn-secondary" @click="voltarDashboard">
@@ -212,15 +280,15 @@ onMounted(loadPedidos);
       <table>
         <thead>
           <tr>
-            <th>Pedido</th>
+            <th>Ped.</th>
             <th>Rota</th>
-            <th>Código</th>
-            <th>Descrição</th>
-            <th>Observação</th>
+            <th>Cod.</th>
+            <!-- <th>Descrição</th> -->
             <th>Qtd</th>
-            <th>Status</th>
-            <th>Criado em</th>
-            <th>Ações</th>
+            <th>Obs</th>
+            <!-- <th>Status</th> -->
+            <th>Criado</th>
+            <th></th>
           </tr>
         </thead>
 
@@ -232,17 +300,17 @@ onMounted(loadPedidos);
             <td>
               <div v-for="item in pedido.items" :key="item.volanteId">
                 <strong>{{ item.codigo }}</strong>
-                <span> ({{ item.marcaNome }})</span>
+                <!-- <span> ({{ item.marcaNome }})</span> -->
               </div>
             </td>
 
-            <td>
+            <!-- <td>
               <div v-for="item in pedido.items" :key="item.volanteId">
                 {{ item.descricao }}
               </div>
-            </td>
+            </td> -->
 
-            <td>{{ pedido.description || "-" }}</td>
+           
 
             <td>
               <div v-for="item in pedido.items" :key="item.volanteId">
@@ -250,14 +318,33 @@ onMounted(loadPedidos);
               </div>
             </td>
 
-            <td>
-              <span class="badge">{{ pedido.status }}</span>
-            </td>
+             <td>{{ pedido.description || "-" }}</td>
 
-            <td>{{ formatDate(pedido.createdAt) }}</td>
+            <!-- <td>
+              <span class="badge">{{ pedido.status }}</span>
+            </td> -->
+
+            <td>
+              <div style="padding-bottom: 20px;">
+<span class="badge"> status: {{ pedido.status }}</span>
+              </div>
+                <div>
+
+{{ formatDate(pedido.createdAt) }}
+                </div>
+              
+              
+            </td>
 
             <!-- AÇÕES -->
             <td>
+              <button
+                class="btn-export"
+                @click="exportOrder(pedido)"
+              >
+                Exportar
+              </button>
+
               <button
                 v-if="pedido.status === 'aberto'"
                 class="btn-finalizar"
@@ -490,6 +577,22 @@ tbody tr:hover {
   font-weight: 700;
   cursor: pointer;
   white-space: nowrap;
+}
+
+.btn-export {
+  background: #dfd261;
+  color: #fff;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn-export:hover {
+  background: #dfd261;
 }
 
 .btn-finalizar:hover {

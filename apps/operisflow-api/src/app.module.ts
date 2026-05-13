@@ -8,6 +8,7 @@ import { UsersModule } from './users/users.module';
 import { VolantesModule } from './volantes/volantes.module';
 import { MarcasModule } from './marcas/marcas.module';
 import { RotasModule } from './rotas/rotas.module';
+import { EstoqueModule } from './estoque/estoque.module';
 
 @Module({
   imports: [
@@ -16,7 +17,8 @@ import { RotasModule } from './rotas/rotas.module';
     UsersModule, 
     VolantesModule,
     MarcasModule,
-    RotasModule
+    RotasModule,
+    EstoqueModule
   ],
   controllers: [AppController],
   providers: [AppService],

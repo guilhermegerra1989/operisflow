@@ -8,5 +8,16 @@ export default defineConfig({
     port: 5173,        // porta padrão do Vite
     strictPort: true,  // não muda de porta se estiver ocupada
     cors: true         // útil para dev com API externa
-  }
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes("node_modules")) {
+            return "vendor";
+          }
+        },
+      },
+    },
+  },
 })

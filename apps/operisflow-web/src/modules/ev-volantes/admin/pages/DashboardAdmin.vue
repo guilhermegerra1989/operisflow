@@ -67,6 +67,11 @@ function logout() {
         <h3>Marcas</h3>
         <p>Visualizar/Configurar Marcas disponíveis</p>
       </router-link>
+
+      <router-link to="/ev-volantes/admin/estoque" class="btn menu-card">
+        <h3>Estoque</h3>
+        <p>Visualizar/Exportar Estoque para pedidos</p>
+      </router-link>
     </div>
   </div>
 </template>
