@@ -42,7 +42,6 @@ type EstoqueSalvo = {
    USUÁRIO / ROLE
 ======================= */
 const user = ref<any>(null);
-const isOperador = computed(() => user.value?.role === "operador");
 
 /* =======================
    ESTADOS
