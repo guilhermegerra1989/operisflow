@@ -42,6 +42,8 @@ type EstoqueSalvo = {
    USUÁRIO / ROLE
 ======================= */
 const user = ref<any>(null);
+const salvando = ref(false);
+
 
 /* =======================
    ESTADOS
@@ -104,8 +106,9 @@ const estoqueRows = computed<EstoqueRow[]>(() => {
 
 const snapshotExiste = computed(() => estoqueSalvo.value.length > 0);
 const tabelaBloqueada = computed(
-  () => snapshotExiste.value
+  () => snapshotExiste.value || salvando.value
 );
+
 
 /* =======================
    CÁLCULOS
@@ -133,26 +136,34 @@ function updateEstoque(codigo: string, value: string) {
    AÇÕES
 ======================= */
 async function salvarEstoque() {
-  const agora = new Date().toISOString();
+  if (salvando.value) return;
 
-  for (const row of estoqueRows.value) {
-    const qtdEstoqueRaw =
-      estoqueInputMap.value[row.codigo] ?? "0";
+  salvando.value = true;
 
-    const dto = {
-      codigo: row.codigo,
-      descricao: row.descricao,
-      qtd_pedidos: String(row.quantidadeTotal),
-      qtd_estoque: qtdEstoqueRaw,
-      qtd_injetar: String(calcInjetar(row)),
-      created_at: agora,
-      updated_at: agora,
-    };
+  try {
+    const agora = new Date().toISOString();
 
-    await apiPost("/estoque", dto);
+    for (const row of estoqueRows.value) {
+      const qtdEstoqueRaw =
+        estoqueInputMap.value[row.codigo] ?? "0";
+
+      const dto = {
+        codigo: row.codigo,
+        descricao: row.descricao,
+        qtd_pedidos: String(row.quantidadeTotal),
+        qtd_estoque: qtdEstoqueRaw,
+        qtd_injetar: String(calcInjetar(row)),
+        created_at: agora,
+        updated_at: agora,
+      };
+
+      await apiPost("/estoque", dto);
+    }
+
+    await loadEstoqueSalvo();
+  } finally {
+    salvando.value = false;
   }
-
-  await loadEstoqueSalvo();
 }
 
 async function limparEstoque() {
@@ -210,6 +221,10 @@ onMounted(async () => {
     <h2>Estoque - Pedidos em Aberto</h2>
 
     <div class="table-container" v-if="estoqueRows.length">
+      <div v-if="salvando" class="saving-overlay">
+        Salvando estoque...
+      </div>
+
       <table>
         <thead>
           <tr>
@@ -251,14 +266,17 @@ onMounted(async () => {
         <button
           v-if="!snapshotExiste"
           class="btn-secondary"
+          :disabled="salvando"
           @click="salvarEstoque"
         >
-          Salvar
+          <span v-if="salvando">Salvando...</span>
+          <span v-else>Salvar</span>
         </button>
 
         <button
           v-if="snapshotExiste"
           class="btn-secondary"
+          :disabled="salvando"
           @click="limparEstoque"
         >
           Limpar
@@ -550,6 +568,17 @@ tbody tr:hover {
   border-top: 1px solid #eee;
   background: #fafafa;
   border-radius: 0 0 10px 10px;
+}
+
+.saving-overlay {
+  position: sticky;
+  top: 0;
+  background: #e3f2fd;
+  color: #0759a0;
+  padding: 10px 16px;
+  font-weight: 600;
+  border-bottom: 1px solid #cfe3f8;
+  z-index: 10;
 }
 
 </style>
