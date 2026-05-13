@@ -19,9 +19,9 @@ export class OrdersExportService {
  async generateOrderExcel(order: any): Promise<Buffer> {
     const workbook = new ExcelJS.Workbook();
 
-    const templatePath = path.resolve(
-      __dirname,
-      "..",
+    const templatePath = path.join(
+      process.cwd(),
+      "dist",
       "templates",
       "template_pedido.xlsx"
     );
@@ -106,9 +106,10 @@ export class OrdersExportService {
 async generateEstoqueExcel(estoque: any[]): Promise<Buffer> {
   const workbook = new ExcelJS.Workbook();
 
-  const templatePath = path.resolve(
-    __dirname,
-    "..",
+  // ✅ path compatível com Render (assets do nest-cli)
+  const templatePath = path.join(
+    process.cwd(),
+    "dist",
     "templates",
     "template_estoque_pedido.xlsx"
   );
@@ -117,13 +118,13 @@ async generateEstoqueExcel(estoque: any[]): Promise<Buffer> {
 
   const worksheet = workbook.worksheets[0];
   if (!worksheet) {
-    throw new Error("Worksheet não encontrada");
+    throw new Error("Worksheet não encontrada no template");
   }
 
-  const START_ROW = 9; // ✅ linha modelo do template
-  const TEMPLATE_ROW = worksheet.getRow(START_ROW);
+  const START_ROW = 9; // 🔴 linha modelo do template
+  const templateRow = worksheet.getRow(START_ROW);
 
-  // ✅ 1. Inserir TODAS as linhas de uma vez (menos a primeira)
+  // ✅ 1. Inserir TODAS as linhas necessárias de uma vez
   if (estoque.length > 1) {
     worksheet.insertRows(
       START_ROW + 1,
@@ -133,11 +134,11 @@ async generateEstoqueExcel(estoque: any[]): Promise<Buffer> {
 
   // ✅ 2. Copiar estilo da linha modelo para as novas linhas
   for (let i = 1; i < estoque.length; i++) {
-    const targetRow = worksheet.getRow(START_ROW + i);
+    const row = worksheet.getRow(START_ROW + i);
 
-    TEMPLATE_ROW.eachCell({ includeEmpty: true }, (cell, col) => {
-      const newCell = targetRow.getCell(col);
-      newCell.style = { ...cell.style };
+    templateRow.eachCell({ includeEmpty: true }, (cell, col) => {
+      const targetCell = row.getCell(col);
+      targetCell.style = { ...cell.style };
     });
   }
 
