@@ -109,7 +109,6 @@ async generateEstoqueExcel(estoque: any[]): Promise<Buffer> {
   // ✅ path compatível com Render (assets do nest-cli)
   const templatePath = path.join(
     process.cwd(),
-    "dist",
     "templates",
     "template_estoque_pedido.xlsx"
   );
