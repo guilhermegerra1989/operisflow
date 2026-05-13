@@ -250,7 +250,7 @@ onMounted(loadPedidos);
       />
       <div class="top-actions">
         <button class="btn-secondary" @click="exportPedidosToCsv()">
-          Exportar
+          Exportar CSV
         </button>
         <button class="btn-secondary" @click="voltarDashboard">
           Dashboard
