@@ -282,7 +282,7 @@ onMounted(loadPedidos);
           <tr>
             <th>Ped.</th>
             <th>Rota</th>
-            <th>Cod.</th>
+            <th>Desc.</th>
             <!-- <th>Descrição</th> -->
             <th>Qtd</th>
             <th>Obs</th>
@@ -299,7 +299,7 @@ onMounted(loadPedidos);
 
             <td>
               <div v-for="item in pedido.items" :key="item.volanteId">
-                <strong>{{ item.codigo }}</strong>
+                <strong>{{ item.descricao }}</strong>
                 <!-- <span> ({{ item.marcaNome }})</span> -->
               </div>
             </td>
