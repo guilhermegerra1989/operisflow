@@ -354,9 +354,20 @@ onMounted(loadPedidos);
             </td> -->
 
             <td>
-              <div style="padding-bottom: 20px;">
-<span class="badge"> status: {{ pedido.status }}</span>
-              </div>
+              
+                <div style="padding-bottom: 20px;">
+                  <span 
+                    class="badge"
+                    :class="{
+                      'badge-success': pedido.status === 'aberto',
+                      'badge-warning': pedido.status === 'Finalizado',
+                      'badge-danger': pedido.status === 'cancelado'
+                    }"
+                  >
+                    status: {{ pedido.status }}
+                  </span>
+                </div>
+
                 <div>
 
 {{ formatDate(pedido.createdAt) }}
@@ -666,5 +677,20 @@ tbody tr:hover {
   .filter-group {
     min-width: 100%;
   }
+}
+
+.badge-success {
+  background-color: #28a745;
+  color: white;
+}
+
+.badge-warning {
+  background-color: #ffc107;
+  color: black;
+}
+
+.badge-danger {
+  background-color: #dc3545;
+  color: white;
 }
 </style>
