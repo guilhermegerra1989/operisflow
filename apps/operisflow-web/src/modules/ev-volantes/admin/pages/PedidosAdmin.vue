@@ -135,6 +135,35 @@ async function finalizarPedido(pedidoId: string) {
   }
 }
 
+/**
+ * Re-Abrir PEDIDO
+ */
+
+async function reAbrirPedido(pedidoId: string) {
+  const confirmar = confirm("Deseja realmente reabrir este pedido?");
+  if (!confirmar) return;
+
+  try {
+
+    const payload = {
+       status: "Aberto"
+    };
+
+    await apiPatch(
+      `/orders/${pedidoId}`, payload
+    );
+
+    // atualiza status local
+    const pedido = pedidos.value.find(p => p.id === pedidoId);
+    if (pedido) {
+      pedido.status = "Aberto";
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Erro ao reabrir o pedido.");
+  }
+}
+
 
 async function exportOrder(pedido: Pedido) {
   const order = mapPedidoToOrder(pedido);
@@ -351,6 +380,14 @@ onMounted(loadPedidos);
                 @click="finalizarPedido(pedido.id)"
               >
                 Finalizar
+              </button>
+
+              <button
+                v-if="pedido.status === 'Finalizado'"
+                class="btn-finalizar"
+                @click="reAbrirPedido(pedido.id)"
+              >
+                Reabrir Pedido
               </button>
 
               <span v-else class="acao-desabilitada">—</span>
