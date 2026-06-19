@@ -33,6 +33,8 @@ const role = ref<"client" | "admin" | "operator">("admin"); // ✅ DEFAULT ADMIN
 const active = ref(true);
 const rotaId = ref("");
 
+const telefoneErro = ref("");
+
 // CAMPOS CLIENTE
 const endereco = ref("");
 const cnpj = ref("");
@@ -91,6 +93,14 @@ watch(role, (r) => {
   }
 });
 
+watch(telefone, (val) => {
+  if (val.length > 50) {
+    telefoneErro.value = "Máximo de 50 caracteres";
+  } else {
+    telefoneErro.value = "";
+  }
+});
+
 // =========================
 // SALVAR
 // =========================
@@ -102,6 +112,11 @@ async function salvarUsuario() {
 
   if (!editingUserId.value && !password.value) {
     alert("Senha obrigatória");
+    return;
+  }
+
+  if (telefone.value.length > 50) {
+    alert("Telefone deve ter no máximo 50 caracteres");
     return;
   }
 
@@ -223,10 +238,14 @@ onMounted(loadUsers);
     <h3>{{ editingUserId ? 'Editar Usuário' : 'Novo Usuário' }}</h3>
 
     <!-- CAMPOS BASE -->
+    <label>Nome</label>
     <input v-model="name" placeholder="Nome do usuário" />
+
+    <label>Email</label>
     <input v-model="email" placeholder="Email (login do sistema)" />
 
     <!-- SENHA -->
+     <label>Senha</label>
     <div class="field">
       <div class="pill-group">
         <input v-model="password" :type="showPassword ? 'text' : 'password'" placeholder="Senha" />
@@ -279,7 +298,17 @@ onMounted(loadUsers);
 
       <div class="field">
         <label>Telefone / Contato</label>
-        <input v-model="telefone" placeholder="Telefone ou contato" />
+        
+        <input
+          v-model="telefone"
+          placeholder="Telefone ou contato"
+          :class="{ 'input-error': telefoneErro }"
+          maxlength="50"
+        />
+
+        <small v-if="telefoneErro" class="error-text">
+          {{ telefoneErro }}
+        </small>
       </div>
 
     </div>
@@ -638,5 +667,17 @@ input {
     text-align: left;
   }
 }
+
+.input-error {
+  border: 1px solid #e53935 !important;
+  background: #ffebee;
+}
+
+.error-text {
+  color: #e53935;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
 
 </style>
