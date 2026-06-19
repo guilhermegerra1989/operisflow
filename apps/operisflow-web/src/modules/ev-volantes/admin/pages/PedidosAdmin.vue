@@ -146,7 +146,7 @@ async function reAbrirPedido(pedidoId: string) {
   try {
 
     const payload = {
-       status: "Aberto"
+       status: "aberto"
     };
 
     await apiPatch(
