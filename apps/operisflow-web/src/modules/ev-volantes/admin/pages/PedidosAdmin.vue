@@ -156,7 +156,7 @@ async function reAbrirPedido(pedidoId: string) {
     // atualiza status local
     const pedido = pedidos.value.find(p => p.id === pedidoId);
     if (pedido) {
-      pedido.status = "Aberto";
+      pedido.status = "aberto";
     }
   } catch (err) {
     console.error(err);
