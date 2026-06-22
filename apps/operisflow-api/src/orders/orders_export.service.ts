@@ -61,8 +61,8 @@ export class OrdersExportService {
     // ===============================
     // ITEMS (dinâmicos, com estilo)
     // ===============================
-    const START_ROW = 14;
-    const TEMPLATE_ROW = 14;
+    const START_ROW = 17;
+    const TEMPLATE_ROW = 17;
 
     const templateRow = worksheet.getRow(TEMPLATE_ROW);
 
