@@ -18,6 +18,8 @@ type Pedido = {
   createdAt: string;
   numeroPedido?: number;
   clientName?: string;
+  nome_fantasia?: string;
+  razao_social?: string;
   address?: string;
   cnpj?: string;
   email?: string;
@@ -36,6 +38,8 @@ interface Order {
     cnpj: string;
     email: string;
     phone: string;
+    nome_fantasia: string;
+    razao_social: string;
   };
   items: Array<{
     code: string;
@@ -193,7 +197,9 @@ function mapPedidoToOrder(pedido: Pedido): Order {
       address: pedido.address ?? "", 
       cnpj: pedido.cnpj ?? "",    
       email: pedido.email ?? "",   
-      phone: pedido.phone ?? "",   
+      phone: pedido.phone ?? "",    
+      nome_fantasia: pedido.nome_fantasia ?? "",  
+      razao_social: pedido.razao_social ?? "", 
     },
 
     items: pedido.items.map((item) => ({

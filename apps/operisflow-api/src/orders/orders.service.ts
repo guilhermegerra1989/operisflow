@@ -130,6 +130,8 @@ async findAll(tenantId: string) {
       o.numero_pedido,
 
       u.name AS client_name,
+      u.nome_fantasia AS nome_fantasia,
+      u.razao_social AS razao_social,
       u.endereco AS endereco,
       u.cnpj AS cnpj,
       u.telefone AS telefone,
@@ -183,6 +185,8 @@ async groupOrdersWithItems(rows: any[]) {
         createdAt: row.created_at,
         numeroPedido: row.numero_pedido,
         clientName: row.client_name,  
+        nome_fantasia: row.nome_fantasia, 
+        razao_social: row.razao_social,  
         cnpj: row.cnpj,
         phone: row.telefone,
         address: row.endereco,
