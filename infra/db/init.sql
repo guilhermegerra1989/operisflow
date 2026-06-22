@@ -319,7 +319,7 @@ INSERT INTO volantes (tenant_id, marca_id, codigo, descricao, img, tipo) VALUES
 
 
 --
--- Volantes esportivos
+-- Volantes esportivos 
 --
 
 -- Chevrolet / GM
@@ -336,6 +336,9 @@ INSERT INTO volantes (tenant_id, marca_id, codigo, descricao, img, tipo) VALUES
 ('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2', 'EVEP202', 'VOL FIAT TORO ALMA ORIGIN.','/volantes/FIAT/EVEP202.png','esportivo'),
 ('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2', 'EVEP203', 'VOL FIAT FIRE ALMA PARAL.','/volantes/FIAT/EVEP203.png','esportivo'),
 ('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2', 'EVEP204', 'VOL FIAT PALIO NOVO ALMA PARALELA','/volantes/FIAT/EVEP204.png','esportivo'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2', 'EVEP205', 'VOL FIAT RALLYE','/volantes/FIAT/EVEP205.png','esportivo'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2', 'EVEP206', 'VOL FIAT GTI VISION','/volantes/FIAT/EVEP206.png','esportivo'),
+
 
 -- Ford
 ('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa3', 'EVEP301', 'VOL FORD NEW KA','/volantes/FORD/EVEP301.png','esportivo'),
@@ -347,6 +350,8 @@ INSERT INTO volantes (tenant_id, marca_id, codigo, descricao, img, tipo) VALUES
 ('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVEP504', 'VOL VW GOL G5 ALMA PARAL.','/volantes/VOLKSWAGEN/EVEP504.png','esportivo'),
 ('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVEP505', 'VOL VW NOVO GOLF','/volantes/VOLKSWAGEN/EVEP505.png','esportivo'),
 ('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVEP506', 'VOL VW CONSTELLATION / DELIVERY COMPLETO','/volantes/VOLKSWAGEN/EVEP506.png','esportivo'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVEP507', 'VOL VW NIVUS UNIVERSAL','/volantes/VOLKSWAGEN/EVEP507.png','esportivo'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVEP508', 'VOL VW NIVUS COMANDO UNIVERSAL','/volantes/VOLKSWAGEN/EVEP508.png','esportivo'),
 
 -- Mercedes-Benz
 ('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa7', 'EVEP601', 'VOL MB 1620 PEQUENO COMPLETO','/volantes/MERCEDES/EVEP601.png','esportivo'),
