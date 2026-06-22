@@ -57,6 +57,8 @@ CREATE TABLE IF NOT EXISTS users (
   tenant_id UUID NOT NULL,
 
   name VARCHAR(255) NOT NULL,
+  nome_fantasia VARCHAR(255),
+  razao_social VARCHAR(255),
   email VARCHAR(255) NOT NULL UNIQUE,
   password VARCHAR(255) NOT NULL,
   role VARCHAR(50) DEFAULT 'client',
@@ -65,7 +67,7 @@ CREATE TABLE IF NOT EXISTS users (
 
   endereco VARCHAR(255),
   cnpj VARCHAR(50),
-  telefone VARCHAR(50),
+  telefone VARCHAR(100),
 
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW(),

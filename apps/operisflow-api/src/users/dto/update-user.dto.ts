@@ -11,4 +11,6 @@ export class UpdateUserDto {
   endereco?: string;
   cnpj?: string;
   telefone?: string;
+  nome_fantasia?: string;
+  razao_social?: string;
 }

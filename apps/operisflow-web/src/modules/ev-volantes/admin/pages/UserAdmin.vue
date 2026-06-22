@@ -9,6 +9,9 @@ type User = {
   role: "client" | "admin" | "operator";
   active: boolean;
   rota_id?: string;
+  nome_fantasia?: string;
+  razao_social?: string;
+  password?: string;
 };
 
 type Rota = {
@@ -26,6 +29,8 @@ const defaultRotaId = ref<string | null>(null);
 
 // FORM
 const name = ref("");
+const nome_fantasia = ref("");
+const razao_social = ref("");
 const email = ref("");
 const password = ref("");
 
@@ -67,6 +72,8 @@ async function loadUsers() {
 // =========================
 function resetForm() {
   name.value = "";
+  nome_fantasia.value = "";
+  razao_social.value = "";
   email.value = "";
   password.value = "";
 
@@ -147,6 +154,8 @@ async function salvarUsuario() {
 
   const payload: any = {
     name: name.value,
+    nome_fantasia: nome_fantasia.value,
+    razao_social: razao_social.value,
     email: email.value,
     role: role.value,
     active: active.value,
@@ -181,8 +190,11 @@ async function salvarUsuario() {
 // EDITAR
 // =========================
 function começarEditarUsuario(user: any) {
+
   editingUserId.value = user.id;
   name.value = user.name;
+  nome_fantasia.value = user.nome_fantasia;
+  razao_social.value = user.razao_social;
   email.value = user.email;
   role.value = user.role;
   active.value = user.active;
@@ -193,7 +205,7 @@ function começarEditarUsuario(user: any) {
   cnpj.value = user.cnpj || "";
   telefone.value = user.telefone || "";
 
-  password.value = "";
+  password.value = user.password || "";
 }
 
 // =========================
@@ -238,15 +250,29 @@ onMounted(loadUsers);
     <h3>{{ editingUserId ? 'Editar Usuário' : 'Novo Usuário' }}</h3>
 
     <!-- CAMPOS BASE -->
-    <label>Nome</label>
-    <input v-model="name" placeholder="Nome do usuário" />
+     <div class="field required">
+        <label>Nome</label>
+        <input v-model="name" placeholder="Nome do usuário" />
+    </div>
 
-    <label>Email</label>
-    <input v-model="email" placeholder="Email (login do sistema)" />
+    <div class="field">
+        <label>Nome Fantasia</label>
+        <input v-model="nome_fantasia" placeholder="Nome Fantasia" />
+    </div>
+
+    <div class="field">
+        <label>Razão Social</label>
+        <input v-model="razao_social" placeholder="Razão Social" />
+    </div>
+
+     <div class="field required">
+        <label>Email</label>
+        <input v-model="email" placeholder="Email (login do sistema)" />
+     </div>
 
     <!-- SENHA -->
-     <label>Senha</label>
-    <div class="field">
+    <div class="field required">
+      <label>Senha</label>
       <div class="pill-group">
         <input v-model="password" :type="showPassword ? 'text' : 'password'" placeholder="Senha" />
         <button type="button" class="toggle-password" @click="showPassword = !showPassword">
@@ -256,7 +282,7 @@ onMounted(loadUsers);
     </div>
 
     <!-- TIPO -->
-    <div class="field">
+    <div class="field required">
       <label>Tipo</label>
       <div class="pill-group">
         <div class="pill" :class="{ active: role === 'client' }" @click="role = 'client'">Cliente</div>
@@ -266,7 +292,7 @@ onMounted(loadUsers);
     </div>
 
     <!-- STATUS -->
-    <div class="field">
+    <div class="field required">
       <label>Status</label>
       <div class="pill-group">
         <div class="pill" :class="{ active: active }" @click="active = true">Ativo</div>

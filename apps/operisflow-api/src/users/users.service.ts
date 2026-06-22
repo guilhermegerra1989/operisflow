@@ -22,7 +22,7 @@ export class UsersService {
   async findAll(tenantId: string) {
     const result = await this.db.query(
       `
-      SELECT id, tenant_id, name, email, role, active, rota_id,
+      SELECT id, tenant_id, name, email, role, active, rota_id, password, nome_fantasia, razao_social,
        endereco, cnpj, telefone,
        created_at, updated_at
       FROM users
@@ -37,7 +37,7 @@ export class UsersService {
   async findOne(tenantId: string, id: string) {
     const result = await this.db.query(
       `
-      SELECT id, tenant_id, name, email, role, active, rota_id,
+      SELECT id, tenant_id, name, email, role, active, rota_id, password, nome_fantasia, razao_social,
        endereco, cnpj, telefone,
        created_at, updated_at
       FROM users
@@ -70,9 +70,9 @@ export class UsersService {
     const result = await this.db.query(
       `
       INSERT INTO users 
-      (tenant_id, name, email, password, role, active, rota_id, endereco, cnpj, telefone)
-      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
-      RETURNING id, tenant_id, name, email, role, active, rota_id, endereco, cnpj, telefone, created_at, updated_at
+      (tenant_id, name, email, password, role, active, rota_id, endereco, cnpj, telefone, nome_fantasia, razao_social)
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)
+      RETURNING id, tenant_id, name, email, role, active, rota_id, endereco, cnpj, telefone, created_at, updated_at, nome_fantasia, razao_social
       `,
       [
         tenantId,
@@ -85,6 +85,8 @@ export class UsersService {
         endereco,
         cnpj,
         telefone,
+        dto.nome_fantasia,
+        dto.razao_social
       ],
     );
 
@@ -124,9 +126,11 @@ export class UsersService {
         endereco = $9,
         cnpj = $10,
         telefone = $11,
+        nome_fantasia = $12,
+        razao_social = $13,
         updated_at = NOW()
       WHERE tenant_id = $1 AND id = $2
-      RETURNING id, tenant_id, name, email, role, active, rota_id, endereco, cnpj, telefone, updated_at
+      RETURNING id, tenant_id, name, email, role, active, rota_id, endereco, cnpj, telefone, updated_at, nome_fantasia, razao_social
       `,
       [
         tenantId,
@@ -140,6 +144,8 @@ export class UsersService {
         endereco,
         cnpj,
         telefone,
+        dto.nome_fantasia,
+        dto.razao_social
       ],
     );
 
