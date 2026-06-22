@@ -51,10 +51,12 @@ export class OrdersExportService {
 
 
     worksheet.getCell("B7").value = order.client.name;
-    worksheet.getCell("B8").value = order.client.address;
-    worksheet.getCell("B9").value = order.client.cnpj;
-    worksheet.getCell("B10").value = order.client.email;
-    worksheet.getCell("B11").value = order.client.phone;
+    worksheet.getCell("B8").value = order.client.nome_fantasia;
+    worksheet.getCell("B9").value = order.client.razao_social;
+    worksheet.getCell("B10").value = order.client.address;
+    worksheet.getCell("B11").value = order.client.cnpj;
+    worksheet.getCell("B12").value = order.client.email;
+    worksheet.getCell("B13").value = order.client.phone;
 
     // ===============================
     // ITEMS (dinâmicos, com estilo)
