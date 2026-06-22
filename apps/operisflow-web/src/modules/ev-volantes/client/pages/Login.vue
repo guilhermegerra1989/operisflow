@@ -63,10 +63,15 @@ function logout() {
       <form @submit.prevent="login">
         <img :src="logo" alt="Logo EV Volantes" class="logo" />
 
-        <label>E-mail</label>
-        <input v-model="email" placeholder="E-mail" />
-        <label>Senha</label>
-        <input v-model="password" type="password" placeholder="Senha" />
+        <div class="field">
+          <label>E-mail</label>
+          <input v-model="email" placeholder="E-mail" />
+        </div>
+
+        <div class="field">
+          <label>Senha</label>
+          <input v-model="password" type="password" placeholder="Senha" />
+        </div>
 
         <!-- BaseButton substituindo o botão original -->
         <BaseButton type="submit" :loading="isLoading" label="Entrar" />
@@ -144,5 +149,17 @@ input:focus {
 .btn-logout:hover {
   background: #ffebee;
 }
+
+.field {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* força label à esquerda */
+  width: 100%;
+}
+
+.field label {
+  margin-bottom: 4px;
+}
+
 
 </style>
