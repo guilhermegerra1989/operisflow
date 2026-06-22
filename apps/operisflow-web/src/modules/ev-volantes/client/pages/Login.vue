@@ -63,7 +63,9 @@ function logout() {
       <form @submit.prevent="login">
         <img :src="logo" alt="Logo EV Volantes" class="logo" />
 
+        <label>E-mail</label>
         <input v-model="email" placeholder="E-mail" />
+        <label>Senha</label>
         <input v-model="password" type="password" placeholder="Senha" />
 
         <!-- BaseButton substituindo o botão original -->
