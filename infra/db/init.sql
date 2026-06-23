@@ -309,7 +309,8 @@ INSERT INTO volantes (tenant_id, marca_id, codigo, descricao, img, tipo) VALUES
 ('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVR54', 'VOL VW GOL G7','/volantes/VOLKSWAGEN/EVR54.png','volante'),
 ('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVR55', 'VOL VW GOL G6 TRÊS TRAVAS','/volantes/VOLKSWAGEN/EVR55.png','volante'),
 ('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVR56', 'VOL VW GOL G6 DUAS TRAVAS','/volantes/VOLKSWAGEN/EVR56.png','volante'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVR57', 'VOL VW DELIVERY/CONSTELLATION','/volantes/VOLKSWAGEN/EVR57.png','volante'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVR57', 'VOL VW D/CONSTELLATION','/volantes/VOLKSWAGEN/EVR57.png','volante'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVR58', 'VOL VW FOX','/volantes/VOLKSWAGEN/EVR58.png','volante'),
 
 -- Hyundai
 ('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa6', 'EVR61', 'VOL HYUNDAI HB20','/volantes/HYUNDAI/EVR61.png','volante'),
