@@ -9,6 +9,7 @@ const email = ref("");
 const password = ref("");
 const error = ref("");
 const isLoading = ref(false);
+const showPassword = ref(false);
 
 async function login() {
   error.value = "";
@@ -70,7 +71,17 @@ function logout() {
 
         <div class="field">
           <label>Senha</label>
-          <input v-model="password" type="password" placeholder="Senha" />
+          <div class="password-wrapper">
+            <input
+              v-model="password"
+              :type="showPassword ? 'text' : 'password'"
+              placeholder="Senha"
+            />
+
+            <span class="toggle" @click="showPassword = !showPassword">
+              {{ showPassword ? '🙈' : '👁️' }}
+            </span>
+          </div>
         </div>
 
         <!-- BaseButton substituindo o botão original -->
@@ -159,6 +170,32 @@ input:focus {
 
 .field label {
   margin-bottom: 4px;
+}
+
+.password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-wrapper input {
+  width: 100%;
+  padding-right: 45px; /* espaço pro ícone */
+}
+
+.toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 18px;
+  user-select: none;
+  opacity: 0.6;
+  transition: 0.2s;
+}
+
+.toggle:hover {
+  opacity: 1;
 }
 
 
