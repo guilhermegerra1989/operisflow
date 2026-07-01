@@ -273,12 +273,19 @@ onMounted(loadUsers);
     <!-- SENHA -->
     <div class="field required">
       <label>Senha</label>
-      <div class="pill-group">
-        <input v-model="password" :type="showPassword ? 'text' : 'password'" placeholder="Senha" />
-        <button type="button" class="toggle-password" @click="showPassword = !showPassword">
-          {{ showPassword ? 'Ocultar' : 'Mostrar' }}
-        </button>
+
+      <div class="password-wrapper">
+        <input
+          v-model="password"
+          :type="showPassword ? 'text' : 'password'"
+          placeholder="Senha"
+        />
+
+        <span class="toggle" @click="showPassword = !showPassword">
+          {{ showPassword ? '🙈' : '👁️' }}
+        </span>
       </div>
+
     </div>
 
     <!-- TIPO -->
@@ -703,6 +710,32 @@ input {
   color: #e53935;
   font-size: 12px;
   margin-top: 4px;
+}
+
+.password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-wrapper input {
+  width: 100%;
+  padding-right: 40px; /* espaço pro ícone */
+}
+
+.toggle {
+  position: absolute;
+  right: 10px;
+  top: 66%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 18px;
+  opacity: 0.6;
+  transition: 0.2s;
+  user-select: none;
+}
+
+.toggle:hover {
+  opacity: 1;
 }
 
 
