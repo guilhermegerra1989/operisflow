@@ -387,7 +387,8 @@
 }
 
 .section-alt {
-  background: rgba(15, 23, 42, 0.88); /* quase sólido, mas deixa o fundo respirar */
+  /* background: rgba(15, 23, 42, 0.88);  */
+  background: transparent; 
 }
 
 .section-header {
