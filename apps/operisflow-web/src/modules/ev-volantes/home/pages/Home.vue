@@ -412,7 +412,8 @@
   border-radius: 10px;
   overflow: hidden;
   border: 1px solid #334155;
-  background: #020617;
+   background: transparent;
+  /* background: #020617; */
   display: flex;
   align-items: center;
   justify-content: center;
