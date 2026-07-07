@@ -277,46 +277,54 @@ ON CONFLICT (id) DO NOTHING;
 INSERT INTO volantes (tenant_id, marca_id, codigo, descricao, img, tipo) VALUES 
 
 -- Chevrolet / GM
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR11', 'VOL GM ONIX AB - APLIQUE','/volantes/CHEVROLET/EVR11.png','volante'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR12', 'VOL GM ONIX AB - PU','/volantes/CHEVROLET/EVR12.png','volante'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR13', 'VOL GM COBALT AB - APLIQUE','/volantes/CHEVROLET/EVR13.png','volante'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR14', 'VOL GM COBALT AB - PU','/volantes/CHEVROLET/EVR14.png','volante'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR15', 'VOL GM CELTA NOVO','/volantes/CHEVROLET/EVR15.png','volante'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR16', 'VOL GM PRISMA','/volantes/CHEVROLET/EVR16.png','volante'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR17', 'VOL GM AGILE AB','/volantes/CHEVROLET/EVR17.png','volante'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR18', 'VOL GM ONIX CONTROLE','/volantes/CHEVROLET/EVR18.png','volante'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR19', 'VOL GM SPIN CONTROLE','/volantes/CHEVROLET/EVR19.png','volante'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR10', 'VOL GM ONIX AB - APLIQUE','/volantes/CHEVROLET/EVR10.png','volante'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR11', 'VOL GM ONIX AB - PU','/volantes/CHEVROLET/EVR11.png','volante'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR12', 'VOL GM COBALT AB - APLIQUE','/volantes/CHEVROLET/EVR12.png','volante'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR13', 'VOL GM COBALT AB - PU','/volantes/CHEVROLET/EVR13.png','volante'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR14', 'VOL GM CELTA NOVO','/volantes/CHEVROLET/EVR14.png','volante'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR15', 'VOL GM PRISMA','/volantes/CHEVROLET/EVR15.png','volante'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR16', 'VOL GM AGILE AB','/volantes/CHEVROLET/EVR16.png','volante'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR17', 'VOL GM ONIX CONTROLE','/volantes/CHEVROLET/EVR17.png','volante'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR18', 'VOL GM SPIN CONTROLE','/volantes/CHEVROLET/EVR18.png','volante'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR19', 'VOL GM CORSA/MERIVA','/volantes/CHEVROLET/EVR19.png','volante'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'EVR100', 'VOL GM TRACKER APLIQUE','/volantes/CHEVROLET/EVR100.png','volante'),
 
 -- Fiat
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2', 'EVR21', 'VOL FIAT UNO FIRE','/volantes/FIAT/EVR21.png','volante'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2', 'EVR22', 'VOL FIAT VIVACE','/volantes/FIAT/EVR22.png','volante'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2', 'EVR23', 'VOL FIAT IDEA AB','/volantes/FIAT/EVR23.png','volante'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2', 'EVR24', 'VOL FIAT PALIO NOVO','/volantes/FIAT/EVR24.png','volante'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2', 'EVR20', 'VOL FIAT UNO FIRE','/volantes/FIAT/EVR20.png','volante'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2', 'EVR21', 'VOL FIAT VIVACE','/volantes/FIAT/EVR21.png','volante'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2', 'EVR22', 'VOL FIAT IDEA AB','/volantes/FIAT/EVR22.png','volante'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2', 'EVR23', 'VOL FIAT PALIO NOVO','/volantes/FIAT/EVR23.png','volante'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2', 'EVR24', 'VOL FIAT ARGO S/BORB','/volantes/FIAT/EVR24.png','volante'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2', 'EVR25', 'VOL FIAT MOBI 2 TRAVAS','/volantes/FIAT/EVR25.png','volante'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2', 'EVR26', 'VOL FIAT MOBI 3 TRAVAS','/volantes/FIAT/EVR26.png','volante'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2', 'EVR27', 'VOL FIAT MOBI 3 TRAVAS SOM','/volantes/FIAT/EVR27.png','volante'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2', 'EVR28', 'VOL FIAT ARGO BORBOLETA','/volantes/FIAT/EVR28.png','volante'),
 
 -- Ford
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa3', 'EVR31', 'VOL FORD NEW KA','/volantes/FORD/EVR31.png','volante'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa3', 'EVR32', 'VOL FORD FIESTA 2003','/volantes/FORD/EVR32.png','volante'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa3', 'EVR33', 'VOL FORD ECO SPORT AB','/volantes/FORD/EVR33.png','volante'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa3', 'EVR30', 'VOL FORD NEW KA','/volantes/FORD/EVR30.png','volante'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa3', 'EVR31', 'VOL FORD FIESTA 2003','/volantes/FORD/EVR31.png','volante'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa3', 'EVR32', 'VOL FORD ECO SPORT AB','/volantes/FORD/EVR32.png','volante'),
 
 -- Renault
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa4', 'EVR41', 'VOL RENAULT LOGAN 3 TRAVAS','/volantes/RENAULT/EVR41.png','volante'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa4', 'EVR42', 'VOL RENAULT SANDERO','/volantes/RENAULT/EVR42.png','volante'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa4', 'EVR40', 'VOL RENAULT LOGAN 3 TRAVAS','/volantes/RENAULT/EVR40.png','volante'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa4', 'EVR41', 'VOL RENAULT SANDERO','/volantes/RENAULT/EVR41.png','volante'),
 
 -- Volkswagen
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVR51', 'VOL VW VOYAGE','/volantes/VOLKSWAGEN/EVR51.png','volante'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVR52', 'VOL VW GOL G4','/volantes/VOLKSWAGEN/EVR52.png','volante'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVR53', 'VOL VW GOL G5','/volantes/VOLKSWAGEN/EVR53.png','volante'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVR54', 'VOL VW GOL G7','/volantes/VOLKSWAGEN/EVR54.png','volante'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVR55', 'VOL VW GOL G6 TRÊS TRAVAS','/volantes/VOLKSWAGEN/EVR55.png','volante'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVR56', 'VOL VW GOL G6 DUAS TRAVAS','/volantes/VOLKSWAGEN/EVR56.png','volante'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVR57', 'VOL VW D/CONSTELLATION','/volantes/VOLKSWAGEN/EVR57.png','volante'),
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVR58', 'VOL VW FOX','/volantes/VOLKSWAGEN/EVR58.png','volante'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVR50', 'VOL VW VOYAGE','/volantes/VOLKSWAGEN/EVR50.png','volante'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVR51', 'VOL VW GOL G4','/volantes/VOLKSWAGEN/EVR51.png','volante'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVR52', 'VOL VW GOL G5','/volantes/VOLKSWAGEN/EVR52.png','volante'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVR53', 'VOL VW GOL G6 TRÊS TRAVAS','/volantes/VOLKSWAGEN/EVR53.png','volante'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVR54', 'VOL VW GOL G6 DUAS TRAVAS','/volantes/VOLKSWAGEN/EVR54.png','volante'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVR55', 'VOL VW GOL G7','/volantes/VOLKSWAGEN/EVR55.png','volante'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVR56', 'VOL VW D/CONSTELLATION','/volantes/VOLKSWAGEN/EVR56.png','volante'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'EVR57', 'VOL VW FOX','/volantes/VOLKSWAGEN/EVR57.png','volante'),
 
 -- Hyundai
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa6', 'EVR61', 'VOL HYUNDAI HB20','/volantes/HYUNDAI/EVR61.png','volante'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa6', 'EVR60', 'VOL HYUNDAI HB20','/volantes/HYUNDAI/EVR61.png','volante'),
 
 -- Mercedes-Benz
-('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa7', 'EVR71', 'VOL MB 1620 PEQUENO','/volantes/MERCEDES/EVR71.png','volante'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa7', 'EVR70', 'VOL MB 1620 PEQUENO','/volantes/MERCEDES/EVR70.png','volante'),
+('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa7', 'EVR71', 'VOL MB 1620 GRANDE','/volantes/MERCEDES/EVR71.png','volante'),
 ('3f2d2d48-1f8f-4ebe-a5e5-cdc1d18f4eab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa7', 'EVR72', 'VOL MB ATRON/EURO','/volantes/MERCEDES/EVR72.png','volante'),
 
 
