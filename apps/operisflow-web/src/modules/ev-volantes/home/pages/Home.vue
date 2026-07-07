@@ -124,12 +124,12 @@
           <div class="foto-card"> <img src="/volantes/FIAT/EVR24.png" alt="EVR24" /></div>
 
         
+          <div class="foto-card"> <img src="/volantes/FORD/EVR30.png" alt="EVR30" /></div>
           <div class="foto-card"> <img src="/volantes/FORD/EVR31.png" alt="EVR31" /></div>
           <div class="foto-card"> <img src="/volantes/FORD/EVR32.png" alt="EVR32" /></div>
-          <div class="foto-card"> <img src="/volantes/FORD/EVR33.png" alt="EVR33" /></div>
 
 
-          <div class="foto-card"> <img src="/volantes/HYUNDAI/EVR61.png" alt="EVR61" /></div>
+          <div class="foto-card"> <img src="/volantes/HYUNDAI/EVR60.png" alt="EVR60" /></div>
 
 
           <div class="foto-card"> <img src="/volantes/VOLKSWAGEN/EVR51.png" alt="EVR51" /></div>
@@ -141,8 +141,8 @@
           <div class="foto-card"> <img src="/volantes/VOLKSWAGEN/EVR57.png" alt="EVR57" /></div>
 
 
+          <div class="foto-card"> <img src="/volantes/RENAULT/EVR40.png" alt="EVR40" /></div>
           <div class="foto-card"> <img src="/volantes/RENAULT/EVR41.png" alt="EVR41" /></div>
-          <div class="foto-card"> <img src="/volantes/RENAULT/EVR42.png" alt="EVR42" /></div>
 
 
           <div class="foto-card"> <img src="/volantes/MERCEDES/EVR71.png" alt="EVR71" /></div>
