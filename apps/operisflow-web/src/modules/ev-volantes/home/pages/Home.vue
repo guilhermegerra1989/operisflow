@@ -1,4 +1,3 @@
-
 <script setup lang="ts">
 
 import { ref } from 'vue'
@@ -209,7 +208,22 @@ function anterior() {
 
         <div class="contact-box">
           <p><strong>E-mail:</strong> administracao@evvolantes.com.br</p>
-          <p><strong>WhatsApp:</strong> (12) 98266-9702</p>
+          <p>
+            <strong>
+              <svg viewBox="0 0 24 24" 
+                  width="18"
+                  height="18">
+                <path
+                  fill="currentColor"
+                  d="M20.52 3.48A11.87 11.87 0 0012.06 0C5.6 0 .34 5.28.34 11.8c0 2.08.54 4.1 1.56 5.88L0 24l6.52-1.7a11.74 11.74 0 005.54 1.4h.01c6.46 0 11.72-5.28 11.72-11.8 0-3.15-1.22-6.1-3.27-8.42zm-8.46 18.1h-.01a9.8 9.8 0 01-5-1.36l-.36-.21-3.87 1.01 1.03-3.77-.24-.39a9.77 9.77 0 01-1.5-5.26c0-5.41 4.38-9.8 9.77-9.8 2.61 0 5.07 1.02 6.92 2.88a9.73 9.73 0 012.87 6.93c0 5.4-4.38 9.79-9.76 9.79zm5.45-7.32c-.3-.15-1.78-.88-2.06-.98-.28-.1-.48-.15-.68.15s-.78.98-.96 1.18c-.17.2-.35.23-.64.08-.3-.15-1.25-.46-2.38-1.48-.88-.79-1.47-1.76-1.64-2.06-.17-.3-.02-.46.13-.6.14-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.38-.02-.53-.07-.15-.68-1.64-.93-2.24-.24-.58-.49-.5-.68-.5h-.58c-.2 0-.52.08-.8.38-.28.3-1.04 1.02-1.04 2.48s1.06 2.88 1.21 3.08c.15.2 2.1 3.2 5.1 4.48.71.31 1.27.5 1.7.64.71.23 1.35.2 1.86.12.57-.09 1.78-.73 2.03-1.44.25-.7.25-1.3.17-1.44-.08-.13-.27-.2-.57-.35z"
+                />
+              </svg>
+               <a href="https://wa.me/5512982669702?text=Olá! Vim pelo site e gostaria de mais informações."
+                      target="_blank"
+                      rel="noopener noreferrer" style="margin-left: 8px;color: cornflowerblue;" > (12) 98266-9702 </a>
+            </strong> 
+                  
+          </p>
           <p>
             <a href="https://www.instagram.com/ev.volantes" class="insta-link" target="_blank">
               <svg
@@ -644,7 +658,7 @@ function anterior() {
 .title-gradient {
   font-size: 2.2rem;
   background: linear-gradient(to right, #38bdf8, #0ea5e9);
-  -webkit-background-clip: text;
+  /* -webkit-background-clip: text; */
   color: transparent;
   font-weight: 700;
 }
