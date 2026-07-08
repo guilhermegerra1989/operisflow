@@ -1,3 +1,72 @@
+
+<script setup lang="ts">
+
+import { ref } from 'vue'
+
+const modalAberto = ref(false)
+const indiceAtual = ref(0)
+const imagens = ref<string[]>([])
+
+const galerias = {
+  CHEVROLET: [
+    '/volantes_esportivos/CHEVROLET/cruze_universal_azul.png',
+    '/volantes_esportivos/CHEVROLET/tracker_controle_universal.png',
+    '/volantes_esportivos/CHEVROLET/volante_gti_vision.png',
+    '/volantes_esportivos/CHEVROLET/cruze_universal_branco.png',
+    '/volantes_esportivos/CHEVROLET/cruze_universal_vermelho.png',
+    '/volantes_esportivos/CHEVROLET/tracker_aplique_universal.png',
+    '/volantes_esportivos/CHEVROLET/tracker_controle_led_alma_corsa_celta.png',
+    '/volantes_esportivos/CHEVROLET/volante_black.png'
+  ],
+
+  VOLKSWAGEN: [
+    '/volantes_esportivos/VOLKSWAGEN/nivus_controle_universal.png',
+    '/volantes_esportivos/VOLKSWAGEN/novo_golf.png',
+    '/volantes_esportivos/VOLKSWAGEN/volante_gti_vision.png',
+    '/volantes_esportivos/VOLKSWAGEN/gol_g5_original.png',
+    '/volantes_esportivos/VOLKSWAGEN/nivus_universal.png',
+    '/volantes_esportivos/VOLKSWAGEN/volante_esportivo_rallye.png'
+  ],
+
+  FIAT: [
+    '/volantes_esportivos/FIAT/volante_fire_original.png',
+    '/volantes_esportivos/FIAT/toro_black_alma_original.png',
+    '/volantes_esportivos/FIAT/volante_gti_vision.png',
+    '/volantes_esportivos/FIAT/volante_palio_novo.png',
+    '/volantes_esportivos/FIAT/volante_rallye.png',
+    '/volantes_esportivos/FIAT/pulse_black_alma_original.png',
+    '/volantes_esportivos/FIAT/palio_novo_azul.png',
+    '/volantes_esportivos/FIAT/nivus_aplique_universal.png'
+  ],
+
+  FORD: [
+    '/volantes_esportivos/FORD/volante_ford.png',
+    '/volantes_esportivos/FORD/volante_gti_vision_ford_ka.png',
+    '/volantes_esportivos/FORD/volante_rallye_ford.png'
+  ]
+} as const
+
+type Marca = keyof typeof galerias
+
+function abrirGaleria(marca: Marca) {
+  imagens.value = [...galerias[marca]]
+  indiceAtual.value = 0
+  modalAberto.value = true
+}
+
+function proxima() {
+  indiceAtual.value =
+    (indiceAtual.value + 1) % imagens.value.length
+}
+
+function anterior() {
+  indiceAtual.value =
+    (indiceAtual.value - 1 + imagens.value.length) %
+    imagens.value.length
+}
+
+</script>
+
 <template>
   <div class="page">
 
@@ -55,10 +124,7 @@
         </div>
 
       </section>
-      
-
-
-
+    
 
       <!-- SOBRE A EMPRESA -->
       <section id="sobre" class="section sobre-elegante">
@@ -98,55 +164,38 @@
         </div>
 
       </section>
+      
 
       <!-- GALERIA DE FOTOS -->
       <section id="fotos" class="section section-alt">
         <div class="section-header">
-          <h2>Galeria de Produtos</h2>
+          <h2>Volantes Esportivos</h2>
           <p></p>
         </div>
 
         <div class="galeria-grid">
-          <div class="foto-card"> <img src="/volantes/CHEVROLET/EVR11.png" alt="EVR11" /></div>
-          <div class="foto-card"> <img src="/volantes/CHEVROLET/EVR12.png" alt="EVR12" /></div>
-          <div class="foto-card"> <img src="/volantes/CHEVROLET/EVR13.png" alt="EVR13" /></div>
-          <div class="foto-card"> <img src="/volantes/CHEVROLET/EVR14.png" alt="EVR14" /></div>
-          <div class="foto-card"> <img src="/volantes/CHEVROLET/EVR15.png" alt="EVR15" /></div>
-          <div class="foto-card"> <img src="/volantes/CHEVROLET/EVR16.png" alt="EVR16" /></div>
-          <div class="foto-card"> <img src="/volantes/CHEVROLET/EVR17.png" alt="EVR17" /></div>
-          <div class="foto-card"> <img src="/volantes/CHEVROLET/EVR18.png" alt="EVR18" /></div>
-          <div class="foto-card"> <img src="/volantes/CHEVROLET/EVR19.png" alt="EVR19" /></div>
+          <div class="foto-card" @click="abrirGaleria('CHEVROLET')"> <img src="/marcas/chevrolet.png" alt="Chevrolet" /></div>
+          <div class="foto-card" @click="abrirGaleria('CHEVROLET')"> <img src="/volantes_esportivos/CHEVROLET/cruze_universal_azul.png" alt="Cruze" /></div>
+          <div class="foto-card" @click="abrirGaleria('CHEVROLET')"> <img src="/volantes_esportivos/CHEVROLET/tracker_controle_universal.png" alt="Tracker" /></div>
+          <div class="foto-card" @click="abrirGaleria('CHEVROLET')"> <img src="/volantes_esportivos/CHEVROLET/volante_gti_vision.png" alt="Gti" /></div>
 
           
-          <div class="foto-card"> <img src="/volantes/FIAT/EVR21.png" alt="EVR21" /></div>
-          <div class="foto-card"> <img src="/volantes/FIAT/EVR22.png" alt="EVR22" /></div>
-          <div class="foto-card"> <img src="/volantes/FIAT/EVR23.png" alt="EVR23" /></div>
-          <div class="foto-card"> <img src="/volantes/FIAT/EVR24.png" alt="EVR24" /></div>
-
-        
-          <!-- <div class="foto-card"> <img src="/volantes/FORD/EVR30.png" alt="EVR30" /></div>
-          <div class="foto-card"> <img src="/volantes/FORD/EVR31.png" alt="EVR31" /></div>
-          <div class="foto-card"> <img src="/volantes/FORD/EVR32.png" alt="EVR32" /></div>
+          <div class="foto-card" @click="abrirGaleria('VOLKSWAGEN')"> <img src="/marcas/volkswagen.png" alt="Volkswagen" /></div>
+          <div class="foto-card" @click="abrirGaleria('VOLKSWAGEN')"> <img src="/volantes_esportivos/VOLKSWAGEN/nivus_controle_universal.png" alt="Nivus" /></div>
+          <div class="foto-card" @click="abrirGaleria('VOLKSWAGEN')"> <img src="/volantes_esportivos/VOLKSWAGEN/novo_golf.png" alt="Golf" /></div>
+          <div class="foto-card" @click="abrirGaleria('VOLKSWAGEN')"> <img src="/volantes_esportivos/VOLKSWAGEN/volante_gti_vision.png" alt="Gti" /></div>
 
 
-          <div class="foto-card"> <img src="/volantes/HYUNDAI/EVR60.png" alt="EVR60" /></div> -->
+          <div class="foto-card" @click="abrirGaleria('FIAT')"> <img src="/marcas/fiat.png" alt="Fiat" /></div>
+          <div class="foto-card" @click="abrirGaleria('FIAT')"> <img src="/volantes_esportivos/FIAT/volante_fire_original.png" alt="Fire" /></div>
+          <div class="foto-card" @click="abrirGaleria('FIAT')"> <img src="/volantes_esportivos/FIAT/toro_black_alma_original.png" alt="Toro" /></div>
+          <div class="foto-card" @click="abrirGaleria('FIAT')"> <img src="/volantes_esportivos/FIAT/volante_gti_vision.png" alt="Gti" /></div>
 
 
-          <div class="foto-card"> <img src="/volantes/VOLKSWAGEN/EVR51.png" alt="EVR51" /></div>
-          <div class="foto-card"> <img src="/volantes/VOLKSWAGEN/EVR52.png" alt="EVR52" /></div>
-          <div class="foto-card"> <img src="/volantes/VOLKSWAGEN/EVR53.png" alt="EVR53" /></div>
-          <div class="foto-card"> <img src="/volantes/VOLKSWAGEN/EVR54.png" alt="EVR54" /></div>
-          <div class="foto-card"> <img src="/volantes/VOLKSWAGEN/EVR55.png" alt="EVR55" /></div>
-          <div class="foto-card"> <img src="/volantes/VOLKSWAGEN/EVR56.png" alt="EVR56" /></div>
-          <div class="foto-card"> <img src="/volantes/VOLKSWAGEN/EVR57.png" alt="EVR57" /></div>
-
-
-          <!-- <div class="foto-card"> <img src="/volantes/RENAULT/EVR40.png" alt="EVR40" /></div>
-          <div class="foto-card"> <img src="/volantes/RENAULT/EVR41.png" alt="EVR41" /></div>
-
-
-          <div class="foto-card"> <img src="/volantes/MERCEDES/EVR71.png" alt="EVR71" /></div>
-          <div class="foto-card"> <img src="/volantes/MERCEDES/EVR72.png" alt="EVR72" /></div> -->
+          <div class="foto-card" @click="abrirGaleria('FORD')"> <img src="/marcas/ford.png" alt="Ford" /></div>
+          <div class="foto-card" @click="abrirGaleria('FORD')"> <img src="/volantes_esportivos/FORD/volante_ford.png" alt="Ford" /></div>
+          <div class="foto-card" @click="abrirGaleria('FORD')"> <img src="/volantes_esportivos/FORD/volante_gti_vision_ford_ka.png" alt="Ford Ka" /></div>
+          <div class="foto-card" @click="abrirGaleria('FORD')"> <img src="/volantes_esportivos/FORD/volante_rallye_ford.png" alt="Ford Rallye" /></div>
 
         </div>
       </section>
@@ -211,6 +260,19 @@
     <footer class="footer">
       <span>© 2026 EV Volantes. Todos os direitos reservados.</span>
     </footer>
+
+
+    <div v-if="modalAberto" class="modal-galeria" @click.self="modalAberto = false" >
+        <button class="modal-fechar" @click="modalAberto = false" > ✕ </button>
+        <button class="modal-nav modal-prev" @click="anterior">  ❮  </button>
+
+        <img :src="imagens[indiceAtual]" class="modal">
+
+        <button class="modal-nav modal-next" @click="proxima">   ❯  </button>
+        <div class="modal-indicador"> {{ indiceAtual + 1 }} / {{ imagens.length }} </div>
+    </div>
+
+
   </div>
 
 </template>
@@ -835,6 +897,131 @@
 
   .whatsapp-label {
     display: none;
+  }
+}
+
+.marca-row{
+  display:grid;
+  grid-template-columns:200px repeat(3,1fr);
+  gap:16px;
+  margin-bottom:24px;
+}
+
+.marca-logo,
+.volante-card{
+  cursor:pointer;
+
+  border-radius:16px;
+  overflow:hidden;
+
+  background:rgba(15,23,42,.7);
+
+  border:1px solid rgba(56,189,248,.2);
+
+  transition:.3s;
+}
+
+.marca-logo:hover,
+.volante-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 12px 30px rgba(0,0,0,.4);
+}
+
+.marca-logo img,
+.volante-card img{
+  width:100%;
+  height:180px;
+  object-fit:contain;
+}
+
+.modal-galeria {
+  position: fixed;
+  inset: 0;
+
+  background: rgba(0,0,0,.94);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 99999;
+}
+
+.modal-imagem {
+  max-width: 85%;
+  max-height: 80vh;
+  object-fit: contain;
+
+  animation: fadeModal .25s ease;
+}
+
+.modal-fechar {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+
+  background: none;
+  border: none;
+
+  color: white;
+  font-size: 40px;
+
+  cursor: pointer;
+}
+
+.modal-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+
+  width: 60px;
+  height: 60px;
+
+  border: none;
+  border-radius: 50%;
+
+  background: rgba(255,255,255,.08);
+  color: white;
+
+  font-size: 32px;
+  cursor: pointer;
+
+  transition: .2s;
+}
+
+.modal-nav:hover {
+  background: rgba(255,255,255,.18);
+}
+
+.modal-prev {
+  left: 40px;
+}
+
+.modal-next {
+  right: 40px;
+}
+
+.modal-indicador {
+  position: absolute;
+  bottom: 25px;
+
+  color: white;
+
+  font-size: 14px;
+  background: rgba(255,255,255,.08);
+
+  padding: 8px 16px;
+  border-radius: 999px;
+}
+
+@keyframes fadeModal {
+  from {
+    opacity: 0;
+    transform: scale(.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
 }
 
