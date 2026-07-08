@@ -357,6 +357,27 @@ function abrirGaleria(marca: Marca) {
       </div>
 
 
+      <div class="banner-diferencial">
+        <div class="banner-icon">
+          ✓
+        </div>
+
+        <div class="banner-texto">
+          <span class="banner-tag">
+            DIFERENCIAL DE FÁBRICA
+          </span>
+
+          <h3>
+            Todos os modelos acompanham Cubo de Adaptação em Alumínio
+          </h3>
+
+          <p>
+            Compatibilidade Plug-and-Play para diversas montadoras.
+            Instalação rápida, segura e com acabamento profissional.
+          </p>
+        </div>
+      </div>
+
 
       </section>
 
@@ -1585,6 +1606,108 @@ function abrirGaleria(marca: Marca) {
 
   box-shadow:
     0 12px 28px rgba(0,75,255,.35);
+}
+
+.banner-diferencial {
+  margin-top: 40px;
+
+  display: flex;
+  align-items: center;
+  gap: 24px;
+
+  padding: 28px;
+
+  border-radius: 24px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #004BFF,
+      #0038c7
+    );
+
+  box-shadow:
+    0 20px 40px rgba(0,75,255,.35);
+
+  position: relative;
+
+  overflow: hidden;
+}
+
+.banner-diferencial::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,.1),
+      transparent 40%
+    );
+
+  pointer-events: none;
+}
+
+.banner-icon {
+  width: 80px;
+  height: 80px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 20px;
+
+  background: rgba(255,255,255,.15);
+
+  font-size: 2rem;
+  font-weight: 800;
+
+  color: white;
+}
+
+.banner-tag {
+  display: inline-block;
+
+  margin-bottom: 8px;
+
+  font-size: .8rem;
+  font-weight: 700;
+
+  letter-spacing: 2px;
+
+  color: rgba(255,255,255,.85);
+}
+
+.banner-texto h3 {
+  margin: 0;
+
+  font-size: 1.5rem;
+
+  color: white;
+
+  font-weight: 800;
+}
+
+.banner-texto p {
+  margin-top: 8px;
+
+  color: rgba(255,255,255,.9);
+
+  font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+
+  .banner-diferencial {
+    flex-direction: column;
+    text-align: center;
+  }
+
 }
 
 </style>
