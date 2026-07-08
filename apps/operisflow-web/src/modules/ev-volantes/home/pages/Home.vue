@@ -125,13 +125,15 @@ function abrirGaleria(marca: Marca) {
       <section class="hero hero-refinado">
 
         <div class="hero-text">
-          <h1 class="hero-titulo"> <span class="hero-destaque">EV Volantes automotivos </span>
+          <h1 class="hero-titulo"> <span class="hero-destaque">EV Volantes | Alta Performance e Estética Automotiva </span>
               </h1>      
 
           <p class="hero-subtitulo">
-            Atuamos fornecendo volantes completos e revisados com alto padrão
-            de qualidade. Atendemos oficinas, lojistas, mecânicas e clientes
-            finais que buscam segurança e acabamento impecável.
+            A EV Volantes nasceu da paixão pelo universo automotivo e de uma inconformidade com o mercado. 
+            Atuando inicialmente como distribuidores, percebemos que os produtos disponíveis não atingiam o nível de excelência que nossos clientes mereciam.
+            Em vez de aceitar o comum, decidimos ditar o padrão. 
+            Assumimos o controle da produção para criar volantes que unem ergonomia superior, acabamento impecável e máxima segurança. 
+            Hoje, somos referência na fabricação e distribuição de volantes automotivos.
           </p>
 
           <div class="hero-botoes">
