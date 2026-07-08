@@ -222,11 +222,14 @@ function abrirGaleria(marca: Marca) {
 
           <p class="sobre-descricao">
            - Inspeção Rígida: Cada peça passa por testes estruturais e de aderência antes do envio.
-           
+          </p>
+          <p class="sobre-descricao">
            - Pronto para Instalação: Componentes entregues limpos, revisados e higienizados.
-           
+          </p>
+          <p class="sobre-descricao">
            - Materiais de Alta Resistência: Injetados e revestimentos que suportam o desgaste diário e a exposição solar.
-           
+          </p>
+          <p class="sobre-descricao">
            - Design e Ergonomia: Visual moderno que valoriza o interior do carro e melhora a pegada ao dirigir.
           </p>
         </div>
