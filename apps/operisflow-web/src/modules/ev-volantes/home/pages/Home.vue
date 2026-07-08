@@ -296,17 +296,17 @@ function abrirGaleria(marca: Marca) {
 
     <div class="servico-item">
       <strong>ATACADO</strong>
-      <p> Distribuição em escala para lojistas e autopeças. </p>
+      <p> Distribuição robusta com condições competitivas para lojistas e autopeças. </p>
     </div>
 
     <div class="servico-item">
       <strong>VAREJO</strong>
-      <p> Venda direta para consumidores finais. </p>
+      <p> Venda direta para consumidores finais com total qualidade. </p>
     </div>
 
     <div class="servico-item">
       <strong>BASE DE TROCA</strong>
-      <p> Renovação imediata de volantes com melhor custo-benefício. </p>
+      <p> Solução sustentável e rápida, minimizando o tempo do veículo parado. </p>
     </div>
 
 
@@ -335,19 +335,19 @@ function abrirGaleria(marca: Marca) {
       <div class="premium-lista">
 
         <div class="premium-item">
-          Inspeção Rígida
+          <b style="color: darkgrey;">Inspeção de Alta Precisão</b>: <small style="margin-left:5px;">Cada volante passa por testes ultra responsivos de estrutura e acabamento.</small>
         </div>
 
         <div class="premium-item">
-          Pronto para Instalação
+          <b  style="color: darkgrey;">Pronto para Instalação</b>: <small style="margin-left:5px;">Peças rigorosamente limpas, revisadas e preparadas para entrega imediata.</small>
         </div>
 
         <div class="premium-item">
-          Materiais de Alta Resistência
-        </div>
+          <b  style="color: darkgrey;">Materiais</b>: <small style="margin-left:5px;">Matéria-prima selecionada e de alta qualidade.</small>
+       </div>
 
         <div class="premium-item">
-          Design e Ergonomia
+          <b  style="color: darkgrey;">Mão de Obra Especializada</b>: <small style="margin-left:5px;">Equipe altamente treinada e capacitação continuada.</small>
         </div>
 
           
