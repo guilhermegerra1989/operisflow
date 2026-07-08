@@ -1,10 +1,46 @@
 <script setup lang="ts">
 
-import { ref } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 
 const modalAberto = ref(false)
 const indiceAtual = ref(0)
 const imagens = ref<string[]>([])
+
+function proxima() {
+  indiceAtual.value =
+    (indiceAtual.value + 1) %
+    imagens.value.length
+}
+
+function anterior() {
+  indiceAtual.value =
+    (indiceAtual.value - 1 + imagens.value.length) %
+    imagens.value.length
+}
+
+function handleKey(event: KeyboardEvent) {
+  if (!modalAberto.value) return
+
+  if (event.key === 'ArrowRight') {
+    proxima()
+  }
+
+  if (event.key === 'ArrowLeft') {
+    anterior()
+  }
+
+  if (event.key === 'Escape') {
+    modalAberto.value = false
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('keydown', handleKey)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKey)
+})
 
 const galerias = {
   CHEVROLET: [
@@ -53,16 +89,6 @@ function abrirGaleria(marca: Marca) {
   modalAberto.value = true
 }
 
-function proxima() {
-  indiceAtual.value =
-    (indiceAtual.value + 1) % imagens.value.length
-}
-
-function anterior() {
-  indiceAtual.value =
-    (indiceAtual.value - 1 + imagens.value.length) %
-    imagens.value.length
-}
 
 </script>
 
