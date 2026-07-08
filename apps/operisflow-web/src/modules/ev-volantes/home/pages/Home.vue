@@ -172,17 +172,17 @@ function abrirGaleria(marca: Marca) {
         <div class="cards-container">
 
           <div class="card-info">
-            <h3>Missão</h3>
+            <h3>🎯 Missão</h3>
             <p>Produzir e entregar volantes com um padrão de qualidade raro no mercado, unindo segurança viária e sofisticação estética.</p>
           </div>
 
           <div class="card-info">
-            <h3>Visão</h3>
+            <h3>👁️ Visão</h3>
             <p>Consolidar-se como a principal referência nacional em volantes automotivos, impulsionada pela inovação contínua e pela confiança dos nossos parceiros.</p>
           </div>
 
           <div class="card-info">
-            <h3>Valores</h3>
+            <h3>🤝 Valores</h3>
             <p>Segurança: Nosso pilar inegociável em cada peça produzida.</p>
             <p>Transparência: Relações comerciais claras e honestas.</p>
             <p>Credibilidade: Compromisso rigoroso com prazos e padrões de entrega.</p>
