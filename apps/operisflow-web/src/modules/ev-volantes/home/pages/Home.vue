@@ -129,11 +129,9 @@ function abrirGaleria(marca: Marca) {
               </h1>      
 
           <p class="hero-subtitulo">
-            A EV Volantes nasceu da paixão pelo universo automotivo e de uma inconformidade com o mercado. 
-            Atuando inicialmente como distribuidores, percebemos que os produtos disponíveis não atingiam o nível de excelência que nossos clientes mereciam.
-            Em vez de aceitar o comum, decidimos ditar o padrão. 
-            Assumimos o controle da produção para criar volantes que unem ergonomia superior, acabamento impecável e máxima segurança. 
-            Hoje, somos referência na fabricação e distribuição de volantes automotivos.
+            Atuamos fornecendo volantes completos e revisados com alto padrão
+            de qualidade. Atendemos oficinas, lojistas, mecânicas e clientes
+            finais que buscam segurança e acabamento impecável.
           </p>
 
           <div class="hero-botoes">
@@ -161,13 +159,11 @@ function abrirGaleria(marca: Marca) {
           <p class="subtitle">Excelência em volantes automotivos com qualidade e confiança.</p>
 
           <p class="sobre-descricao">
-            A EV Volantes é uma empresa especializada na venda de volantes
-            automotivos no atacado, varejo e base de troca. Trabalhamos com
-            peças revisadas, limpas e prontas para entrega, priorizando sempre a
-            segurança e a satisfação do cliente.<br/><br/>
-            Cada volante passa por uma inspeção completa, garantindo acabamento,
-            durabilidade e funcionamento perfeito. Nosso compromisso é entregar
-            produtos de alto padrão com agilidade e atendimento diferenciado.
+            A EV Volantes nasceu da paixão pelo universo automotivo e de uma inconformidade com o mercado. 
+            Atuando inicialmente como distribuidores, percebemos que os produtos disponíveis não atingiam o nível de excelência que nossos clientes mereciam.<br/><br/>
+            Em vez de aceitar o comum, decidimos ditar o padrão. 
+            Assumimos o controle da produção para criar volantes que unem ergonomia superior, acabamento impecável e máxima segurança. 
+            Hoje, somos referência na fabricação e distribuição de volantes automotivos.
           </p>
         </div>
 
