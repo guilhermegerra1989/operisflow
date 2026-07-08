@@ -138,7 +138,6 @@ function abrirGaleria(marca: Marca) {
             <a href="#fotos" class="btn-hero-primary">Conheça nossos produtos</a>
             <a href="#sobre" class="btn-hero-secondary">Quem somos</a>
             <a href="#fazemos" class="btn-hero-secondary">O que fazemos</a>
-            <!-- <a href="#diferencial" class="btn-hero-secondary">Linha Premium</a> -->
           </div>
         </div>
 
@@ -251,15 +250,19 @@ function abrirGaleria(marca: Marca) {
               <div class="card-conteudo">
 
                 <div class="valor-item">
-                  Segurança Máxima
+                  Segurança em Primeiro Lugar
                 </div>
 
                 <div class="valor-item">
-                  Transparência
+                  Transparência Total
                 </div>
 
                 <div class="valor-item">
-                  Confiança Premium
+                  Credibilidade e Confiança
+                </div>
+
+                <div class="valor-item">
+                  Alta Performance
                 </div>
 
               </div>
@@ -273,129 +276,88 @@ function abrirGaleria(marca: Marca) {
 
 
 
-  <!-- O QUE FAZEMOS -->
-  <div class="card-servico">
+      <!-- O QUE FAZEMOS -->
+      <div class="card-servico">
 
-    <div class="servico-topo">
+        <div class="servico-topo">
+          <div class="servico-icon">
+              <img src="/icons/ferramentas.svg" >
+          </div>
 
-      <div class="servico-icon">
-          <img src="/icons/ferramentas.svg" >
-      </div>
+          <div>
+            <span class="servico-subtitulo">
+              SOLUÇÕES EV VOLANTES
+            </span>
 
-      <div>
-        <span class="servico-subtitulo">
-          SOLUÇÕES EV VOLANTES
-        </span>
-
-        <h3 class="servico-titulo">
-          O QUE FAZEMOS
-        </h3>
-      </div>
-
-    </div>
-
-    <div class="servico-item">
-      <strong>ATACADO</strong>
-      <p> Distribuição robusta com condições competitivas para lojistas e autopeças. </p>
-    </div>
-
-    <div class="servico-item">
-      <strong>VAREJO</strong>
-      <p> Venda direta para consumidores finais com total qualidade. </p>
-    </div>
-
-    <div class="servico-item">
-      <strong>BASE DE TROCA</strong>
-      <p> Solução sustentável e rápida, minimizando o tempo do veículo parado. </p>
-    </div>
-
-
-    <!-- PREMIUM -->
-    <div class="card-servico destaque-premium">
-      <div class="servico-topo">
-        <div class="servico-icon">
-          <img src="/icons/premium.svg" >
+            <h3 class="servico-titulo">
+              O QUE FAZEMOS
+            </h3>
+          </div>
         </div>
 
-        <div>
-          <span class="servico-subtitulo">
-            PERFORMANCE E ACABAMENTO
-          </span>
-
-          <h3>LINHA PREMIUM</h3>
-        </div>
-       
-      </div>
-      <div>
-          <a href="/pdf/catalogo_premium.pdf"  download  class="btn-catalogo">
-            Download
-          </a>
-      </div>
-
-      <div class="premium-lista">
-
-        <div class="premium-item">
-          <b style="color: darkgrey;">Inspeção de Alta Precisão</b>: <small style="margin-left:5px;">Cada volante passa por testes ultra responsivos de estrutura e acabamento.</small>
+        <div class="servico-item">
+          <strong>ATACADO</strong>
+          <p> Distribuição robusta com condições competitivas para lojistas e autopeças. </p>
         </div>
 
-        <div class="premium-item">
-          <b  style="color: darkgrey;">Pronto para Instalação</b>: <small style="margin-left:5px;">Peças rigorosamente limpas, revisadas e preparadas para entrega imediata.</small>
+        <div class="servico-item">
+          <strong>VAREJO</strong>
+          <p> Venda direta para consumidores finais com total qualidade. </p>
         </div>
 
-        <div class="premium-item">
-          <b  style="color: darkgrey;">Materiais</b>: <small style="margin-left:5px;">Matéria-prima selecionada e de alta qualidade.</small>
-       </div>
-
-        <div class="premium-item">
-          <b  style="color: darkgrey;">Mão de Obra Especializada</b>: <small style="margin-left:5px;">Equipe altamente treinada e capacitação continuada.</small>
+        <div class="servico-item">
+          <strong>BASE DE TROCA</strong>
+          <p> Solução sustentável e rápida, minimizando o tempo do veículo parado. </p>
         </div>
 
+
+        <!-- PREMIUM -->
+        <div class="card-servico destaque-premium">
+          <div class="servico-topo">
+            <div class="servico-icon">
+              <img src="/icons/premium.svg" >
+            </div>
+
+            <div>
+              <span class="servico-subtitulo">
+                PERFORMANCE E ACABAMENTO
+              </span>
+
+              <h3>LINHA PREMIUM</h3>
+            </div>
           
+          </div>
+          <div>
+              <a href="/pdf/catalogo_premium.pdf"  download  class="btn-catalogo">
+                Download
+              </a>
+          </div>
+
+          <div class="premium-lista">
+
+            <div class="premium-item">
+              <b style="color: darkgrey;">Inspeção de Alta Precisão</b>: <small style="margin-left:5px;">Cada volante passa por testes ultra responsivos de estrutura e acabamento.</small>
+            </div>
+
+            <div class="premium-item">
+              <b  style="color: darkgrey;">Pronto para Instalação</b>: <small style="margin-left:5px;">Peças rigorosamente limpas, revisadas e preparadas para entrega imediata.</small>
+            </div>
+
+            <div class="premium-item">
+              <b  style="color: darkgrey;">Materiais</b>: <small style="margin-left:5px;">Matéria-prima selecionada e de alta qualidade.</small>
+          </div>
+
+            <div class="premium-item">
+              <b  style="color: darkgrey;">Mão de Obra Especializada</b>: <small style="margin-left:5px;">Equipe altamente treinada e capacitação continuada.</small>
+            </div>
+
+              
+          </div>
+        </div>
+
       </div>
-    </div>
 
-</div>
 
-<!-- <div class="cards-container">
-
-          <div class="card-info">
-            <h3>🛠️ O que fazemos</h3>
-            <p style=" color: #94a3b8; margin-top: 0.5rem; font-size: 0.9rem;">
-              Atendemos com agilidade, estoque a pronta-entrega e logística eficiente em três modalidades:
-            </p>
-
-            <p class="sobre-descricao">
-            <b>- Atacado:</b> Distribuição em escala para lojistas e autopeças com condições comerciais competitivas.
-            </p>
-            <p class="sobre-descricao">
-            <b>- Varejo:</b> Venda direta para o consumidor final que busca renovar o interior do veículo.
-            </p>
-            <p class="sobre-descricao">
-            <b>- Base de Troca:</b> Solução sustentável e econômica para renovação imediata do seu volante.
-            </p>
-          </div>
-
-          <div class="card-info">
-            <h3>🏆 Diferenciais da Linha Premium</h3>
-            <p style=" color: #94a3b8; margin-top: 0.5rem; font-size: 0.9rem;">
-                O volante é o principal ponto de contato entre o motorista e o veículo. Por isso, nossa Linha Premium entrega:
-            </p>
-
-            <p class="sobre-descricao">
-            <b>- Inspeção Rígida:</b> Cada peça passa por testes estruturais e de aderência antes do envio.
-            </p>
-            <p class="sobre-descricao">
-            <b>- Pronto para Instalação:</b> Componentes entregues limpos, revisados e higienizados.
-            </p>
-            <p class="sobre-descricao">
-            <b>- Materiais de Alta Resistência:</b> Injetados e revestimentos que suportam o desgaste diário e a exposição solar.
-            </p>
-            <p class="sobre-descricao">
-            <b>- Design e Ergonomia:</b> Visual moderno que valoriza o interior do carro e melhora a pegada ao dirigir.
-            </p>
-          </div>
-
-        </div> -->
 
       </section>
 
