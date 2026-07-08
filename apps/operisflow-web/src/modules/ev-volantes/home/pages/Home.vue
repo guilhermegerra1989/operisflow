@@ -170,34 +170,189 @@ function abrirGaleria(marca: Marca) {
         </div>
 
         <div class="cards-container">
+            <!-- MISSÃO -->
+            <div class="card-pilar">
 
-          <div class="card-info">
-            <h3>🎯 Missão</h3>
-            <p>Fabricar e entregar volantes de alta performance que elevam a segurança e o prazer de dirigir. Nosso compromisso é injetar no mercado automotivo um padrão de qualidade raro, superando as expectativas de motoristas e lojistas.</p>
-          </div>
+              <div class="card-topo">
+                <div class="card-icon">
+                  <img src="/icons/missao.svg" alt="Missao" />
+                </div>
 
-          <div class="card-info">
-            <h3>🛣️ Visão</h3>
-            <p>Ser a marca líder e a principal referência nacional em soluções de direção. Buscamos a evolução contínua dos nossos processos para ditar as tendências de durabilidade, design e inovação do setor.</p>
-          </div>
+                <div>
+                  <span class="card-subtitulo">
+                    O QUE NOS MOVE
+                  </span>
 
-          <div class="card-info">
-            <h3>🤝 Valores</h3>
-            <p><b>• Segurança em Primeiro Lugar:</b> Cada curva importa; por isso, a precisão técnica guia nossa produção.</p>
-            <p><b>•	Transparência Total:</b>Relações claras, éticas e diretas com clientes, colaboradores e parceiros.</p>
-            <p><b>•	Credibilidade e Confiança:</b>Entregar exatamente o que prometemos: produtos robustos e prontos para a rodagem.</p>
-            <p><b>•	Alta Performance:</b>Inconformismo com o comum; nossa busca pela perfeição é constante e incansável.</p>
-          </div>
+                  <h3>MISSÃO</h3>
+                </div>
+              </div>
 
+              <div class="card-conteudo">
+                Fabricar e entregar volantes de alta performance que
+                elevam a segurança e o prazer de dirigir.
+
+                <br><br>
+
+                Injetamos no mercado automotivo um padrão de qualidade raro,
+                superando as expectativas de motoristas e lojistas.
+              </div>
+
+            </div>
+
+
+            <!-- VISÃO -->
+            <div class="card-pilar">
+
+              <div class="card-topo">
+                <div class="card-icon">
+                  <img src="/icons/visao.svg" alt="Visao" />
+                </div>
+
+                <div>
+                  <span class="card-subtitulo">
+                    ROTA PARA O FUTURO
+                  </span>
+
+                  <h3>VISÃO</h3>
+                </div>
+              </div>
+
+              <div class="card-conteudo">
+                Ser a marca líder e a principal referência nacional
+                em soluções de direção.
+
+                <br><br>
+
+                Buscamos a evolução contínua dos nossos processos para
+                ditar as tendências de durabilidade, design e inovação
+                do setor.
+              </div>
+
+            </div>
+
+
+            <!-- VALORES -->
+            <div class="card-pilar">
+
+              <div class="card-topo">
+                <div class="card-icon">
+                  <img src="/icons/valores.svg" alt="Valores" />
+                </div>
+
+                <div>
+                  <span class="card-subtitulo">
+                    NOSSO DNA MECÂNICO
+                  </span>
+
+                  <h3>VALORES</h3>
+                </div>
+              </div>
+
+              <div class="card-conteudo">
+
+                <div class="valor-item">
+                  Segurança Máxima
+                </div>
+
+                <div class="valor-item">
+                  Transparência
+                </div>
+
+                <div class="valor-item">
+                  Confiança Premium
+                </div>
+
+              </div>
+
+            </div>
         </div>
-
       </section>
 
        <!-- FAZEMOS NA EMPRESA -->
       <section id="fazemos" class="section sobre-elegante">
 
 
-        <div class="cards-container">
+
+  <!-- O QUE FAZEMOS -->
+  <div class="card-servico">
+
+    <div class="servico-topo">
+
+      <div class="servico-icon">
+          <img src="/icons/ferramentas.svg" >
+      </div>
+
+      <div>
+        <span class="servico-subtitulo">
+          SOLUÇÕES EV VOLANTES
+        </span>
+
+        <h3 class="servico-titulo">
+          O QUE FAZEMOS
+        </h3>
+      </div>
+
+    </div>
+
+    <div class="servico-item">
+      <strong>ATACADO</strong>
+      <p> Distribuição em escala para lojistas e autopeças. </p>
+    </div>
+
+    <div class="servico-item">
+      <strong>VAREJO</strong>
+      <p> Venda direta para consumidores finais. </p>
+    </div>
+
+    <div class="servico-item">
+      <strong>BASE DE TROCA</strong>
+      <p> Renovação imediata de volantes com melhor custo-benefício. </p>
+    </div>
+
+
+    <!-- PREMIUM -->
+    <div class="card-servico destaque-premium">
+      <div class="servico-topo">
+        <div class="servico-icon">
+          <img src="/icons/premium.svg" >
+        </div>
+
+        <div>
+          <span class="servico-subtitulo">
+            PERFORMANCE E ACABAMENTO
+          </span>
+
+          <h3>LINHA PREMIUM</h3>
+        </div>
+      </div>
+
+      <div class="premium-lista">
+
+        <div class="premium-item">
+          Inspeção Rígida
+        </div>
+
+        <div class="premium-item">
+          Pronto para Instalação
+        </div>
+
+        <div class="premium-item">
+          Materiais de Alta Resistência
+        </div>
+
+        <div class="premium-item">
+          Design e Ergonomia
+        </div>
+
+          <a href="/pdf/catalogo_premium.pdf"  download  class="btn-catalogo">
+            Download
+          </a>
+      </div>
+    </div>
+
+</div>
+
+<!-- <div class="cards-container">
 
           <div class="card-info">
             <h3>🛠️ O que fazemos</h3>
@@ -214,31 +369,29 @@ function abrirGaleria(marca: Marca) {
             <p class="sobre-descricao">
             <b>- Base de Troca:</b> Solução sustentável e econômica para renovação imediata do seu volante.
             </p>
-            
           </div>
 
           <div class="card-info">
             <h3>🏆 Diferenciais da Linha Premium</h3>
-           <p style=" color: #94a3b8; margin-top: 0.5rem; font-size: 0.9rem;">
-              O volante é o principal ponto de contato entre o motorista e o veículo. Por isso, nossa Linha Premium entrega:
-          </p>
+            <p style=" color: #94a3b8; margin-top: 0.5rem; font-size: 0.9rem;">
+                O volante é o principal ponto de contato entre o motorista e o veículo. Por isso, nossa Linha Premium entrega:
+            </p>
 
-          <p class="sobre-descricao">
-           <b>- Inspeção Rígida:</b> Cada peça passa por testes estruturais e de aderência antes do envio.
-          </p>
-          <p class="sobre-descricao">
-           <b>- Pronto para Instalação:</b> Componentes entregues limpos, revisados e higienizados.
-          </p>
-          <p class="sobre-descricao">
-           <b>- Materiais de Alta Resistência:</b> Injetados e revestimentos que suportam o desgaste diário e a exposição solar.
-          </p>
-          <p class="sobre-descricao">
-           <b>- Design e Ergonomia:</b> Visual moderno que valoriza o interior do carro e melhora a pegada ao dirigir.
-          </p>
-
+            <p class="sobre-descricao">
+            <b>- Inspeção Rígida:</b> Cada peça passa por testes estruturais e de aderência antes do envio.
+            </p>
+            <p class="sobre-descricao">
+            <b>- Pronto para Instalação:</b> Componentes entregues limpos, revisados e higienizados.
+            </p>
+            <p class="sobre-descricao">
+            <b>- Materiais de Alta Resistência:</b> Injetados e revestimentos que suportam o desgaste diário e a exposição solar.
+            </p>
+            <p class="sobre-descricao">
+            <b>- Design e Ergonomia:</b> Visual moderno que valoriza o interior do carro e melhora a pegada ao dirigir.
+            </p>
           </div>
 
-        </div>
+        </div> -->
 
       </section>
 
@@ -506,7 +659,7 @@ function abrirGaleria(marca: Marca) {
 }
 
 .highlight {
-  color: #38bdf8;
+  color: #004BFF;
   display: block;
 }
 
@@ -536,18 +689,18 @@ function abrirGaleria(marca: Marca) {
 }
 
 .btn-primary {
-  background: #38bdf8;
+  background: #004BFF;
   color: #0f172a;
 }
 
 .btn-primary:hover {
-  background: #0ea5e9;
+  background: #004BFF;
   transform: translateY(-1px);
 }
 
 .btn-secondary {
-  border: 1px solid #38bdf8;
-  color: #38bdf8;
+  border: 1px solid #004BFF;
+  color: #004BFF;
   background: transparent;
 }
 
@@ -717,22 +870,22 @@ function abrirGaleria(marca: Marca) {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: #38bdf8;
+  color: #004BFF;
   text-decoration: none;
   font-weight: 500;
 }
 
 .insta-link:hover {
-  color: #0ea5e9;
+  color: #004BFF;
 }
 
 .insta-icon {
-  color: #38bdf8;
+  color: #004BFF;
   transition: 0.2s;
 }
 
 .insta-link:hover .insta-icon {
-  color: #0ea5e9;
+  color: #004BFF;
   transform: scale(1.1);
 }
 
@@ -749,7 +902,7 @@ function abrirGaleria(marca: Marca) {
 
 .title-gradient {
   font-size: 2.2rem;
-  background: linear-gradient(to right, #38bdf8, #0ea5e9);
+  background: linear-gradient(to right, #004BFF, #004BFF);
   -webkit-background-clip: text;
   color: transparent;
   font-weight: 700;
@@ -787,7 +940,7 @@ function abrirGaleria(marca: Marca) {
 }
 
 .card-info h3 {
-  color: #38bdf8;
+  color: #004BFF;
   margin-bottom: 0.8rem;
   font-size: 1.3rem;
   font-weight: 600;
@@ -808,7 +961,7 @@ function abrirGaleria(marca: Marca) {
 .card-info:hover {
   transform: translateY(-6px);
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-  border-color: #38bdf8;
+  border-color: #004BFF;
 }
 
 
@@ -834,7 +987,7 @@ function abrirGaleria(marca: Marca) {
 
 .hero-destaque {
   display: block;
-  color: #38bdf8;
+  color: #004BFF;
   font-weight: 800;
   font-size: 1.9rem;
   margin-top: 6px;
@@ -866,25 +1019,27 @@ function abrirGaleria(marca: Marca) {
 }
 
 .btn-hero-primary {
-  background: #38bdf8;
+  background: #004BFF;
   color: #0f172a;
   box-shadow: 0 4px 12px rgba(14,165,233,0.35);
 }
 
 .btn-hero-primary:hover {
-  background: #0ea5e9;
+  background: #004BFF;
+  color: #becff5;
   transform: translateY(-2px);
   box-shadow: 0 6px 18px rgba(14,165,233,0.45);
 }
 
 .btn-hero-secondary {
-  border: 2px solid #38bdf8;
-  color: #38bdf8;
+  border: 2px solid #004BFF;
+  color: #004BFF;
   background: transparent;
 }
 
 .btn-hero-secondary:hover {
   background: rgba(56, 189, 248, 0.12);
+  color: #becff5;
   transform: translateY(-2px);
 }
 
@@ -1135,6 +1290,335 @@ function abrirGaleria(marca: Marca) {
     opacity: 1;
     transform: scale(1);
   }
+}
+
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 3rem;
+}
+
+.card-pilar {
+  position: relative;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(20,20,20,.95),
+      rgba(10,10,10,.98)
+    );
+
+  border: 1px solid rgba(0,75,255,.25);
+
+  border-radius: 22px;
+
+  padding: 28px;
+
+  overflow: hidden;
+
+  transition: .35s ease;
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.35);
+}
+
+.card-pilar::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0,75,255,.08),
+      transparent 40%
+    );
+
+  pointer-events: none;
+}
+
+.card-pilar:hover {
+  transform: translateY(-8px);
+
+  border-color: #004BFF;
+
+  box-shadow:
+    0 18px 45px rgba(0,75,255,.22);
+}
+
+.card-topo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  margin-bottom: 22px;
+}
+
+.card-icon {
+  width: 70px;
+  height: 70px;
+
+  border-radius: 18px;
+
+  background:
+    rgba(0,75,255,.12);
+
+  border:
+    1px solid rgba(0,75,255,.25);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+}
+
+.card-icon img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.card-subtitulo {
+  display: block;
+
+  color: #004BFF;
+
+  font-size: .75rem;
+
+  letter-spacing: 2px;
+
+  font-weight: 700;
+}
+
+.card-pilar h3 {
+  margin-top: 4px;
+
+  font-size: 1.6rem;
+
+  color: white;
+
+  font-weight: 800;
+
+  letter-spacing: 1px;
+}
+
+.card-conteudo {
+  color: #d6d6d6;
+
+  line-height: 1.8;
+}
+
+.valor-item {
+  position: relative;
+
+  margin-bottom: 12px;
+
+  padding-left: 18px;
+
+  color: #e8e8e8;
+}
+
+.valor-item::before {
+  content: "";
+
+  width: 8px;
+  height: 8px;
+
+  border-radius: 50%;
+
+  background: #004BFF;
+
+  position: absolute;
+
+  left: 0;
+  top: 10px;
+}
+
+@media (max-width: 900px) {
+
+  .cards-container {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+.card-servico {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(20,20,20,.95),
+      rgba(10,10,10,.98)
+    );
+
+  border: 1px solid rgba(0,75,255,.2);
+
+  border-radius: 22px;
+
+  padding: 30px;
+
+  transition: .3s;
+}
+
+.card-servico:hover {
+  transform: translateY(-6px);
+
+  border-color: #004BFF;
+}
+
+.servico-topo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  margin-bottom: 30px;
+}
+
+.servico-icon {
+  width: 70px;
+  height: 70px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 18px;
+
+  background: rgba(0,75,255,.12);
+
+  border: 1px solid rgba(0,75,255,.25);
+}
+
+.servico-icon img {
+  width: 40px;
+}
+
+.servico-subtitulo {
+  display: block;
+
+  color: #004BFF;
+
+  font-size: .75rem;
+
+  font-weight: 700;
+
+  letter-spacing: 2px;
+}
+
+.card-servico h3 {
+  margin-top: 4px;
+
+  color: white;
+
+  font-size: 1.7rem;
+}
+
+.servico-item {
+  padding: 18px;
+
+  margin-bottom: 14px;
+
+  border-radius: 14px;
+
+  background: rgba(255,255,255,.03);
+
+  border: 1px solid rgba(255,255,255,.04);
+}
+
+.servico-item strong {
+  color: #004BFF;
+
+  display: block;
+
+  margin-bottom: 6px;
+}
+
+.servico-item p {
+  color: #d3d3d3;
+}
+
+.premium-item {
+  padding: 16px 18px;
+
+  margin-bottom: 12px;
+
+  border-left: 4px solid #004BFF;
+
+  background: rgba(255,255,255,.03);
+
+  color: #f1f5f9;
+
+  font-weight: 500;
+}
+@media (max-width: 900px) {
+  .cards-servicos {
+    grid-template-columns: 1fr;
+  }
+}
+
+.servico-titulo {
+  position: relative;
+
+  margin-top: 4px;
+  padding-bottom: 12px;
+
+  color: white;
+
+  font-size: 1.6rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.servico-titulo::after {
+  content: "";
+
+  position: absolute;
+  left: 0;
+  bottom: 0;
+
+  width: 50px;
+  height: 3px;
+
+  background: #004BFF;
+
+  border-radius: 999px;
+}
+
+.btn-catalogo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 24px;
+
+  padding: 14px 20px;
+
+  border-radius: 14px;
+
+  background: #004BFF;
+
+  color: white;
+
+  text-decoration: none;
+
+  font-weight: 700;
+
+  transition: .3s;
+
+  box-shadow:
+    0 8px 20px rgba(0,75,255,.25);
+}
+
+.btn-catalogo:hover {
+  background: #0038c7;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 28px rgba(0,75,255,.35);
 }
 
 </style>

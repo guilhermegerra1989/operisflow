@@ -1,0 +1,35 @@
+<svg
+  width="64"
+  height="64"
+  viewBox="0 0 64 64"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg">
+
+  <path
+    d="M20 56L28 8"
+    stroke="#004BFF"
+    stroke-width="3"
+    stroke-linecap="round"/>
+
+  <path
+    d="M44 56L36 8"
+    stroke="#004BFF"
+    stroke-width="3"
+    stroke-linecap="round"/>
+
+  <line
+    x1="32"
+    y1="18"
+    x2="32"
+    y2="26"
+    stroke="#004BFF"
+    stroke-width="3"/>
+
+  <line
+    x1="32"
+    y1="34"
+    x2="32"
+    y2="42"
+    stroke="#004BFF"
+    stroke-width="3"/>
+</svg>

@@ -1,0 +1,31 @@
+<svg
+  width="64"
+  height="64"
+  viewBox="0 0 64 64"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg">
+
+  <path
+    d="M32 8
+       L50 16
+       V30
+       C50 42 42 51 32 56
+       C22 51 14 42 14 30
+       V16
+       L32 8Z"
+    stroke="#004BFF"
+    stroke-width="3"/>
+
+  <circle
+    cx="32"
+    cy="30"
+    r="8"
+    stroke="#004BFF"
+    stroke-width="3"/>
+
+  <circle
+    cx="32"
+    cy="30"
+    r="3"
+    fill="#004BFF"/>
+</svg>
