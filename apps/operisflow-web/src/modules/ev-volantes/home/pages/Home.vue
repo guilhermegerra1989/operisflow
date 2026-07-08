@@ -206,13 +206,13 @@ function abrirGaleria(marca: Marca) {
             </p>
 
             <p class="sobre-descricao">
-            - Atacado: Distribuição em escala para lojistas e autopeças com condições comerciais competitivas.
+            <b>- Atacado:</b> Distribuição em escala para lojistas e autopeças com condições comerciais competitivas.
             </p>
             <p class="sobre-descricao">
-            - Varejo: Venda direta para o consumidor final que busca renovar o interior do veículo.
+            <b>- Varejo:</b> Venda direta para o consumidor final que busca renovar o interior do veículo.
             </p>
             <p class="sobre-descricao">
-            - Base de Troca: Solução sustentável e econômica para renovação imediata do seu volante.
+            <b>- Base de Troca:</b> Solução sustentável e econômica para renovação imediata do seu volante.
             </p>
             
           </div>
@@ -224,16 +224,16 @@ function abrirGaleria(marca: Marca) {
           </p>
 
           <p class="sobre-descricao">
-           - Inspeção Rígida: Cada peça passa por testes estruturais e de aderência antes do envio.
+           <b>- Inspeção Rígida:</b> Cada peça passa por testes estruturais e de aderência antes do envio.
           </p>
           <p class="sobre-descricao">
-           - Pronto para Instalação: Componentes entregues limpos, revisados e higienizados.
+           <b>- Pronto para Instalação:</b> Componentes entregues limpos, revisados e higienizados.
           </p>
           <p class="sobre-descricao">
-           - Materiais de Alta Resistência: Injetados e revestimentos que suportam o desgaste diário e a exposição solar.
+           <b>- Materiais de Alta Resistência:</b> Injetados e revestimentos que suportam o desgaste diário e a exposição solar.
           </p>
           <p class="sobre-descricao">
-           - Design e Ergonomia: Visual moderno que valoriza o interior do carro e melhora a pegada ao dirigir.
+           <b>- Design e Ergonomia:</b> Visual moderno que valoriza o interior do carro e melhora a pegada ao dirigir.
           </p>
 
           </div>
