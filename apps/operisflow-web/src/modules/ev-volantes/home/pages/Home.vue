@@ -279,7 +279,6 @@ function abrirGaleria(marca: Marca) {
       <section id="fazemos" class="section sobre-elegante">
 
 
-
       <!-- O QUE FAZEMOS -->
       <div class="card-servico">
 
@@ -377,7 +376,6 @@ function abrirGaleria(marca: Marca) {
           </p>
         </div>
       </div>
-
 
       </section>
 
@@ -498,53 +496,6 @@ function abrirGaleria(marca: Marca) {
       <!-- CONTATO -->
       <section id="contact" class="section section-alt">
         
-
-        <!-- <div class="contact-box">
-          <div class="section-header">
-            <h2>Contato</h2>
-            <p>Entre em contato para pedidos, dúvidas e informações.</p>
-          </div>
-          <p><strong>E-mail:</strong> administracao@evvolantes.com.br</p>
-          <p>
-            <strong>
-              <svg viewBox="0 0 24 24" 
-                  width="18"
-                  height="18">
-                <path
-                  fill="currentColor"
-                  d="M20.52 3.48A11.87 11.87 0 0012.06 0C5.6 0 .34 5.28.34 11.8c0 2.08.54 4.1 1.56 5.88L0 24l6.52-1.7a11.74 11.74 0 005.54 1.4h.01c6.46 0 11.72-5.28 11.72-11.8 0-3.15-1.22-6.1-3.27-8.42zm-8.46 18.1h-.01a9.8 9.8 0 01-5-1.36l-.36-.21-3.87 1.01 1.03-3.77-.24-.39a9.77 9.77 0 01-1.5-5.26c0-5.41 4.38-9.8 9.77-9.8 2.61 0 5.07 1.02 6.92 2.88a9.73 9.73 0 012.87 6.93c0 5.4-4.38 9.79-9.76 9.79zm5.45-7.32c-.3-.15-1.78-.88-2.06-.98-.28-.1-.48-.15-.68.15s-.78.98-.96 1.18c-.17.2-.35.23-.64.08-.3-.15-1.25-.46-2.38-1.48-.88-.79-1.47-1.76-1.64-2.06-.17-.3-.02-.46.13-.6.14-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.38-.02-.53-.07-.15-.68-1.64-.93-2.24-.24-.58-.49-.5-.68-.5h-.58c-.2 0-.52.08-.8.38-.28.3-1.04 1.02-1.04 2.48s1.06 2.88 1.21 3.08c.15.2 2.1 3.2 5.1 4.48.71.31 1.27.5 1.7.64.71.23 1.35.2 1.86.12.57-.09 1.78-.73 2.03-1.44.25-.7.25-1.3.17-1.44-.08-.13-.27-.2-.57-.35z"
-                />
-              </svg>
-               <a href="https://wa.me/5512982669702?text=Olá! Vim pelo site e gostaria de mais informações."
-                      target="_blank"
-                      rel="noopener noreferrer" style="margin-left: 8px;color: cornflowerblue;" > (12) 98266-9702 </a>
-            </strong> 
-                  
-          </p>
-          <p>
-            <a href="https://www.instagram.com/ev.volantes" class="insta-link" target="_blank">
-              <svg
-                class="insta-icon"
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-              >
-                <path d="M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 0 5-2.24 5-5V7c0-2.76-2.24-5-5-5H7zm10 2c1.66 0 3 1.34 3 3v10c0 1.66-1.34 3-3 3H7c-1.66 
-                0-3-1.34-3-3V7c0-1.66 1.34-3 3-3h10zm-5 3.5A4.5 4.5 0 1 0 16.5 
-                12 4.505 4.505 0 0 0 12 7.5zm0 2A2.5 2.5 0 1 1 9.5 12 2.503 2.503 0 0 1 12 
-                9.5zm4.75-.88a1.12 1.12 0 1 1-1.12 1.12 1.12 1.12 0 0 1 1.12-1.12z"/>
-              </svg>
-              @ev.volantes
-            </a>
-          </p>
-
-          
-          <p class="contact-note">
-            Estamos à disposição para atender sua necessidade.
-          </p>
-        </div> -->
-
         <div class="contact-destaque">
           Solicite um orçamento ou fale diretamente com nossa equipe.
         </div>
@@ -662,8 +613,8 @@ function abrirGaleria(marca: Marca) {
   font-family: system-ui, sans-serif;
   overflow-x: hidden;
 
-  position: relative;        /* importante pro overlay funcionar */
-  isolation: isolate;        /* garante que o ::before não vaze */
+  position: relative;       
+  isolation: isolate;      
 }
 
 .page::before {
@@ -687,7 +638,6 @@ function abrirGaleria(marca: Marca) {
   opacity: .18;
 }
 
-/* HEADER */
 .header {
   background: #F2F2F2;
   border-bottom: 1px solid rgba(148, 163, 184, 0.3);
@@ -771,69 +721,6 @@ function abrirGaleria(marca: Marca) {
 .hero-text h1 {
   font-size: 2.2rem;
   line-height: 1.3;
-}
-
-.highlight {
-  color: #004BFF;
-  display: block;
-}
-
-.hero-subtitle {
-  margin: 1rem 0 1.5rem;
-  color: #cbd5e1;
-}
-
-.hero-actions {
-  margin-top: 1rem;
-  display: flex;
-  gap: 1rem;
-}
-
-/* Botões principais hero */
-.btn-primary,
-.btn-secondary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  font-weight: 600;
-  border-radius: 8px;
-  padding: 10px 18px;
-  font-size: 0.9rem;
-  transition: 0.2s ease-in-out;
-}
-
-.btn-primary {
-  background: #004BFF;
-  color: #0f172a;
-}
-
-.btn-primary:hover {
-  background: #004BFF;
-  transform: translateY(-1px);
-}
-
-.btn-secondary {
-  border: 1px solid #004BFF;
-  color: #004BFF;
-  background: transparent;
-}
-
-.btn-secondary:hover {
-  background: rgba(56, 189, 248, 0.1);
-  transform: translateY(-1px);
-}
-
-/* FOTO BANNER */
-.hero-image {
-  display: flex;
-  justify-content: center;
-}
-
-.logo-brand {
-  width: 260px;
-  height: 250px;
-  object-fit: contain;
 }
 
 /* SECTIONS */
@@ -1007,27 +894,6 @@ function abrirGaleria(marca: Marca) {
   border-radius: 10px;
 }
 
-.contact-link {
-  color: #60a5fa;
-
-  text-decoration: none;
-
-  font-weight: 700;
-
-  transition: .25s;
-}
-
-.contact-link:hover {
-  color: white;
-}
-
-
-.contact-note {
-  font-size: 0.85rem;
-  color: #94a3b8;
-}
-
-/* FOOTER */
 .footer {
   background: #F2F2F2;
   color: #0f172a;
@@ -1125,52 +991,6 @@ function abrirGaleria(marca: Marca) {
   font-size: 1rem;
 }
 
-/* Cards de Missão / Visão / Valores */
-.cards-container {
-  display: grid;
-  gap: 1.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  margin-top: 3rem;
-}
-
-.card-info {
-  background: rgba(15, 23, 42, 0.45);
-  border: 1px solid rgba(56, 189, 248, 0.2);
-  padding: 1.8rem;
-  border-radius: 14px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(6px);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-.card-info h3 {
-  color: #004BFF;
-  margin-bottom: 0.8rem;
-  font-size: 1.3rem;
-  font-weight: 600;
-}
-
-.card-info-subtitle {
-  color: #94a3b8;
-  margin-top: 0.5rem;
-  font-size: 1.1rem;
-}
-
-.card-info p {
-  color: #cbd5e1;
-  line-height: 1.5;
-}
-
-/* Hover elegante */
-.card-info:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-  border-color: #004BFF;
-}
-
-
-
-/* HERO REFINADO */
 .hero-refinado {
   max-width: 1120px;
   margin: 0 auto;
@@ -1371,38 +1191,12 @@ function abrirGaleria(marca: Marca) {
   }
 }
 
-.marca-row{
-  display:grid;
-  grid-template-columns:200px repeat(3,1fr);
-  gap:16px;
-  margin-bottom:24px;
-}
+.modal {
+  max-width: 85%;
+  max-height: 80vh;
+  object-fit: contain;
 
-.marca-logo,
-.volante-card{
-  cursor:pointer;
-
-  border-radius:16px;
-  overflow:hidden;
-
-  background:rgba(15,23,42,.7);
-
-  border:1px solid rgba(56,189,248,.2);
-
-  transition:.3s;
-}
-
-.marca-logo:hover,
-.volante-card:hover{
-  transform:translateY(-6px);
-  box-shadow:0 12px 30px rgba(0,0,0,.4);
-}
-
-.marca-logo img,
-.volante-card img{
-  width:100%;
-  height:180px;
-  object-fit:contain;
+  animation: fadeModal .25s ease;
 }
 
 .modal-galeria {
@@ -1416,14 +1210,6 @@ function abrirGaleria(marca: Marca) {
   justify-content: center;
 
   z-index: 99999;
-}
-
-.modal-imagem {
-  max-width: 85%;
-  max-height: 80vh;
-  object-fit: contain;
-
-  animation: fadeModal .25s ease;
 }
 
 .modal-fechar {
@@ -1768,11 +1554,6 @@ function abrirGaleria(marca: Marca) {
 
   font-weight: 500;
 }
-@media (max-width: 900px) {
-  .cards-servicos {
-    grid-template-columns: 1fr;
-  }
-}
 
 .servico-titulo {
   position: relative;
@@ -1803,9 +1584,10 @@ function abrirGaleria(marca: Marca) {
 }
 
 .btn-catalogo {
-  display: flex;
-  align-items: right;
-  justify-content: right;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
 
   margin-top: 5px;
   margin-bottom: 10px;
