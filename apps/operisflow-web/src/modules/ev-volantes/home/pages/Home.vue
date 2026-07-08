@@ -200,7 +200,7 @@ function abrirGaleria(marca: Marca) {
         <div class="cards-container">
 
           <div class="card-info">
-            <h3>O que fazemos</h3>
+            <h3>🛠️ O que fazemos</h3>
             <p style=" color: #94a3b8; margin-top: 0.5rem; font-size: 0.9rem;">
               Atendemos com agilidade, estoque a pronta-entrega e logística eficiente em três modalidades:
             </p>
@@ -218,7 +218,7 @@ function abrirGaleria(marca: Marca) {
           </div>
 
           <div class="card-info">
-            <h3>Diferenciais da Linha Premium</h3>
+            <h3>🏆 Diferenciais da Linha Premium</h3>
            <p style=" color: #94a3b8; margin-top: 0.5rem; font-size: 0.9rem;">
               O volante é o principal ponto de contato entre o motorista e o veículo. Por isso, nossa Linha Premium entrega:
           </p>
