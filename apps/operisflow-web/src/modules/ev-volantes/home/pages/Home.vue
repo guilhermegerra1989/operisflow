@@ -219,8 +219,8 @@ function abrirGaleria(marca: Marca) {
 
           <div class="foto-card" @click="abrirGaleria('FORD')"> <img src="/marcas/ford.png" alt="Ford" /></div>
           <div class="foto-card" @click="abrirGaleria('FORD')"> <img src="/volantes_esportivos/FORD/volante_ford.png" alt="Ford" /></div>
-          <div class="foto-card" @click="abrirGaleria('FORD')"> <img src="/volantes_esportivos/FORD/volante_gti_vision_ford_ka.png" alt="Ford Ka" /></div>
           <div class="foto-card" @click="abrirGaleria('FORD')"> <img src="/volantes_esportivos/FORD/volante_rallye_ford.png" alt="Ford Rallye" /></div>
+          <div class="foto-card" @click="abrirGaleria('FORD')"> <img src="/volantes_esportivos/FORD/volante_gti_vision_ford_ka.png" alt="Ford Ka" /></div>
 
         </div>
       </section>
