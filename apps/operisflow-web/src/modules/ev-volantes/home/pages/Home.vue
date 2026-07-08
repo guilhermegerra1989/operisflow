@@ -369,16 +369,27 @@ function abrirGaleria(marca: Marca) {
 </template>
 
 <style scoped>
-:root { color-scheme: dark light; }
+:root {
+  --ev-blue: #004BFF;
+  --ev-blue-hover: #0038c7;
+  --ev-black: #111111;
+  --ev-carbon: #1a1a1a;
+  --ev-gray: #f5f5f5;
+}
 
 .page {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-
-  /* Gradiente base azul escuro */
+  
   background:
-    radial-gradient(circle at top left, #0f172a, #020617);
+    linear-gradient(
+      135deg,
+      #111111,
+      #171717,
+      #0d0d0d
+    );
+
   color: #e5e7eb;
   font-family: system-ui, sans-serif;
   overflow-x: hidden;
@@ -394,14 +405,18 @@ function abrirGaleria(marca: Marca) {
   z-index: -1;
 
   background-image:
-    url("/back-volantes-esportivos.jpg"),
-    radial-gradient(circle at top left, #0f172a, #020617);
-  background-repeat: no-repeat, no-repeat;
-  background-position: center center, center center;
-  background-size: cover, cover;
+    linear-gradient(
+      135deg,
+      rgba(0,75,255,.08) 25%,
+      transparent 25%
+    ),
+    url('/back-volantes-esportivos.jpg');
 
-  opacity: 0.18;
-  filter: saturate(0.7) contrast(0.9);
+  background-size:
+    40px 40px,
+    cover;
+
+  opacity: .18;
 }
 
 /* HEADER */
