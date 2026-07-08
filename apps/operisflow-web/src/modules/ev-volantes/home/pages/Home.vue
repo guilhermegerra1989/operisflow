@@ -384,45 +384,126 @@ function abrirGaleria(marca: Marca) {
       <!-- GALERIA DE FOTOS -->
       <section id="fotos" class="section section-alt">
         <div class="section-header">
-          <h2>Volantes Esportivos</h2>
+          <h2 class="title-gradient">Volantes Esportivos</h2>
           <p></p>
         </div>
 
         <div class="galeria-grid">
-          <div class="foto-card" @click="abrirGaleria('CHEVROLET')"> <img src="/marcas/chevrolet.png" alt="Chevrolet" /></div>
-          <div class="foto-card" @click="abrirGaleria('CHEVROLET')"> <img src="/volantes_esportivos/CHEVROLET/cruze_universal_azul.png" alt="Cruze" /></div>
-          <div class="foto-card" @click="abrirGaleria('CHEVROLET')"> <img src="/volantes_esportivos/CHEVROLET/tracker_controle_universal.png" alt="Tracker" /></div>
-          <div class="foto-card" @click="abrirGaleria('CHEVROLET')"> <img src="/volantes_esportivos/CHEVROLET/volante_gti_vision.png" alt="Gti" /></div>
+          <div class="foto-card" @click="abrirGaleria('CHEVROLET')"> 
+            <img src="/marcas/chevrolet.png" alt="Chevrolet" />
+              <div class="foto-legenda">
+                Chevrolet
+              </div>
+          </div>
+          <div class="foto-card" @click="abrirGaleria('CHEVROLET')"> 
+            <img src="/volantes_esportivos/CHEVROLET/cruze_universal_azul.png" alt="Cruze" />
+            <div class="foto-legenda">
+                Cruze universal azul
+            </div>
+          </div>
+          <div class="foto-card" @click="abrirGaleria('CHEVROLET')"> 
+            <img src="/volantes_esportivos/CHEVROLET/tracker_controle_universal.png" alt="Tracker" />
+              <div class="foto-legenda">
+                Tracker controle universal
+              </div>
+          </div>
+          <div class="foto-card" @click="abrirGaleria('CHEVROLET')"> 
+            <img src="/volantes_esportivos/CHEVROLET/volante_gti_vision.png" alt="Gti" />
+              <div class="foto-legenda">
+                Gti vision
+              </div>
+          </div>
 
           
-          <div class="foto-card" @click="abrirGaleria('VOLKSWAGEN')"> <img src="/marcas/volkswagen.png" alt="Volkswagen" /></div>
-          <div class="foto-card" @click="abrirGaleria('VOLKSWAGEN')"> <img src="/volantes_esportivos/VOLKSWAGEN/nivus_controle_universal.png" alt="Nivus" /></div>
-          <div class="foto-card" @click="abrirGaleria('VOLKSWAGEN')"> <img src="/volantes_esportivos/VOLKSWAGEN/novo_golf.png" alt="Golf" /></div>
-          <div class="foto-card" @click="abrirGaleria('VOLKSWAGEN')"> <img src="/volantes_esportivos/VOLKSWAGEN/volante_gti_vision.png" alt="Gti" /></div>
+          <div class="foto-card" @click="abrirGaleria('VOLKSWAGEN')"> 
+            <img src="/marcas/volkswagen.png" alt="Volkswagen" />
+              <div class="foto-legenda">
+                Volkswagen
+              </div>
+          </div>
+          <div class="foto-card" @click="abrirGaleria('VOLKSWAGEN')"> 
+            <img src="/volantes_esportivos/VOLKSWAGEN/nivus_controle_universal.png" alt="Nivus" />
+              <div class="foto-legenda">
+                Nivus controle universal
+              </div>
+          </div>
+          <div class="foto-card" @click="abrirGaleria('VOLKSWAGEN')">
+            <img src="/volantes_esportivos/VOLKSWAGEN/novo_golf.png">
+              <div class="foto-legenda">
+                Novo Golf
+              </div>
+          </div>
+          <div class="foto-card" @click="abrirGaleria('VOLKSWAGEN')"> 
+            <img src="/volantes_esportivos/VOLKSWAGEN/volante_gti_vision.png" alt="Gti" />
+              <div class="foto-legenda">
+                Gti vision
+              </div>
+          </div>
 
 
-          <div class="foto-card" @click="abrirGaleria('FIAT')"> <img src="/marcas/fiat.png" alt="Fiat" /></div>
-          <div class="foto-card" @click="abrirGaleria('FIAT')"> <img src="/volantes_esportivos/FIAT/volante_fire_original.png" alt="Fire" /></div>
-          <div class="foto-card" @click="abrirGaleria('FIAT')"> <img src="/volantes_esportivos/FIAT/toro_black_alma_original.png" alt="Toro" /></div>
-          <div class="foto-card" @click="abrirGaleria('FIAT')"> <img src="/volantes_esportivos/FIAT/volante_gti_vision.png" alt="Gti" /></div>
+          <div class="foto-card" @click="abrirGaleria('FIAT')"> 
+            <img src="/marcas/fiat.png" alt="Fiat" />
+              <div class="foto-legenda">
+                Fiat
+              </div>
+          </div>
+          <div class="foto-card" @click="abrirGaleria('FIAT')"> 
+            <img src="/volantes_esportivos/FIAT/volante_fire_original.png" alt="Fire" />
+              <div class="foto-legenda">
+                Fire original
+              </div>
+          </div>
+          <div class="foto-card" @click="abrirGaleria('FIAT')"> 
+            <img src="/volantes_esportivos/FIAT/toro_black_alma_original.png" alt="Toro" />
+              <div class="foto-legenda">
+                Toro black alma original
+              </div>
+          </div>
+          <div class="foto-card" @click="abrirGaleria('FIAT')"> 
+            <img src="/volantes_esportivos/FIAT/volante_gti_vision.png" alt="Gti" />
+              <div class="foto-legenda">
+                Gti vision
+              </div>
+          </div>
 
 
-          <div class="foto-card" @click="abrirGaleria('FORD')"> <img src="/marcas/ford.png" alt="Ford" /></div>
-          <div class="foto-card" @click="abrirGaleria('FORD')"> <img src="/volantes_esportivos/FORD/volante_ford.png" alt="Ford" /></div>
-          <div class="foto-card" @click="abrirGaleria('FORD')"> <img src="/volantes_esportivos/FORD/volante_rallye_ford.png" alt="Ford Rallye" /></div>
-          <div class="foto-card" @click="abrirGaleria('FORD')"> <img src="/volantes_esportivos/FORD/volante_gti_vision_ford_ka.png" alt="Ford Ka" /></div>
+          <div class="foto-card" @click="abrirGaleria('FORD')"> 
+            <img src="/marcas/ford.png" alt="Ford" />
+              <div class="foto-legenda">
+                Ford
+              </div>
+          </div>
+          <div class="foto-card" @click="abrirGaleria('FORD')"> 
+            <img src="/volantes_esportivos/FORD/volante_ford.png" alt="Ford" />
+              <div class="foto-legenda">
+                Ford
+              </div>
+          </div>
+          <div class="foto-card" @click="abrirGaleria('FORD')"> 
+            <img src="/volantes_esportivos/FORD/volante_rallye_ford.png" alt="Ford Rallye" />
+            <div class="foto-legenda">
+                Ford rallye
+              </div>
+          </div>
+          <div class="foto-card" @click="abrirGaleria('FORD')"> 
+            <img src="/volantes_esportivos/FORD/volante_gti_vision_ford_ka.png" alt="Ford Ka" />
+              <div class="foto-legenda">
+                Gti vision ford Ka
+              </div>
+          </div>
 
         </div>
       </section>
 
       <!-- CONTATO -->
-      <section id="contact" class="section">
-        <div class="section-header">
-          <h2>Contato</h2>
-          <p>Entre em contato para pedidos, dúvidas e informações.</p>
-        </div>
+      <section id="contact" class="section section-alt">
+        
 
-        <div class="contact-box">
+        <!-- <div class="contact-box">
+          <div class="section-header">
+            <h2>Contato</h2>
+            <p>Entre em contato para pedidos, dúvidas e informações.</p>
+          </div>
           <p><strong>E-mail:</strong> administracao@evvolantes.com.br</p>
           <p>
             <strong>
@@ -462,7 +543,55 @@ function abrirGaleria(marca: Marca) {
           <p class="contact-note">
             Estamos à disposição para atender sua necessidade.
           </p>
+        </div> -->
+
+        <div class="contact-destaque">
+          Solicite um orçamento ou fale diretamente com nossa equipe.
         </div>
+
+        <div class="contact-item">
+          <strong>E-mail</strong>
+          <span>administracao@evvolantes.com.br</span>
+        </div>
+
+        <div class="contact-item">
+          <strong>WhatsApp</strong>
+
+          <strong>
+              <svg viewBox="0 0 24 24" 
+                  width="18"
+                  height="18">
+                <path
+                  fill="currentColor"
+                  d="M20.52 3.48A11.87 11.87 0 0012.06 0C5.6 0 .34 5.28.34 11.8c0 2.08.54 4.1 1.56 5.88L0 24l6.52-1.7a11.74 11.74 0 005.54 1.4h.01c6.46 0 11.72-5.28 11.72-11.8 0-3.15-1.22-6.1-3.27-8.42zm-8.46 18.1h-.01a9.8 9.8 0 01-5-1.36l-.36-.21-3.87 1.01 1.03-3.77-.24-.39a9.77 9.77 0 01-1.5-5.26c0-5.41 4.38-9.8 9.77-9.8 2.61 0 5.07 1.02 6.92 2.88a9.73 9.73 0 012.87 6.93c0 5.4-4.38 9.79-9.76 9.79zm5.45-7.32c-.3-.15-1.78-.88-2.06-.98-.28-.1-.48-.15-.68.15s-.78.98-.96 1.18c-.17.2-.35.23-.64.08-.3-.15-1.25-.46-2.38-1.48-.88-.79-1.47-1.76-1.64-2.06-.17-.3-.02-.46.13-.6.14-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.38-.02-.53-.07-.15-.68-1.64-.93-2.24-.24-.58-.49-.5-.68-.5h-.58c-.2 0-.52.08-.8.38-.28.3-1.04 1.02-1.04 2.48s1.06 2.88 1.21 3.08c.15.2 2.1 3.2 5.1 4.48.71.31 1.27.5 1.7.64.71.23 1.35.2 1.86.12.57-.09 1.78-.73 2.03-1.44.25-.7.25-1.3.17-1.44-.08-.13-.27-.2-.57-.35z"
+                />
+              </svg>
+               <a href="https://wa.me/5512982669702?text=Olá! Vim pelo site e gostaria de mais informações."
+                      target="_blank"
+                      rel="noopener noreferrer" style="margin-left: 8px;color: cornflowerblue;" > (12) 98266-9702 </a>
+            </strong> 
+        </div>
+
+        <div class="contact-item">
+          <strong>Instagram</strong>
+
+          <a href="https://www.instagram.com/ev.volantes" class="insta-link" target="_blank">
+              <svg
+                class="insta-icon"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 0 5-2.24 5-5V7c0-2.76-2.24-5-5-5H7zm10 2c1.66 0 3 1.34 3 3v10c0 1.66-1.34 3-3 3H7c-1.66 
+                0-3-1.34-3-3V7c0-1.66 1.34-3 3-3h10zm-5 3.5A4.5 4.5 0 1 0 16.5 
+                12 4.505 4.505 0 0 0 12 7.5zm0 2A2.5 2.5 0 1 1 9.5 12 2.503 2.503 0 0 1 12 
+                9.5zm4.75-.88a1.12 1.12 0 1 1-1.12 1.12 1.12 1.12 0 0 1 1.12-1.12z"/>
+              </svg>
+              @ev.volantes
+            </a>
+        </div>
+
       </section>
     </main>
 
@@ -715,12 +844,17 @@ function abrirGaleria(marca: Marca) {
 }
 
 .section-alt {
-  /* background: rgba(15, 23, 42, 0.88);  */
   background: transparent; 
 }
 
 .section-header {
   margin-bottom: 1.5rem;
+  align-items: center;
+}
+
+#fotos .section-header {
+  color: rgba(0,75,255,.75);
+  text-align: center;
 }
 
 .sobre-text {
@@ -736,22 +870,38 @@ function abrirGaleria(marca: Marca) {
 }
 
 .foto-card {
-  width: 100%;
-  aspect-ratio: 1 / 1;              /* card quadrado */
-  border-radius: 10px;
-  overflow: hidden;
-  border: 1px solid #334155;
-   background: transparent;
-  /* background: #020617; */
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  border-radius: 14px;
 
-  transform: translateY(0);
-  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.5);
-  transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease;
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(20,20,20,.30),
+      rgba(10,10,10,.35)
+    );
+
+  border: 1px solid rgba(0,75,255,.15);
+
+  display: flex;
+  flex-direction: column;
+
+  cursor: pointer;
+}
+
+.foto-legenda {
+  padding: 10px;
+
+  text-align: center;
+
+  font-size: .85rem;
+  font-weight: 700;
+
+  color: white;
+
+  background: rgba(0,75,255,.75);
+
+  backdrop-filter: blur(4px);
 }
 
 .foto-card img {
@@ -798,11 +948,79 @@ function abrirGaleria(marca: Marca) {
 
 /* CONTATO */
 .contact-box {
-  background: #1e293b;
-  border: 1px solid #334155;
-  padding: 1.5rem;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(20,20,20,.62),
+      rgba(10,10,10,.68)
+    );
+
+  border: 1px solid rgba(0,75,255,.25);
+
+  border-radius: 22px;
+
+  padding: 2rem;
+
+  backdrop-filter: blur(8px);
+}
+
+.contact-item {
+  display: flex;
+  flex-direction: column;
+
+  gap: 6px;
+
+  padding: 18px;
+
+  margin-bottom: 14px;
+
+  border-radius: 14px;
+
+  background: rgba(255,255,255,.03);
+
+  border: 1px solid rgba(255,255,255,.05);
+}
+
+#contact .section-header {
+  text-align: center;
+}
+
+#contact h2 {
+  color: #004BFF;
+
+  font-size: 2rem;
+
+  margin-bottom: 10px;
+}
+
+.contact-destaque {
+  margin-bottom: 20px;
+
+  padding: 16px;
+
+  border-left: 4px solid #004BFF;
+
+  background: rgba(187, 198, 223, 0.18);
+
+  color: #dbeafe;
+
   border-radius: 10px;
 }
+
+.contact-link {
+  color: #60a5fa;
+
+  text-decoration: none;
+
+  font-weight: 700;
+
+  transition: .25s;
+}
+
+.contact-link:hover {
+  color: white;
+}
+
 
 .contact-note {
   font-size: 0.85rem;
@@ -916,7 +1134,7 @@ function abrirGaleria(marca: Marca) {
 }
 
 .card-info {
-  background: rgba(15, 23, 42, 0.55);
+  background: rgba(15, 23, 42, 0.45);
   border: 1px solid rgba(56, 189, 248, 0.2);
   padding: 1.8rem;
   border-radius: 14px;
@@ -1291,8 +1509,8 @@ function abrirGaleria(marca: Marca) {
   background:
     linear-gradient(
       145deg,
-      rgba(20,20,20,.95),
-      rgba(10,10,10,.98)
+      rgba(20,20,20,.65),
+      rgba(10,10,10,.68)
     );
 
   border: 1px solid rgba(0,75,255,.25);
@@ -1436,12 +1654,12 @@ function abrirGaleria(marca: Marca) {
   background:
     linear-gradient(
       145deg,
-      rgba(20,20,20,.95),
-      rgba(10,10,10,.98)
+      rgba(20,20,20,.65),
+      rgba(10,10,10,.68)
     );
 
   border: 1px solid rgba(0,75,255,.2);
-
+  
   border-radius: 22px;
 
   padding: 30px;
@@ -1494,6 +1712,13 @@ function abrirGaleria(marca: Marca) {
   letter-spacing: 2px;
 }
 
+/* .card-servico h3 {
+  margin-top: 4px;
+  color: #111111;
+  font-size: 1.7rem;
+} */
+
+
 .card-servico h3 {
   margin-top: 4px;
 
@@ -1525,6 +1750,10 @@ function abrirGaleria(marca: Marca) {
 .servico-item p {
   color: #d3d3d3;
 }
+
+/* .servico-item p {
+  color: #475569;
+} */
 
 .premium-item {
   padding: 16px 18px;
