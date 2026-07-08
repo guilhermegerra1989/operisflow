@@ -138,7 +138,7 @@ function abrirGaleria(marca: Marca) {
             <a href="#fotos" class="btn-hero-primary">Conheça nossos produtos</a>
             <a href="#sobre" class="btn-hero-secondary">Quem somos</a>
             <a href="#fazemos" class="btn-hero-secondary">O que fazemos</a>
-            <a href="#diferenciais" class="btn-hero-secondary">Linha Premium</a>
+            <!-- <a href="#diferencial" class="btn-hero-secondary">Linha Premium</a> -->
           </div>
         </div>
 
@@ -195,8 +195,53 @@ function abrirGaleria(marca: Marca) {
 
        <!-- FAZEMOS NA EMPRESA -->
       <section id="fazemos" class="section sobre-elegante">
+
+
+        <div class="cards-container">
+
+          <div class="card-info">
+            <h3>O que fazemos</h3>
+            <p class="subtitle">Atendemos com agilidade, estoque a pronta-entrega e logística eficiente em três modalidades:</p>
+
+            <p class="sobre-descricao">
+            - Atacado: Distribuição em escala para lojistas e autopeças com condições comerciais competitivas.
+            </p>
+            <p class="sobre-descricao">
+            - Varejo: Venda direta para o consumidor final que busca renovar o interior do veículo.
+            </p>
+            <p class="sobre-descricao">
+            - Base de Troca: Solução sustentável e econômica para renovação imediata do seu volante.
+            </p>
+            
+          </div>
+
+          <div class="card-info">
+            <h3>Diferenciais da Linha Premium</h3>
+           <p class="subtitle">O volante é o principal ponto de contato entre o motorista e o veículo. Por isso, nossa Linha Premium entrega:</p>
+
+          <p class="sobre-descricao">
+           - Inspeção Rígida: Cada peça passa por testes estruturais e de aderência antes do envio.
+          </p>
+          <p class="sobre-descricao">
+           - Pronto para Instalação: Componentes entregues limpos, revisados e higienizados.
+          </p>
+          <p class="sobre-descricao">
+           - Materiais de Alta Resistência: Injetados e revestimentos que suportam o desgaste diário e a exposição solar.
+          </p>
+          <p class="sobre-descricao">
+           - Design e Ergonomia: Visual moderno que valoriza o interior do carro e melhora a pegada ao dirigir.
+          </p>
+
+          </div>
+
+        </div>
+
+
+
+
+
   
-        <div class="sobre-intro">
+        <!-- <div class="sobre-intro">
           <h2 class="title-gradient">O que fazemos</h2>
           <p class="subtitle">Atendemos com agilidade, estoque a pronta-entrega e logística eficiente em três modalidades:</p>
 
@@ -209,12 +254,12 @@ function abrirGaleria(marca: Marca) {
           <p class="sobre-descricao">
            - Base de Troca: Solução sustentável e econômica para renovação imediata do seu volante.
           </p>
-        </div>
+        </div> -->
 
       </section>
 
       <!-- DIFERENCIAIS NA EMPRESA -->
-      <section id="diferencial" class="section sobre-elegante">
+      <!-- <section id="diferencial" class="section sobre-elegante">
   
         <div class="sobre-intro">
           <h2 class="title-gradient">Diferenciais da Linha Premium</h2>
@@ -234,7 +279,7 @@ function abrirGaleria(marca: Marca) {
           </p>
         </div>
 
-      </section>
+      </section> -->
       
 
       <!-- GALERIA DE FOTOS -->
