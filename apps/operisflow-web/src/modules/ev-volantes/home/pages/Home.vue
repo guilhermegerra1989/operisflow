@@ -251,18 +251,22 @@ function abrirGaleria(marca: Marca) {
 
                 <div class="valor-item">
                   Segurança em Primeiro Lugar
+                  <small style="margin-left:5px;color: darkgrey;">Cada volante passa por testes ultra responsivos de estrutura e acabamento.</small>
                 </div>
 
                 <div class="valor-item">
                   Transparência Total
+                  <small style="margin-left:5px;color: darkgrey;">Relações claras, éticas e diretas com os clientes, colaboradores e parceiros.</small>
                 </div>
 
                 <div class="valor-item">
                   Credibilidade e Confiança
+                  <small style="margin-left:5px;color: darkgrey;">Entregar exatamente o que prometemos: produtos robustos e prontos para a rodagem.</small>
                 </div>
 
                 <div class="valor-item">
                   Alta Performance
+                  <small style="margin-left:5px;color: darkgrey;">Inconformismo com o comum; nossa busca pela perfeição é constante e incansável.</small>
                 </div>
 
               </div>
@@ -298,11 +302,6 @@ function abrirGaleria(marca: Marca) {
         <div class="servico-item">
           <strong>ATACADO</strong>
           <p> Distribuição robusta com condições competitivas para lojistas e autopeças. </p>
-        </div>
-
-        <div class="servico-item">
-          <strong>VAREJO</strong>
-          <p> Venda direta para consumidores finais com total qualidade. </p>
         </div>
 
         <div class="servico-item">
