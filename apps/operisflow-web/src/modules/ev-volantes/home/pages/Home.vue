@@ -174,7 +174,7 @@ function anterior() {
         </div>
 
         <div class="galeria-grid">
-          <div class="foto-card" @click="abrirGaleria('CHEVROLET')"> <img src="/marcas/hyundai.png" alt="Chevrolet" /></div>
+          <div class="foto-card" @click="abrirGaleria('CHEVROLET')"> <img src="/marcas/chevrolet.png" alt="Chevrolet" /></div>
           <div class="foto-card" @click="abrirGaleria('CHEVROLET')"> <img src="/volantes_esportivos/CHEVROLET/cruze_universal_azul.png" alt="Cruze" /></div>
           <div class="foto-card" @click="abrirGaleria('CHEVROLET')"> <img src="/volantes_esportivos/CHEVROLET/tracker_controle_universal.png" alt="Tracker" /></div>
           <div class="foto-card" @click="abrirGaleria('CHEVROLET')"> <img src="/volantes_esportivos/CHEVROLET/volante_gti_vision.png" alt="Gti" /></div>
