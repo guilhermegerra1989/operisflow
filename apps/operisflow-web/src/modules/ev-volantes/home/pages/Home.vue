@@ -201,10 +201,12 @@ function abrirGaleria(marca: Marca) {
           <p class="subtitle">Atendemos com agilidade, estoque a pronta-entrega e logística eficiente em três modalidades:</p>
 
           <p class="sobre-descricao">
-           - Atacado: Distribuição em escala para lojistas e autopeças com condições comerciais competitivas.Varejo: 
-            
-           - Venda direta para o consumidor final que busca renovar o interior do veículo.
-            
+           - Atacado: Distribuição em escala para lojistas e autopeças com condições comerciais competitivas.
+          </p>
+          <p class="sobre-descricao">
+           - Varejo: Venda direta para o consumidor final que busca renovar o interior do veículo.
+          </p>
+          <p class="sobre-descricao">
            - Base de Troca: Solução sustentável e econômica para renovação imediata do seu volante.
           </p>
         </div>
