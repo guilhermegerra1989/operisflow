@@ -173,20 +173,20 @@ function abrirGaleria(marca: Marca) {
 
           <div class="card-info">
             <h3>🎯 Missão</h3>
-            <p>Produzir e entregar volantes com um padrão de qualidade raro no mercado, unindo segurança viária e sofisticação estética.</p>
+            <p>Fabricar e entregar volantes de alta performance que elevam a segurança e o prazer de dirigir. Nosso compromisso é injetar no mercado automotivo um padrão de qualidade raro, superando as expectativas de motoristas e lojistas.</p>
           </div>
 
           <div class="card-info">
-            <h3>👁️ Visão</h3>
-            <p>Consolidar-se como a principal referência nacional em volantes automotivos, impulsionada pela inovação contínua e pela confiança dos nossos parceiros.</p>
+            <h3>🛣️ Visão</h3>
+            <p>Ser a marca líder e a principal referência nacional em soluções de direção. Buscamos a evolução contínua dos nossos processos para ditar as tendências de durabilidade, design e inovação do setor.</p>
           </div>
 
           <div class="card-info">
             <h3>🤝 Valores</h3>
-            <p>Segurança: Nosso pilar inegociável em cada peça produzida.</p>
-            <p>Transparência: Relações comerciais claras e honestas.</p>
-            <p>Credibilidade: Compromisso rigoroso com prazos e padrões de entrega.</p>
-            <p>Respeito: Valorização de colaboradores, clientes e parceiros do setor.</p>
+            <p><b>• Segurança em Primeiro Lugar:</b> Cada curva importa; por isso, a precisão técnica guia nossa produção.</p>
+            <p><b>•	Transparência Total:</b>Relações claras, éticas e diretas com clientes, colaboradores e parceiros.</p>
+            <p><b>•	Credibilidade e Confiança:</b>Entregar exatamente o que prometemos: produtos robustos e prontos para a rodagem.</p>
+            <p><b>•	Alta Performance:</b>Inconformismo com o comum; nossa busca pela perfeição é constante e incansável.</p>
           </div>
 
         </div>
