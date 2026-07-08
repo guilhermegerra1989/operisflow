@@ -137,6 +137,8 @@ function abrirGaleria(marca: Marca) {
           <div class="hero-botoes">
             <a href="#fotos" class="btn-hero-primary">Conheça nossos produtos</a>
             <a href="#sobre" class="btn-hero-secondary">Quem somos</a>
+            <a href="#fazemos" class="btn-hero-secondary">O que fazemos</a>
+            <a href="#diferenciais" class="btn-hero-secondary">Linha Premium</a>
           </div>
         </div>
 
@@ -184,6 +186,44 @@ function abrirGaleria(marca: Marca) {
             <p>Transparência - respeito - credibilidade - honestidade - confiança.</p>
           </div>
 
+        </div>
+
+      </section>
+
+       <!-- FAZEMOS NA EMPRESA -->
+      <section id="fazemos" class="section sobre-elegante">
+  
+        <div class="sobre-intro">
+          <h2 class="title-gradient">O que fazemos</h2>
+          <p class="subtitle">Atendemos com agilidade, estoque a pronta-entrega e logística eficiente em três modalidades:</p>
+
+          <p class="sobre-descricao">
+           - Atacado: Distribuição em escala para lojistas e autopeças com condições comerciais competitivas.Varejo: 
+            
+           - Venda direta para o consumidor final que busca renovar o interior do veículo.
+            
+           - Base de Troca: Solução sustentável e econômica para renovação imediata do seu volante.
+          </p>
+        </div>
+
+      </section>
+
+      <!-- DIFERENCIAIS NA EMPRESA -->
+      <section id="diferencial" class="section sobre-elegante">
+  
+        <div class="sobre-intro">
+          <h2 class="title-gradient">Diferenciais da Linha Premium</h2>
+          <p class="subtitle">O volante é o principal ponto de contato entre o motorista e o veículo. Por isso, nossa Linha Premium entrega:</p>
+
+          <p class="sobre-descricao">
+           - Inspeção Rígida: Cada peça passa por testes estruturais e de aderência antes do envio.
+           
+           - Pronto para Instalação: Componentes entregues limpos, revisados e higienizados.
+           
+           - Materiais de Alta Resistência: Injetados e revestimentos que suportam o desgaste diário e a exposição solar.
+           
+           - Design e Ergonomia: Visual moderno que valoriza o interior do carro e melhora a pegada ao dirigir.
+          </p>
         </div>
 
       </section>
