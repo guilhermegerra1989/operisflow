@@ -324,6 +324,12 @@ function abrirGaleria(marca: Marca) {
 
           <h3>LINHA PREMIUM</h3>
         </div>
+       
+      </div>
+      <div>
+          <a href="/pdf/catalogo_premium.pdf"  download  class="btn-catalogo">
+            Download
+          </a>
       </div>
 
       <div class="premium-lista">
@@ -344,9 +350,7 @@ function abrirGaleria(marca: Marca) {
           Design e Ergonomia
         </div>
 
-          <a href="/pdf/catalogo_premium.pdf"  download  class="btn-catalogo">
-            Download
-          </a>
+          
       </div>
     </div>
 
@@ -1589,10 +1593,11 @@ function abrirGaleria(marca: Marca) {
 
 .btn-catalogo {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: right;
+  justify-content: right;
 
-  margin-top: 24px;
+  margin-top: 5px;
+  margin-bottom: 10px;
 
   padding: 14px 20px;
 
