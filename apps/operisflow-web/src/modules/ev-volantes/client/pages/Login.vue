@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import logo from "../../../../assets/ev-volantes-logo.png";
+import logo from "../../../../assets/ev_volantes_image.png";
 import BaseButton from "../../../../components/BaseButton.vue";
 
 const router = useRouter();
@@ -54,15 +54,9 @@ function logout() {
 <template>
    <div class="container">
 
-    <div class="top-bar">
-      <img src="../../../../assets/ev-volantes-logo.png" alt="EV Volantes" class="logo_header" />
-      <button class="btn-logout" @click="logout">Retornar ao site</button>
-    </div>
-
-
     <div class="container login-wrapper">
       <form @submit.prevent="login">
-        <img :src="logo" alt="Logo EV Volantes" class="logo" />
+        <img :src="logo" alt="Logo EV Volantes" class="logo" @click="logout" />
 
         <div class="field">
           <label>E-mail</label>
@@ -86,6 +80,17 @@ function logout() {
 
         <!-- BaseButton substituindo o botão original -->
         <BaseButton type="submit" :loading="isLoading" label="Entrar" />
+
+        <div class="forgot-password">
+          <RouterLink to="/ev-volantes/esqueci-senha">
+            Esqueceu sua senha?
+          </RouterLink>
+
+          <RouterLink style="margin-left: 15px;" to="/ev-volantes/esqueci-senha">
+              Não tem Cadastro?  Cadastre-se
+          </RouterLink>
+        </div>
+
 
         <p v-if="error" class="error">{{ error }}</p>
       </form>
@@ -196,6 +201,20 @@ input:focus {
 
 .toggle:hover {
   opacity: 1;
+}
+
+.forgot-password {
+  margin-top: 12px;
+}
+
+.forgot-password a {
+  color: #5e72a8;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.forgot-password a:hover {
+  text-decoration: underline;
 }
 
 

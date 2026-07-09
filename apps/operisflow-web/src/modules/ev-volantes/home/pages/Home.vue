@@ -101,7 +101,7 @@ function abrirGaleria(marca: Marca) {
 
         <div class="logo-area">
           <img
-            src="/ev_volantes_image.jpeg"
+            src="/ev_volantes_image.png"
             alt="EV Volantes"
             class="logo"
           />
@@ -695,7 +695,7 @@ function abrirGaleria(marca: Marca) {
   padding: 8px 18px;
   border-radius: 50px;
   font-size: 0.9rem;
-  background: #5e72a8;
+  background: #004BFF;
   color: #fff;
   border: none;
   font-weight: 600;
