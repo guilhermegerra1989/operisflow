@@ -1,10 +1,15 @@
 <script setup lang="ts">
 
 import { ref, onMounted, onUnmounted } from 'vue'
+import { computed } from 'vue'
+
+const imagemAtual = computed(() => {
+  return imagens.value[indiceAtual.value] || null
+})
 
 const modalAberto = ref(false)
 const indiceAtual = ref(0)
-const imagens = ref<string[]>([])
+const imagens = ref<{ src: string; nome: string }[]>([])
 
 function proxima() {
   indiceAtual.value =
@@ -44,49 +49,53 @@ onUnmounted(() => {
 
 const galerias = {
   CHEVROLET: [
-    '/volantes_esportivos/CHEVROLET/cruze_universal_azul.png',
-    '/volantes_esportivos/CHEVROLET/tracker_controle_universal.png',
-    '/volantes_esportivos/CHEVROLET/volante_gti_vision.png',
-    '/volantes_esportivos/CHEVROLET/cruze_universal_branco.png',
-    '/volantes_esportivos/CHEVROLET/cruze_universal_vermelho.png',
-    '/volantes_esportivos/CHEVROLET/tracker_aplique_universal.png',
-    '/volantes_esportivos/CHEVROLET/tracker_controle_led_alma_corsa_celta.png',
-    '/volantes_esportivos/CHEVROLET/volante_black.png'
+    { src: '/volantes_esportivos/CHEVROLET/cruze_universal_azul.png', nome: 'Cruze universal azul' },
+    { src: '/volantes_esportivos/CHEVROLET/tracker_controle_universal.png', nome: 'Tracker controle universal' },
+    { src: '/volantes_esportivos/CHEVROLET/volante_gti_vision.png', nome: 'GTI Vision' },
+    { src: '/volantes_esportivos/CHEVROLET/cruze_universal_branco.png', nome: 'Cruze universal branco' },
+    { src: '/volantes_esportivos/CHEVROLET/cruze_universal_vermelho.png', nome: 'Cruze universal vermelho' },
+    { src: '/volantes_esportivos/CHEVROLET/tracker_aplique_universal.png', nome: 'Tracker aplique universal' },
+    { src: '/volantes_esportivos/CHEVROLET/tracker_controle_led_alma_corsa_celta.png', nome: 'Tracker controle LED' },
+    { src: '/volantes_esportivos/CHEVROLET/volante_black.png', nome: 'Volante Black' }
   ],
 
   VOLKSWAGEN: [
-    '/volantes_esportivos/VOLKSWAGEN/nivus_controle_universal.png',
-    '/volantes_esportivos/VOLKSWAGEN/novo_golf.png',
-    '/volantes_esportivos/VOLKSWAGEN/volante_gti_vision.png',
-    '/volantes_esportivos/VOLKSWAGEN/gol_g5_original.png',
-    '/volantes_esportivos/VOLKSWAGEN/nivus_universal.png',
-    '/volantes_esportivos/VOLKSWAGEN/volante_esportivo_rallye.png'
+    { src: '/volantes_esportivos/VOLKSWAGEN/nivus_controle_universal.png', nome: 'Nivus controle universal' },
+    { src: '/volantes_esportivos/VOLKSWAGEN/novo_golf.png', nome: 'Novo Golf' },
+    { src: '/volantes_esportivos/VOLKSWAGEN/volante_gti_vision.png', nome: 'GTI Vision' },
+    { src: '/volantes_esportivos/VOLKSWAGEN/gol_g5_original.png', nome: 'Gol G5 Original' },
+    { src: '/volantes_esportivos/VOLKSWAGEN/nivus_universal.png', nome: 'Nivus universal' },
+    { src: '/volantes_esportivos/VOLKSWAGEN/volante_esportivo_rallye.png', nome: 'Rallye Esportivo' }
   ],
 
   FIAT: [
-    '/volantes_esportivos/FIAT/volante_fire_original.png',
-    '/volantes_esportivos/FIAT/toro_black_alma_original.png',
-    '/volantes_esportivos/FIAT/volante_gti_vision.png',
-    '/volantes_esportivos/FIAT/volante_palio_novo.png',
-    '/volantes_esportivos/FIAT/volante_rallye.png',
-    '/volantes_esportivos/FIAT/pulse_black_alma_original.png',
-    '/volantes_esportivos/FIAT/palio_novo_azul.png',
-    '/volantes_esportivos/FIAT/nivus_aplique_universal.png'
+    { src: '/volantes_esportivos/FIAT/volante_fire_original.png', nome: 'Fire original' },
+    { src: '/volantes_esportivos/FIAT/toro_black_alma_original.png', nome: 'Toro black alma original' },
+    { src: '/volantes_esportivos/FIAT/volante_gti_vision.png', nome: 'GTI Vision' },
+    { src: '/volantes_esportivos/FIAT/volante_palio_novo.png', nome: 'Palio novo' },
+    { src: '/volantes_esportivos/FIAT/volante_rallye.png', nome: 'Rallye' },
+    { src: '/volantes_esportivos/FIAT/pulse_black_alma_original.png', nome: 'Pulse black alma original' },
+    { src: '/volantes_esportivos/FIAT/palio_novo_azul.png', nome: 'Palio azul' },
+    { src: '/volantes_esportivos/FIAT/nivus_aplique_universal.png', nome: 'Nivus aplique universal' }
   ],
 
   FORD: [
-    '/volantes_esportivos/FORD/volante_ford.png',
-    '/volantes_esportivos/FORD/volante_gti_vision_ford_ka.png',
-    '/volantes_esportivos/FORD/volante_rallye_ford.png'
+    { src: '/volantes_esportivos/FORD/volante_ford.png', nome: 'Volante Ford' },
+    { src: '/volantes_esportivos/FORD/volante_gti_vision_ford_ka.png', nome: 'GTI Vision Ford Ka' },
+    { src: '/volantes_esportivos/FORD/volante_rallye_ford.png', nome: 'Rallye Ford' }
   ]
 } as const
+
 
 type Marca = keyof typeof galerias
 
 function abrirGaleria(marca: Marca) {
   imagens.value = [...galerias[marca]]
   indiceAtual.value = 0
-  modalAberto.value = true
+
+  if (imagens.value.length > 0) {
+    modalAberto.value = true
+  }
 }
 
 
@@ -576,7 +585,13 @@ function abrirGaleria(marca: Marca) {
         <button class="modal-fechar" @click="modalAberto = false" > ✕ </button>
         <button class="modal-nav modal-prev" @click="anterior">  ❮  </button>
 
-        <img :src="imagens[indiceAtual]" class="modal">
+        <div class="modal-content" v-if="imagemAtual">
+          <img :src="imagemAtual.src" class="modal">
+
+          <div class="modal-nome">
+            {{ imagemAtual.nome }}
+          </div>
+        </div>
 
         <button class="modal-nav modal-next" @click="proxima">   ❯  </button>
         <div class="modal-indicador"> {{ indiceAtual + 1 }} / {{ imagens.length }} </div>
@@ -1719,6 +1734,26 @@ function abrirGaleria(marca: Marca) {
     text-align: center;
   }
 
+}
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modal-nome {
+  margin-top: 12px;
+  padding: 8px 14px;
+
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+
+  background: rgba(255,255,255,.08);
+  border-radius: 999px;
+
+  backdrop-filter: blur(6px);
 }
 
 </style>
