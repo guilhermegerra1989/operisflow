@@ -334,9 +334,19 @@ function abrirGaleria(marca: Marca) {
             </div>
           
           </div>
-          <div>
+
+          <div style="display: flex; justify-content: flex-end;padding-bottom: 10px;">
               <a href="/pdf/catalogo_premium.pdf"  download  class="btn-catalogo">
-                Download
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 2h14v2H5z"/>
+                </svg>
+                <span> Download do Catálogo</span>
               </a>
           </div>
 
