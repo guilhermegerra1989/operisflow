@@ -18,6 +18,7 @@ export class UsersService {
     const { password, ...rest } = user;
     return rest;
   }
+  
 
   async findAll(tenantId: string) {
     const result = await this.db.query(
