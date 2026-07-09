@@ -86,7 +86,7 @@ function logout() {
             Esqueceu sua senha?
           </RouterLink>
 
-          <RouterLink style="margin-left: 15px;" to="/ev-volantes/esqueci-senha">
+          <RouterLink style="margin-left: 15px;" to="/ev-volantes/cadastre">
               Não tem Cadastro?  Cadastre-se
           </RouterLink>
         </div>

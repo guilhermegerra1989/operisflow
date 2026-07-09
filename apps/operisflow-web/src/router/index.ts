@@ -3,6 +3,8 @@ import { session } from "../auth/session.ts";
 
 import Home from "../modules/ev-volantes/home/pages/Home.vue";
 import Login from "../modules/ev-volantes/client/pages/Login.vue";
+import Cadastre from "../modules/ev-volantes/client/pages/Cadastre.vue";
+import RecadastrarSenha from "../modules/ev-volantes/client/pages/RecadastrarSenha.vue";
 import MeusPedidos from "../modules/ev-volantes/client/pages/MeusPedidos.vue";
 import NovoPedido from "../modules/ev-volantes/client/pages/NovoPedido.vue";
 import UsersAdmin from "../modules/ev-volantes/admin/pages/UserAdmin.vue";
@@ -26,6 +28,12 @@ export const router = createRouter({
 
     // PÚBLICA - LOGIN
     { path: "/ev-volantes/login", component: Login },
+
+    // PÚBLICA - CADASTRE
+    { path: "/ev-volantes/cadastre", component: Cadastre },
+
+    // PÚBLICA - RECADASTRAR SENHA
+    { path: "/ev-volantes/esqueci-senha", component: RecadastrarSenha },
 
     // CLIENTE
     {

@@ -2,12 +2,14 @@ const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
 
 async function fetchWithAuth(
   path: string,
-  options: RequestInit = {}
+  options: RequestInit = {},
+  useAuth: boolean = true
 ) {
   const token = localStorage.getItem("token");
 
   const headers = new Headers(options.headers || {});
-  if (token) {
+
+  if (useAuth && token) {
     headers.set("Authorization", `Bearer ${token}`);
   }
 
@@ -33,6 +35,16 @@ async function fetchWithAuth(
 
 export async function apiGet(path: string) {
   const res = await fetchWithAuth(path);
+  return res.json();
+}
+
+export async function apiPostPublic(path: string, body: any) {
+  const res = await fetchWithAuth(path, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  }, false); 
+
   return res.json();
 }
 
