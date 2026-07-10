@@ -123,7 +123,7 @@ function abrirGaleria(marca: Marca) {
           <a href="#contact" class="nav-link">Contato</a>
 
           <RouterLink to="/ev-volantes/login" class="btn-outline">
-            Entrar
+            Entrar / Cadastrar
           </RouterLink>
         </nav>
       </div>
