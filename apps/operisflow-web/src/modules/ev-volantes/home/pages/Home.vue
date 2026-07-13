@@ -39,13 +39,43 @@ function handleKey(event: KeyboardEvent) {
   }
 }
 
+
+let intervalId: number
+
 onMounted(() => {
+  intervalId = window.setInterval(() => {
+    indiceProduto.value =
+      (indiceProduto.value + 1) %
+      produtosDestaque.length
+  }, 3500)
+
   window.addEventListener('keydown', handleKey)
+  window.addEventListener('scroll', verificarScroll)
+
 })
 
 onUnmounted(() => {
+  clearInterval(intervalId)
   window.removeEventListener('keydown', handleKey)
+  window.removeEventListener('scroll', verificarScroll)
+
 })
+
+
+const mostrarVoltarTopo = ref(false)
+
+function verificarScroll() {
+  mostrarVoltarTopo.value = window.scrollY > 600
+}
+
+function voltarAoTopo() {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  })
+}
+
+
 
 const galerias = {
   CHEVROLET: [
@@ -99,6 +129,117 @@ function abrirGaleria(marca: Marca) {
 }
 
 
+const produtosDestaque = [
+
+  // CHEVROLET
+  {
+    src: '/volantes_esportivos/CHEVROLET/cruze_universal_azul.png',
+    nome: 'Cruze Universal Azul'
+  },
+  {
+    src: '/volantes_esportivos/CHEVROLET/tracker_controle_universal.png',
+    nome: 'Tracker Controle Universal'
+  },
+  {
+    src: '/volantes_esportivos/CHEVROLET/cruze_universal_branco.png',
+    nome: 'Cruze Universal Branco'
+  },
+  {
+    src: '/volantes_esportivos/CHEVROLET/cruze_universal_vermelho.png',
+    nome: 'Cruze Universal Vermelho'
+  },
+  {
+    src: '/volantes_esportivos/CHEVROLET/tracker_aplique_universal.png',
+    nome: 'Tracker Aplique Universal'
+  },
+  {
+    src: '/volantes_esportivos/CHEVROLET/tracker_controle_led_alma_corsa_celta.png',
+    nome: 'Tracker Controle LED'
+  },
+  {
+    src: '/volantes_esportivos/CHEVROLET/volante_black.png',
+    nome: 'Volante Black'
+  },
+
+  // VOLKSWAGEN
+  {
+    src: '/volantes_esportivos/VOLKSWAGEN/nivus_controle_universal.png',
+    nome: 'Nivus Controle Universal'
+  },
+  {
+    src: '/volantes_esportivos/VOLKSWAGEN/novo_golf.png',
+    nome: 'Novo Golf'
+  },
+  {
+    src: '/volantes_esportivos/VOLKSWAGEN/volante_gti_vision.png',
+    nome: 'GTI Vision'
+  },
+  {
+    src: '/volantes_esportivos/VOLKSWAGEN/gol_g5_original.png',
+    nome: 'Gol G5 Original'
+  },
+  {
+    src: '/volantes_esportivos/VOLKSWAGEN/nivus_universal.png',
+    nome: 'Nivus Universal'
+  },
+  {
+    src: '/volantes_esportivos/VOLKSWAGEN/volante_esportivo_rallye.png',
+    nome: 'Rallye Esportivo'
+  },
+
+  // FIAT
+  {
+    src: '/volantes_esportivos/FIAT/volante_fire_original.png',
+    nome: 'Fire Original'
+  },
+  {
+    src: '/volantes_esportivos/FIAT/toro_black_alma_original.png',
+    nome: 'Toro Black'
+  },
+  {
+    src: '/volantes_esportivos/FIAT/volante_palio_novo.png',
+    nome: 'Palio Novo'
+  },
+  {
+    src: '/volantes_esportivos/FIAT/volante_rallye.png',
+    nome: 'Rallye'
+  },
+  {
+    src: '/volantes_esportivos/FIAT/pulse_black_alma_original.png',
+    nome: 'Pulse Black'
+  },
+  {
+    src: '/volantes_esportivos/FIAT/palio_novo_azul.png',
+    nome: 'Palio Azul'
+  },
+  {
+    src: '/volantes_esportivos/FIAT/nivus_aplique_universal.png',
+    nome: 'Nivus Aplique Universal'
+  },
+
+  // FORD
+  {
+    src: '/volantes_esportivos/FORD/volante_ford.png',
+    nome: 'Volante Ford'
+  },
+  {
+    src: '/volantes_esportivos/FORD/volante_gti_vision_ford_ka.png',
+    nome: 'GTI Vision Ford Ka'
+  },
+  {
+    src: '/volantes_esportivos/FORD/volante_rallye_ford.png',
+    nome: 'Rallye Ford'
+  }
+
+]
+
+const indiceProduto = ref(0)
+
+const produtoAtual = computed(() => {
+  return produtosDestaque[indiceProduto.value]
+})
+
+
 </script>
 
 <template>
@@ -122,9 +263,26 @@ function abrirGaleria(marca: Marca) {
           <a href="#fotos" class="nav-link">Produtos</a>
           <a href="#contact" class="nav-link">Contato</a>
 
-          <RouterLink to="/ev-volantes/login" class="btn-outline">
-            Entrar / Cadastrar
-          </RouterLink>
+          <a  href="https://wa.me/5512982669702?text=Olá! Vim pelo site e gostaria de mais informações."
+            target="_blank" rel="noopener noreferrer" class="btn-whatsapp-header">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20.52 3.48A11.87 11.87 0 0012.06 0C5.6 0 .34 5.28.34 11.8c0 2.08.54 4.1 1.56 5.88L0 24l6.52-1.7a11.74 11.74 0 005.54 1.4h.01c6.46 0 11.72-5.28 11.72-11.8 0-3.15-1.22-6.1-3.27-8.42zm-8.46 18.1h-.01a9.8 9.8 0 01-5-1.36l-.36-.21-3.87 1.01 1.03-3.77-.24-.39a9.77 9.77 0 01-1.5-5.26c0-5.41 4.38-9.8 9.77-9.8 2.61 0 5.07 1.02 6.92 2.88a9.73 9.73 0 012.87 6.93c0 5.4-4.38 9.79-9.76 9.79zm5.45-7.32c-.3-.15-1.78-.88-2.06-.98-.28-.1-.48-.15-.68.15s-.78.98-.96 1.18c-.17.2-.35.23-.64.08-.3-.15-1.25-.46-2.38-1.48-.88-.79-1.47-1.76-1.64-2.06-.17-.3-.02-.46.13-.6.14-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.38-.02-.53-.07-.15-.68-1.64-.93-2.24-.24-.58-.49-.5-.68-.5h-.58c-.2 0-.52.08-.8.38-.28.3-1.04 1.02-1.04 2.48s1.06 2.88 1.21 3.08c.15.2 2.1 3.2 5.1 4.48.71.31 1.27.5 1.7.64.71.23 1.35.2 1.86.12.57-.09 1.78-.73 2.03-1.44.25-.7.25-1.3.17-1.44-.08-.13-.27-.2-.57-.35z"
+              />
+            </svg>
+
+            <span class="btn-whatsapp-text">
+              Peça seu orçamento
+            </span>
+          </a>
+
+  <RouterLink
+    to="/ev-volantes/login"
+    class="btn-outline"
+  >
+    Entrar / Cadastrar
+  </RouterLink>
+
+
         </nav>
       </div>
     </header>
@@ -134,14 +292,18 @@ function abrirGaleria(marca: Marca) {
       <section class="hero hero-refinado">
 
         <div class="hero-text">
-          <h1 class="hero-titulo"> <span class="hero-destaque">EV Volantes | Alta Performance e Estética Automotiva </span>
-              </h1>      
+          <h1 class="hero-titulo"> <span class="hero-destaque">EV Volantes | Alta Performance e Estética Automotiva </span></h1>      
 
-          <p class="hero-subtitulo">
-            Atuamos fornecendo volantes completos e revisados com alto padrão
-            de qualidade. Atendemos oficinas, lojistas, mecânicas e clientes
-            finais que buscam segurança e acabamento impecável.
-          </p>
+           <div class="hero-imagem">
+            <img src="/ev_volantes.jpeg" alt="EV Volantes" class="hero-banner" />
+            <span>
+              <p class="hero-subtitulo">
+                Atuamos fornecendo volantes completos e revisados com alto padrão
+                de qualidade. Atendemos oficinas, lojistas, mecânicas e clientes
+                finais que buscam segurança e acabamento impecável.
+              </p>
+            </span>
+          </div>
 
           <div class="hero-botoes">
             <a href="#fotos" class="btn-hero-primary">Conheça nossos produtos</a>
@@ -150,16 +312,26 @@ function abrirGaleria(marca: Marca) {
           </div>
         </div>
 
-        <div class="hero-imagem">
-          <img
-            src="/ev_volantes.jpeg"
-            alt="EV Volantes"
-            class="hero-banner"
-          />
-        </div>
+       <div class="hero-imagem">
+                <div class="produto-slider">
+
+                  <div class="produto-frame">
+                    <img
+                        v-if="produtoAtual"
+                        :src="produtoAtual.src"
+                        :alt="produtoAtual.nome"
+                      >
+                  </div>
+
+                  <span class="produto-label">
+                    {{ produtoAtual.nome }}
+                  </span>
+
+                </div>
+       </div>
 
       </section>
-    
+       
 
       <!-- SOBRE A EMPRESA -->
       <section id="sobre" class="section sobre-elegante">
@@ -564,6 +736,15 @@ function abrirGaleria(marca: Marca) {
 
       </section>
     </main>
+
+    <button  v-if="mostrarVoltarTopo" @click="voltarAoTopo" class="btn-topo">
+        <svg viewBox="0 0 24 24">
+          <path
+            fill="currentColor"
+            d="M12 4l-8 8h5v8h6v-8h5z"
+          />
+        </svg>
+    </button>
 
     <!-- WHATSAPP -->
     <a
@@ -1044,6 +1225,7 @@ function abrirGaleria(marca: Marca) {
 
 .hero-subtitulo {
   margin-top: 1rem;
+  margin-left: 2rem;
   font-size: 1.05rem;
   color: #cbd5e1;
   line-height: 1.6;
@@ -1099,7 +1281,7 @@ function abrirGaleria(marca: Marca) {
 }
 
 .hero-banner {
-  width: 260px;
+  width: 160px;
   height: auto;
   filter: drop-shadow(0 10px 28px rgba(0,0,0,0.55));
   transition: transform .25s ease;
@@ -1764,6 +1946,213 @@ function abrirGaleria(marca: Marca) {
   border-radius: 999px;
 
   backdrop-filter: blur(6px);
+}
+
+.produto-slider {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.produto-info {
+  margin-top: 12px;
+
+  color: white;
+
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.produto-thumbs {
+  display: flex;
+  gap: 10px;
+
+  margin-top: 20px;
+}
+
+.thumb {
+  width: 65px;
+  height: 65px;
+
+  border-radius: 12px;
+  overflow: hidden;
+
+  border: 2px solid transparent;
+
+  background: rgba(255,255,255,.05);
+
+  cursor: pointer;
+
+  transition: .25s;
+}
+
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.thumb:hover {
+  transform: translateY(-3px);
+}
+
+.thumb.ativo {
+  border-color: #004BFF;
+
+  box-shadow:
+    0 0 20px rgba(0,75,255,.4);
+}
+
+.produto-frame {
+  width: 420px;
+  height: 320px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.produto-principal {
+  max-width: 100%;
+  max-height: 100%;
+
+  object-fit: contain;
+
+  transition:
+    opacity .4s ease,
+    transform .4s ease;
+
+  filter:
+    drop-shadow(
+      0 15px 35px rgba(0,0,0,.45)
+    );
+}
+
+.produto-label {
+  margin-top: 10px;
+
+  color: white;
+
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.produto-principal {
+  animation: trocaProduto .5s ease;
+}
+
+@keyframes trocaProduto {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.btn-whatsapp-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 8px 16px;
+
+  border-radius: 999px;
+
+  background: #25d366;
+  color: white;
+
+  text-decoration: none;
+  font-weight: 700;
+  font-size: .9rem;
+
+  transition: .25s ease;
+
+  box-shadow:
+    0 4px 12px rgba(37,211,102,.3);
+}
+
+.btn-whatsapp-header:hover {
+  background: #1ebe5d;
+  transform: translateY(-2px);
+}
+
+.btn-whatsapp-header svg {
+  width: 18px;
+  height: 18px;
+}
+
+@media (max-width: 768px) {
+
+  .btn-whatsapp-header {
+    padding: 8px 10px;
+  }
+
+  .btn-whatsapp-text {
+    display: none;
+  }
+
+}
+
+@media (max-width: 768px) {
+
+  .btn-outline {
+    padding: 8px 12px;
+    font-size: .8rem;
+  }
+
+}
+
+.btn-topo {
+  position: fixed;
+
+  right: 28px;
+  bottom: 100px;
+
+  width: 50px;
+  height: 50px;
+
+  border: none;
+  border-radius: 50%;
+
+  background: rgba(15, 23, 42, 0.95);
+
+  color: white;
+
+  font-size: 22px;
+  font-weight: bold;
+
+  cursor: pointer;
+
+  z-index: 998;
+
+  box-shadow:
+    0 10px 25px rgba(0,0,0,.35);
+
+  transition: all .25s ease;
+}
+
+.btn-topo:hover {
+  background: #004BFF;
+
+  transform: translateY(-3px);
+}
+
+@media (max-width: 768px) {
+
+  .btn-topo {
+    width: 42px;
+    height: 42px;
+
+    right: 18px;
+    bottom: 84px;
+
+    font-size: 18px;
+  }
+
 }
 
 </style>
