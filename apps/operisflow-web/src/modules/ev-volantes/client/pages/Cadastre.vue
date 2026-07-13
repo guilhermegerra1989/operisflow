@@ -13,27 +13,45 @@ const password = ref("");
 
 const endereco = ref("");
 const cnpj = ref("");
-const telefone = ref("");
+const telcomercial = ref("");
+const telpessoal = ref("");
+const bairro = ref("");
+const cep = ref("");
+const estado = ref("SP");
+const inscricao_estadual = ref("");
+const inscricao_municipal = ref("");
+
+
 
 const loading = ref(false);
 const sucesso = ref(false);
+
+const mostrarSenha = ref(false);
+
+const estados = [
+  "AC", "AL", "AP", "AM",
+  "BA", "CE", "DF", "ES",
+  "GO", "MA", "MT", "MS",
+  "MG", "PA", "PB", "PR",
+  "PE", "PI", "RJ", "RN",
+  "RS", "RO", "RR", "SC",
+  "SP", "SE", "TO"
+];
 
 // =========================
 // VALIDAÇÃO
 // =========================
 function validar() {
-    debugger
-  if (!name.value) return "Nome obrigatório";
-  if (!nome_fantasia.value) return "Nome fantasia obrigatório";
+    
   if (!razao_social.value) return "Razão social obrigatória";
   if (!email.value) return "Email obrigatório";
   if (!password.value) return "Senha obrigatória";
 
   if (!endereco.value) return "Endereço obrigatório";
   if (!cnpj.value) return "CNPJ obrigatório";
-  if (!telefone.value) return "Telefone obrigatório";
+  if (!telcomercial.value) return "Telefone obrigatório";
 
-  if (telefone.value.length > 50) {
+  if (telcomercial.value.length > 50) {
     return "Telefone máximo 50 caracteres";
   }
 
@@ -48,6 +66,7 @@ async function cadastrarCliente() {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
   const erro = validar();
+
 
   if (erro) {
     alert(erro);
@@ -66,7 +85,7 @@ async function cadastrarCliente() {
 
     endereco: endereco.value,
     cnpj: cnpj.value,
-    telefone: telefone.value,
+    telefone: telcomercial.value,
   };
 
   try {
@@ -98,45 +117,55 @@ function voltarLogin() {
 </script>
 
 <template>
+
+
+<div class="page">
   <div class="container">
+     <div class="card-cadastro">
 
     <!-- HEADER -->
-    
     <div class="top-bar">
       <img
-        src="../../../../assets/ev-volantes-logo.png"
+        src="../../../../assets/ev_volantes_image.png"
         alt="EV Volantes"
         class="logo"
       />
 
-      <button class="btn-secondary" @click="voltarLogin">
-        Voltar para login
+      <button class="btn-secondary btn-small" @click="voltarLogin">
+          Voltar para login
       </button>
+
     </div>
 
     <h2>Cadastro de Cliente</h2>
 
-    <!-- ✅ MENSAGEM SUCESSO -->
     <div v-if="sucesso" class="sucesso-msg">
-      ✅ Cliente cadastrado com sucesso! Redirecionando...
+      ✅ Cliente cadastrado com sucesso!
+      Redirecionando...
     </div>
+
 
     <!-- FORM -->
     <div class="form">
 
-      <div class="field required">
+      <div class="field">
         <label>Nome</label>
         <input v-model="name" />
       </div>
 
       <div class="field required">
+        <label>Razão Social</label>
+        <input v-model="razao_social" />
+      </div>
+
+      <div class="field">
         <label>Nome Fantasia</label>
         <input v-model="nome_fantasia" />
       </div>
 
       <div class="field required">
-        <label>Razão Social</label>
-        <input v-model="razao_social" />
+        <label>CNPJ</label>
+        <input v-model="cnpj" />
       </div>
 
       <div class="field required">
@@ -146,7 +175,24 @@ function voltarLogin() {
 
       <div class="field required">
         <label>Senha</label>
-        <input v-model="password" type="password" />
+
+        <div class="password-wrapper">
+            <input v-model="password" :type="mostrarSenha ? 'text' : 'password'" />
+
+            <button type="button" class="btn-eye" @click="mostrarSenha = !mostrarSenha" >
+              {{ mostrarSenha ? '🙈' : '👁️' }}
+            </button>
+        </div>
+      </div>
+
+      <div class="field required">
+        <label>Tel (Comercial)</label>
+        <input v-model="telcomercial" maxlength="50" />
+      </div>
+
+      <div class="field">
+        <label>Tel (Pessoal)</label>
+        <input v-model="telpessoal" maxlength="50" />
       </div>
 
       <div class="field required">
@@ -155,152 +201,405 @@ function voltarLogin() {
       </div>
 
       <div class="field required">
-        <label>CNPJ</label>
-        <input v-model="cnpj" />
+        <label>Bairro</label>
+        <input v-model="bairro" />
       </div>
 
       <div class="field required">
-        <label>Telefone</label>
-        <input v-model="telefone" maxlength="50" />
+        <label>Estado / UF</label>
+
+        <select v-model="estado">
+          <option
+            v-for="uf in estados"
+            :key="uf"
+            :value="uf"
+          >
+            {{ uf }}
+          </option>
+        </select>
       </div>
 
-      <button @click="cadastrarCliente" :disabled="loading">
+      <div class="field required">
+        <label>Cep</label>
+        <input v-model="cep" />
+      </div>
+
+      <div class="field required">
+        <label>IE (Incrição Estadual)</label>
+        <input v-model="inscricao_estadual" />
+      </div>
+
+      <div class="field">
+        <label>IM (Incrição Municipal)</label>
+        <input v-model="inscricao_municipal" />
+      </div>
+      
+      <button
+        class="btn-primary"
+        @click="cadastrarCliente"
+        :disabled="loading"
+      >
         {{ loading ? "Cadastrando..." : "Criar Conta" }}
       </button>
+
+
+    </div>
 
     </div>
 
   </div>
+  </div>
 </template>
 
-<style>
-.container {
-  padding: 16px;
-  max-width: 480px;
-  margin: 40px auto;
+<style scoped>
+
+.page {
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 30px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #111111,
+      #171717,
+      #0d0d0d
+    );
 }
 
-/* Topo */
+.container {
+  width: 100%;
+  max-width: 700px;
+}
+
+.card-cadastro {
+  position: relative;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(20,20,20,.65),
+      rgba(10,10,10,.68)
+    );
+
+  border: 1px solid rgba(0,75,255,.25);
+
+  border-radius: 24px;
+
+  padding: 32px;
+
+  transition: .35s ease;
+
+  box-shadow:
+    0 15px 40px rgba(0,0,0,.35);
+}
+
+.card-cadastro::before {
+
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0,75,255,.08),
+      transparent 40%
+    );
+
+  pointer-events: none;
+}
+
+.card-cadastro:hover {
+
+  transform: translateY(-6px);
+
+  border-color: #004BFF;
+
+  box-shadow:
+    0 18px 45px rgba(0,75,255,.25);
+}
+
+/* TOPO */
+
 .top-bar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+
+  gap: 12px;
+
+  margin-bottom: 20px;
 }
 
 .logo {
-  height: 36px; /* bom para mobile e desktop */
+  height: 55px;
+
   object-fit: contain;
+
+  filter:
+    brightness(0)
+    invert(1);
 }
 
-.btn-logout {
-  background: transparent;
-  border: 1px solid #e53935;
-  color: #e53935;
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  max-width: 100px;
-}
+/* TITULO */
 
-.btn-logout:hover {
-  background: #ffebee;
-}
-
-.btn-secondary {
-  background: transparent;
-  border: 1px solid #5e72a8;
-  color: #5e72a8;
-  padding: 5px 10px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: 600;
-}
-
-.btn-secondary:hover {
-  background: #eef2ff;
-}
-
-/* TÍTULO */
 h2 {
-  margin-bottom: 16px;
+  text-align: center;
+
+  color: white;
+
+  font-size: 2rem;
+
+  margin-bottom: 24px;
 }
 
 /* FORM */
+
 .form {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+
+  gap: 16px;
 }
 
-/* CAMPOS */
 .field {
   display: flex;
   flex-direction: column;
-  font-size: 14px;
-  font-weight: 600;
 }
 
 .field label {
-  margin-bottom: 5px;
+  margin-bottom: 6px;
+
+  color: #cbd5e1;
+
+  font-size: .9rem;
+
+  font-weight: 600;
 }
 
-/* obrigatório */
 .field.required label::after {
   content: " *";
-  color: #e53935;
+
+  color: #ef4444;
 }
 
 /* INPUTS */
+
 input,
 select {
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
+   appearance: none;
+
+  width: 100%;
+
+  padding: 12px 14px;
+
+  border-radius: 12px;
+
+  border: 1px solid rgba(255,255,255,.08);
+
+  background: rgba(255,255,255,.03);
+
+  color: white;
+
   font-size: 14px;
-  transition: 0.2s;
+
+  transition: .25s;
+}
+
+input::placeholder {
+  color: #94a3b8;
 }
 
 input:focus,
 select:focus {
-  border-color: #5e72a8;
   outline: none;
+
+  border-color: #004BFF;
+
+  box-shadow:
+    0 0 0 4px rgba(0,75,255,.15);
 }
 
-/* BOTÃO */
-button {
-  margin-top: 12px;
-  background: #5e72a8;
-  color: white;
-  padding: 12px;
-  border-radius: 8px;
+/* SENHA */
+
+.password-wrapper {
+  position: relative;
+}
+
+.password-wrapper input {
+  padding-right: 50px;
+}
+
+.btn-eye {
+  position: absolute;
+
+  right: 14px;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  background: transparent !important;
+
   border: none;
-  font-weight: 700;
+
+  color: #94a3b8;
+
   cursor: pointer;
-  transition: 0.2s;
+
+  font-size: 18px;
+
+  padding: 0;
+  margin: 0;
+
+  width: auto;
+
+  box-shadow: none;
 }
 
-button:hover {
-  background: #475a90;
+.btn-eye:hover {
+  color: #004BFF;
+  background: transparent !important;
+  transform: translateY(-50%);
 }
 
-button:disabled {
-  opacity: 0.6;
+/* BOTÃO PRINCIPAL */
+
+.btn-primary {
+  width: 100%;
+
+  margin-top: 12px;
+
+  padding: 14px;
+
+  border-radius: 12px;
+
+  border: none;
+
+  background: #004BFF;
+
+  color: white;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: .25s;
+
+  box-shadow:
+    0 8px 20px rgba(0,75,255,.25);
+}
+
+.btn-primary:hover {
+  background: #0038c7;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 28px rgba(0,75,255,.35);
+}
+
+.btn-primary:disabled {
+  opacity: .6;
+
   cursor: not-allowed;
+
+  transform: none;
+}
+
+/* BOTÃO VOLTAR */
+
+.btn-secondary {
+  background: transparent;
+
+  border: 2px solid #004BFF;
+
+  color: #004BFF;
+
+  padding: 10px 16px;
+
+  border-radius: 10px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: .25s;
+}
+
+.btn-secondary:hover {
+  background: rgba(0,75,255,.12);
+
+  color: white;
 }
 
 /* SUCESSO */
+
 .sucesso-msg {
-  background: #e8f5e9;
-  color: #2e7d32;
-  padding: 12px;
-  border-radius: 8px;
-  margin-bottom: 14px;
-  font-weight: 600;
+  margin-bottom: 20px;
+
+  padding: 16px;
+
+  border-radius: 12px;
+
   text-align: center;
-  border: 1px solid #c8e6c9;
+
+  font-weight: 700;
+
+  color: #86efac;
+
+  background: rgba(34,197,94,.12);
+
+  border: 1px solid rgba(34,197,94,.35);
 }
+
+/* RESPONSIVO */
+
+@media (max-width: 768px) {
+
+  .page {
+    padding: 16px;
+  }
+
+  .card-cadastro {
+    padding: 22px;
+  }
+
+  .top-bar {
+    flex-direction: column;
+
+    text-align: center;
+  }
+
+  .logo {
+    height: 50px;
+  }
+
+  h2 {
+    font-size: 1.6rem;
+  }
+
+}
+
+.btn-small {
+  width: auto;
+
+  padding: 4px 10px;
+
+  font-size: 0.75rem;
+
+  border-radius: 8px;
+}
+
+
+
+
 </style>
