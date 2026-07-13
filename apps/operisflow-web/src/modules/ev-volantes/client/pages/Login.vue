@@ -52,11 +52,30 @@ function logout() {
 </script>
 
 <template>
-   <div class="container">
 
-    <div class="container login-wrapper">
-      <form @submit.prevent="login">
-        <img :src="logo" alt="Logo EV Volantes" class="logo" @click="logout" />
+
+<div class="page">
+  <div class="container">
+
+    <div class="card-login">
+
+      <div class="top-bar">
+          <button class="btn-back-mobile" @click="voltarLogin">
+            ←
+          </button>
+
+          <img src="../../../../assets/ev_volantes_image.png"
+            alt="EV Volantes"
+            class="logo"
+          />
+
+          <button class="btn-secondary btn-small desktop-only" @click="voltarLogin">
+            Voltar para login
+          </button>
+      </div>
+
+            <form @submit.prevent="login">
+       
 
         <div class="field">
           <label>E-mail</label>
@@ -86,16 +105,21 @@ function logout() {
             Esqueceu sua senha?
           </RouterLink>
 
-          <RouterLink style="margin-left: 15px;" to="/ev-volantes/cadastre">
-              Não tem Cadastro?  Cadastre-se
+          <RouterLink to="/ev-volantes/cadastre">
+              Cadastre-se
           </RouterLink>
         </div>
 
-
         <p v-if="error" class="error">{{ error }}</p>
       </form>
+      
     </div>
+
   </div>
+</div>
+
+
+
 </template>
 
 <style scoped>
@@ -106,16 +130,22 @@ function logout() {
 
 .top-bar {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  margin-bottom: 16px;
+
+  margin-bottom: 20px;
 }
 
 .logo {
-  width: 360px;
-  height: 360px;
+  height: 70px;
+
+  width: auto;
+
   object-fit: contain;
-  margin-bottom: 10px;
+
+  filter:
+    brightness(0)
+    invert(1);
 }
 
 input {
@@ -205,6 +235,10 @@ input:focus {
 
 .forgot-password {
   margin-top: 12px;
+
+  display: flex;
+  justify-content: center;
+  gap: 15px;
 }
 
 .forgot-password a {
@@ -215,6 +249,214 @@ input:focus {
 
 .forgot-password a:hover {
   text-decoration: underline;
+}
+
+.page {
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 30px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #111111,
+      #171717,
+      #0d0d0d
+    );
+}
+
+.container {
+  width: 100%;
+  max-width: 500px;
+}
+
+.card-login {
+  position: relative;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(20,20,20,.65),
+      rgba(10,10,10,.68)
+    );
+
+  border: 1px solid rgba(0,75,255,.25);
+
+  border-radius: 24px;
+
+  padding: 32px;
+
+  transition: .35s ease;
+
+  box-shadow:
+    0 15px 40px rgba(0,0,0,.35);
+}
+
+.card-login::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0,75,255,.08),
+      transparent 40%
+    );
+
+  pointer-events: none;
+}
+
+.card-login:hover {
+  transform: translateY(-6px);
+
+  border-color: #004BFF;
+
+  box-shadow:
+    0 18px 45px rgba(0,75,255,.25);
+}
+
+.footer-actions {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.btn-secondary {
+  background: transparent;
+
+  border: 2px solid #004BFF;
+
+  color: #004BFF;
+
+  padding: 10px 16px;
+
+  border-radius: 10px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: .25s;
+}
+
+.btn-secondary:hover {
+  background: rgba(0,75,255,.12);
+
+  color: white;
+}
+
+.btn-back-site {
+  background: transparent;
+  border: none;
+
+  color: #94a3b8;
+
+  font-size: 14px;
+
+  cursor: pointer;
+
+  transition: .2s;
+}
+
+.btn-back-site:hover {
+  color: #60a5fa;
+}
+
+@media (max-width: 768px) {
+
+  .page {
+    padding: 16px;
+  }
+
+  .card-cadastro {
+    padding: 22px;
+  }
+
+  .top-bar {
+    flex-direction: column;
+
+    text-align: center;
+  }
+
+  .logo {
+    height: 50px;
+  }
+
+  h2 {
+    font-size: 1.6rem;
+  }
+
+}
+
+.btn-small {
+  width: auto;
+
+  padding: 4px 10px;
+
+  font-size: 0.75rem;
+
+  border-radius: 8px;
+}
+
+.btn-back-mobile {
+  display: none;
+
+  width: 40px;
+  height: 40px;
+
+  border-radius: 50%;
+
+  border: 1px solid rgba(255,255,255,.15);
+
+  background: rgba(255,255,255,.05);
+
+  color: white;
+
+  font-size: 20px;
+
+  cursor: pointer;
+
+  transition: .25s;
+}
+
+.btn-back-mobile:hover {
+  background: rgba(0,75,255,.15);
+
+  border-color: #004BFF;
+}
+
+.desktop-only {
+  display: flex;
+}
+
+@media (max-width: 768px) {
+
+  .top-bar {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .btn-back-mobile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .desktop-only {
+    display: none;
+  }
+
+  .logo {
+    height: 42px;
+  }
 }
 
 

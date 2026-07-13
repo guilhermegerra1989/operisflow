@@ -125,16 +125,18 @@ function voltarLogin() {
 
     <!-- HEADER -->
     <div class="top-bar">
-      <img
-        src="../../../../assets/ev_volantes_image.png"
+      <button class="btn-back-mobile" @click="voltarLogin">
+        ←
+      </button>
+
+       <img src="../../../../assets/ev_volantes_image.png"
         alt="EV Volantes"
         class="logo"
       />
 
-      <button class="btn-secondary btn-small" @click="voltarLogin">
-          Voltar para login
+      <button class="btn-secondary btn-small desktop-only" @click="voltarLogin">
+        Voltar para login
       </button>
-
     </div>
 
     <h2>Cadastro de Cliente</h2>
@@ -599,6 +601,59 @@ select:focus {
   border-radius: 8px;
 }
 
+.btn-back-mobile {
+  display: none;
+
+  width: 40px;
+  height: 40px;
+
+  border-radius: 50%;
+
+  border: 1px solid rgba(255,255,255,.15);
+
+  background: rgba(255,255,255,.05);
+
+  color: white;
+
+  font-size: 20px;
+
+  cursor: pointer;
+
+  transition: .25s;
+}
+
+.btn-back-mobile:hover {
+  background: rgba(0,75,255,.15);
+
+  border-color: #004BFF;
+}
+
+.desktop-only {
+  display: flex;
+}
+
+@media (max-width: 768px) {
+
+  .top-bar {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .btn-back-mobile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .desktop-only {
+    display: none;
+  }
+
+  .logo {
+    height: 42px;
+  }
+}
 
 
 
