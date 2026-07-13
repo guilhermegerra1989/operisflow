@@ -5,52 +5,57 @@ import "./styles/base.css";
 import { session } from "./auth/session";
 import { validateSession } from "./auth/authApi";
 
+
 async function bootstrap() {
-  try {
-    // NÃO valida sessão no site público
-    if (!shouldSkipValidation()) {
-      const user = await validateSession();
-      localStorage.setItem("user", JSON.stringify(user));
-      console.log('VALIDADO ----autenticação---')
-    }
-  } catch (error: any) {
-    if (error.status === 401) {
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-    }
-  } finally {
+
+  // monta a aplicação imediatamente
+  createApp(App)
+    .use(router)
+    .mount("#app");
+
+  const token = localStorage.getItem("token");
+
+  // sem token = sem sessão
+  if (!token) {
     session.validated = true;
     session.validating = false;
+    return;
   }
 
-  createApp(App).use(router).mount("#app");
-}
+  try {
 
-function shouldSkipValidation() {
-  const url = window.location.origin + window.location.pathname;
+    const user = await validateSession();
 
-  return [
-    "https://evvolantes.com.br",
-    "https://evvolantes.com.br/",
-    "https://evvolantes.com.br/login",
-    "https://evvolantes.com.br/ev-volantes",
+    localStorage.setItem(
+      "user",
+      JSON.stringify(user)
+    );
 
-    "https://www.evvolantes.com.br",
-    "https://www.evvolantes.com.br/",
-    "https://www.evvolantes.com.br/login",
-    "https://www.evvolantes.com.br/ev-volantes",
+    console.log("Sessão validada");
 
-    // se tiver http também, já garante:
-    "http://evvolantes.com.br",
-    "http://evvolantes.com.br/",
-    "http://evvolantes.com.br/login",
-    "http://evvolantes.com.br/ev-volantes",
+  } catch (error: any) {
 
-    "http://www.evvolantes.com.br",
-    "http://www.evvolantes.com.br/",
-    "http://www.evvolantes.com.br/login",
-    "http://www.evvolantes.com.br/ev-volantes",
-  ].includes(url);
+    console.error("Falha na validação da sessão", error);
+
+    // token expirado ou inválido
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
+    // se estiver numa área protegida força login
+    if (
+      window.location.pathname.startsWith("/ev-volantes/admin") ||
+      window.location.pathname.startsWith("/ev-volantes/client") ||
+      window.location.pathname.startsWith("/ev-volantes/operator")
+    ) {
+      router.push("/ev-volantes/login");
+    }
+
+  } finally {
+
+    session.validated = true;
+    session.validating = false;
+
+  }
 }
 
 bootstrap();
