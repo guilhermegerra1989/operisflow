@@ -70,7 +70,7 @@ function logout() {
           />
 
           <button class="btn-secondary btn-small desktop-only" @click="voltarLogin">
-            Voltar para login
+            Voltar para o Site
           </button>
       </div>
 
