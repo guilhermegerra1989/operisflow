@@ -1323,6 +1323,7 @@ const produtoAtual = computed(() => {
 }
 
 .whatsapp-container {
+  animation: shakeWhatsapp 6s infinite;
   position: fixed;
   bottom: 24px;
   right: 24px;
@@ -1335,21 +1336,69 @@ const produtoAtual = computed(() => {
   z-index: 999;
 }
 
+@keyframes shakeWhatsapp {
+
+  0%,
+  90%,
+  100% {
+    transform: rotate(0);
+  }
+
+  91% {
+    transform: rotate(-8deg);
+  }
+
+  92% {
+    transform: rotate(8deg);
+  }
+
+  93% {
+    transform: rotate(-8deg);
+  }
+
+  94% {
+    transform: rotate(8deg);
+  }
+
+  95% {
+    transform: rotate(0);
+  }
+}
+
 .whatsapp-button {
   width: 60px;
   height: 60px;
+
   border-radius: 50%;
 
   background: #25d366;
-  color: white;
+
+  position: relative;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+  animation: pulseWhatsapp 2s infinite;
+}
 
-  transition: all 0.25s ease;
+@keyframes pulseWhatsapp {
+
+  0% {
+    box-shadow:
+      0 0 0 0 rgba(37,211,102,.6);
+  }
+
+  70% {
+    box-shadow:
+      0 0 0 18px rgba(37,211,102,0);
+  }
+
+  100% {
+    box-shadow:
+      0 0 0 0 rgba(37,211,102,0);
+  }
+
 }
 
 /* SVG */
@@ -1704,12 +1753,6 @@ const produtoAtual = computed(() => {
 
   letter-spacing: 2px;
 }
-
-/* .card-servico h3 {
-  margin-top: 4px;
-  color: #111111;
-  font-size: 1.7rem;
-} */
 
 
 .card-servico h3 {
