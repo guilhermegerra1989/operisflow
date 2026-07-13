@@ -236,7 +236,7 @@ const produtosDestaque = [
 const indiceProduto = ref(0)
 
 const produtoAtual = computed(() => {
-  return produtosDestaque[indiceProduto.value]
+  return produtosDestaque[indiceProduto.value]!
 })
 
 
@@ -275,12 +275,12 @@ const produtoAtual = computed(() => {
             </span>
           </a>
 
-  <RouterLink
-    to="/ev-volantes/login"
-    class="btn-outline"
-  >
-    Entrar / Cadastrar
-  </RouterLink>
+          <RouterLink
+            to="/ev-volantes/login"
+            class="btn-outline"
+          >
+            Entrar / Cadastrar
+          </RouterLink>
 
 
         </nav>
