@@ -69,13 +69,12 @@ function logout() {
             class="logo"
           />
 
-          <button class="btn-secondary btn-small desktop-only" @click="voltarLogin">
+          <button class="btn-secondary btn-small desktop-only" @click="logout()">
             Voltar para o Site
           </button>
       </div>
 
-            <form @submit.prevent="login">
-       
+      <form @submit.prevent="login"> 
 
         <div class="field">
           <label>E-mail</label>
@@ -199,12 +198,22 @@ input:focus {
 .field {
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* força label à esquerda */
-  width: 100%;
 }
 
 .field label {
-  margin-bottom: 4px;
+  margin-bottom: 6px;
+
+  color: #cbd5e1!important;
+
+  font-size: .9rem;
+
+  font-weight: 600;
+}
+
+.field.required label::after {
+  content: " *";
+
+  color: #ef4444;
 }
 
 .password-wrapper {
