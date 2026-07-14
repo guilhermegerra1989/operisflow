@@ -21,7 +21,7 @@ const estado = ref("SP");
 const inscricao_estadual = ref("");
 const inscricao_municipal = ref("");
 
-
+const role = ref("client");
 
 const loading = ref(false);
 const sucesso = ref(false);
@@ -80,7 +80,7 @@ async function cadastrarCliente() {
     email: email.value,
     password: password.value,
 
-    role: "client",
+    role: role.value,
     active: true,
 
     endereco: endereco.value,
@@ -139,10 +139,12 @@ function voltarLogin() {
       </button>
     </div>
 
-    <h2>Cadastro de Cliente</h2>
+    <h2>
+      Cadastro de Cliente
+    </h2>
 
     <div v-if="sucesso" class="sucesso-msg">
-      ✅ Cliente cadastrado com sucesso!
+      ✅ Usuário cadastrado com sucesso!
       Redirecionando...
     </div>
 

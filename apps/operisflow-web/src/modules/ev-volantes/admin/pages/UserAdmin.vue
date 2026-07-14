@@ -234,25 +234,78 @@ onMounted(loadUsers);
 </script>
 
 <template>
-  <div class="container">
 
-    <!-- TOPO -->
+
+<div class="page">
+  <div class="container">
+     <div class="card-cadastro">
+
+    <!-- HEADER -->
     <div class="top-bar">
-      <img src="../../../../assets/ev-volantes-logo.png" class="logo" />
-      <div class="top-actions">
-        <button class="btn-secondary" @click="voltarDashboard">Dashboard</button>
-        <button class="btn-logout" @click="logout">Sair</button>
+      
+      <div class="left-actions">
+        <button class="btn-back-mobile" @click="logout">
+          ←
+        </button>
+
+        <button class="btn-back-mobile" @click="voltarDashboard">
+          ^
+        </button>
+      </div>
+
+       <img src="../../../../assets/ev_volantes_image.png"
+          alt="EV Volantes"
+          class="logo"
+        />
+
+      <div class="right-actions">
+        <button class="btn-secondary btn-small desktop-only" @click="voltarDashboard">
+          Dashboard
+        </button>
+
+        <button class="btn-secondary btn-small desktop-only" @click="logout">
+          Sair
+        </button>
       </div>
     </div>
 
-    <h2>Usuários</h2>
 
-    <h3>{{ editingUserId ? 'Editar Usuário' : 'Novo Usuário' }}</h3>
+<div class="container">
 
-    <!-- CAMPOS BASE -->
-     <div class="field required">
+    <h2>{{ editingUserId ? 'Editar Usuário' : 'Novo Usuário' }}</h2>
+
+      <div class="field required">
+        <label>Tipo</label>
+        <div class="role-selector">
+          <div class="role-card" :class="{ active: role === 'client' }" @click="role = 'client'">
+            <span>🏢</span>
+            <strong>Cliente</strong>
+            <small>Cadastro empresarial</small>
+          </div>
+
+          <div class="role-card" :class="{ active: role === 'admin' }" @click="role = 'admin'" >
+            <span>👑</span>
+            <strong>Administrador</strong>
+            <small>Acesso total</small>
+          </div>
+
+          <div class="role-card" :class="{ active: role === 'operator' }" @click="role = 'operator'">
+            <span>⚙️</span>
+            <strong>Operador</strong>
+            <small>Operação diária</small>
+          </div>
+        </div>
+      </div>
+
+
+    <div class="field">
         <label>Nome</label>
         <input v-model="name" placeholder="Nome do usuário" />
+    </div>
+
+    <div class="field required">
+        <label>Razão Social</label>
+        <input v-model="razao_social" placeholder="Razão Social" />
     </div>
 
     <div class="field">
@@ -260,50 +313,39 @@ onMounted(loadUsers);
         <input v-model="nome_fantasia" placeholder="Nome Fantasia" />
     </div>
 
-    <div class="field">
-        <label>Razão Social</label>
-        <input v-model="razao_social" placeholder="Razão Social" />
-    </div>
-
      <div class="field required">
         <label>Email</label>
         <input v-model="email" placeholder="Email (login do sistema)" />
      </div>
 
-    <!-- SENHA -->
     <div class="field required">
-      <label>Senha</label>
-
-      <div class="password-wrapper">
-        <input
-          v-model="password"
-          :type="showPassword ? 'text' : 'password'"
-          placeholder="Senha"
-        />
-
-        <span class="toggle" @click="showPassword = !showPassword">
-          {{ showPassword ? '🙈' : '👁️' }}
-        </span>
-      </div>
-
-    </div>
-
-    <!-- TIPO -->
-    <div class="field required">
-      <label>Tipo</label>
-      <div class="pill-group">
-        <div class="pill" :class="{ active: role === 'client' }" @click="role = 'client'">Cliente</div>
-        <div class="pill" :class="{ active: role === 'admin' }" @click="role = 'admin'">Admin</div>
-        <div class="pill" :class="{ active: role === 'operator' }" @click="role = 'operator'">Operador</div>
-      </div>
+        <label>Senha</label>
+        <div class="password-row">
+          <input v-model="password":type="showPassword ? 'text' : 'password'" placeholder="Digite a senha" />
+          <button type="button" class="btn-visibility" @click="showPassword = !showPassword"    >
+            {{ showPassword ? '🙈' : '👁️' }}
+          </button>
+        </div>
     </div>
 
     <!-- STATUS -->
     <div class="field required">
       <label>Status</label>
-      <div class="pill-group">
-        <div class="pill" :class="{ active: active }" @click="active = true">Ativo</div>
-        <div class="pill" :class="{ active: !active }" @click="active = false">Inativo</div>
+
+      <div class="status-selector">
+
+        <div class="status-card ativo" :class="{ active: active }" @click="active = true">
+          <span>✅</span>
+          <strong>Ativo</strong>
+          <small>Usuário pode acessar o sistema</small>
+        </div>
+
+        <div class="status-card inativo" :class="{ active: !active }" @click="active = false">
+          <span>❌</span>
+          <strong>Inativo</strong>
+          <small>Usuário sem acesso ao sistema</small>
+        </div>
+
       </div>
     </div>
 
@@ -347,396 +389,698 @@ onMounted(loadUsers);
     </div>
 
     <!-- BOTÕES -->
-    <div class="actions-form">
-      <button @click="salvarUsuario" :disabled="loading">
+    <button  class="btn-save" @click="salvarUsuario" :disabled="loading" >
+      <span v-if="loading">
+        Salvando...
+      </span>
 
-        <span v-if="loading" class="btn-loading">
-          <span class="spinner"></span>
-          Salvando...
-        </span>
+      <span v-else>
+        {{ editingUserId  ? 'Salvar Alterações' : 'Criar Usuário' }}
+      </span>
+    </button>
 
-        <span v-else>
-          {{ editingUserId ? 'Salvar Alterações' : 'Criar Usuário' }}
-        </span>
 
-      </button>
-
-      <button v-if="editingUserId" class="btn-cancelar" @click="resetForm">
-        Cancelar Edição
-      </button>
-    </div>
 
     <!-- TABELA -->
-    <h3>Lista</h3>
 
-    <div class="table-wrapper">
-      <table class="user-table">
-        <thead>
-          <tr>
-            <th>Nome</th>
-            <th>Tipo</th>
-            <th>Status</th>
-            <th class="actions-col"></th>
-            <th class="actions-col">Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="u in users" :key="u.id">
-            <td>{{ u.name }}</td>
-            <td>{{ u.role }}</td>
-            <td>{{ u.active ? 'Ativo' : 'Inativo' }}</td>
-            <td class="actions-col">
+    <div class="table-card">
 
-              <button class="icon-btn edit" @click="começarEditarUsuario(u)" title="Editar">
-                ✏️
-              </button>
+      <h3>Lista de Usuários</h3>
 
-            </td>
-            <td class="actions-col">
+      <div class="table-wrapper">
+          <div class="table-wrapper">
+            <table class="user-table">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>Tipo</th>
+                  <th>Status</th>
+                  <th class="actions-col"></th>
+                  <th class="actions-col">Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="u in users" :key="u.id">
+                  <td>{{ u.name }}</td>
+                  <td>{{ u.role }}</td>
+                  <td>{{ u.active ? 'Ativo' : 'Inativo' }}</td>
+                  <td class="actions-col">
 
-              <button class="icon-btn delete" @click="excluirUsuario(u.id)" title="Excluir">
-                🗑️
-              </button>
+                    <button class="icon-btn edit" @click="começarEditarUsuario(u)" title="Editar">
+                      ✏️
+                    </button>
 
-            </td>
-          </tr>
-        </tbody>
-      </table>
+                  </td>
+                  <td class="actions-col">
+
+                    <button class="icon-btn delete" @click="excluirUsuario(u.id)" title="Excluir">
+                      🗑️
+                    </button>
+
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+      </div>
+
     </div>
 
   </div>
+
+
+    </div>
+  </div>
+
+</div>
+
+
 </template>
 
 <style scoped>
 
-.container {
-  padding: 16px;
-  font-family: Arial, sans-serif;
-}
-
-/* =========================
-   TOPO
-========================= */
-.top-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-}
-
-.logo {
-  height: 36px;
-}
-
-.top-actions {
-  display: flex;
-  gap: 8px;
-}
-
-/* =========================
-   BOTÕES TOPO
-========================= */
-.btn-secondary {
-  background: transparent;
-  border: 1px solid #1e88e5;
-  color: #5e72a8;
-  padding: 5px 10px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.btn-secondary:hover {
-  background: #e3f2fd;
-}
-
-.btn-logout {
-  background: transparent;
-  border: 1px solid #e53935;
-  color: #e53935;
-  padding: 5px 10px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.btn-logout:hover {
-  background: #ffebee;
-}
-
-/* =========================
-   HEADINGS
-========================= */
-h2 {
-  margin-bottom: 12px;
-}
-
-h3 {
-  margin-top: 10px;
-}
-
-/* =========================
-   INPUTS
-========================= */
-input {
-  width: 100%;
-  padding: 10px;
-  margin-top: 6px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-}
-
-/* =========================
-   FIELD
-========================= */
-.field {
-  margin: 12px 0;
-  display: flex;
-  flex-direction: column;
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.field label {
-  margin-bottom: 6px;
-}
-
-/* obrigatório */
-.field.required label::after {
-  content: " *";
-  color: #e53935;
-}
-
-/* =========================
-   SELECT
-========================= */
-.input {
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-}
-
-/* =========================
-   PILLS
-========================= */
-.pill-group {
-  display: flex;
-  gap: 10px;
-}
-
-.pill {
-  padding: 6px 14px;
-  border-radius: 20px;
-  border: 1px solid #ccc;
-  cursor: pointer;
-  background: #fafafa;
-  font-size: 13px;
-}
-
-.pill:hover {
-  background: #eee;
-}
-
-.pill.active {
-  background: #5e72a8;
-  color: white;
-  border-color: #5e72a8;
-}
-
-/* =========================
-   SENHA
-========================= */
-.toggle-password {
-  margin-left: 8px;
-}
-
-/* =========================
-   CLIENTE SECTION
-========================= */
-.client-section {
-  margin-top: 10px;
-  padding: 12px;
-  border: 1px dashed #ccc;
-  border-radius: 8px;
-  background: #fafafa;
-}
-
-/* =========================
-   BOTÕES FORM
-========================= */
-.actions-form {
-  display: flex;
-  gap: 10px;
-  margin: 14px 0;
-}
-
-.actions-form > button:first-child {
-  background: #5e72a8;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 6px;
-  cursor: pointer;
+.page {
+  min-height: 100vh;
 
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 36px;
+
+  padding: 30px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #111111,
+      #171717,
+      #0d0d0d
+    );
 }
 
-.actions-form > button:first-child:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-}
-
-.btn-cancelar {
-  background: transparent;
-  border: 2px solid #aaa;
-  padding: 8px 14px;
-  border-radius: 6px;
-  background: #f5dddd;
-  cursor: pointer;
-}
-
-.btn-cancelar:hover {
-  background: #aaa;
-}
-
-/* =========================
-   SPINNER
-========================= */
-.spinner {
-  width: 14px;
-  height: 14px;
-  border: 2px solid rgba(255,255,255,0.5);
-  border-top: 2px solid #ffffff;
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.btn-loading {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-/* =========================
-   TABELA
-========================= */
-.table-wrapper {
-  margin-top: 10px;
-  overflow-x: auto;
-}
-
-.user-table {
+.container {
   width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
-  background: #fff;
+  max-width: 700px;
 }
 
-.user-table thead {
-  background: #f5f7fa;
+.card-cadastro {
+  position: relative;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(20,20,20,.65),
+      rgba(10,10,10,.68)
+    );
+
+  border: 1px solid rgba(0,75,255,.25);
+
+  border-radius: 24px;
+
+  padding: 32px;
+
+  transition: .35s ease;
+
+  box-shadow:
+    0 15px 40px rgba(0,0,0,.35);
 }
 
-.user-table th,
-.user-table td {
-  padding: 8px;
-  border-bottom: 1px solid #eee;
+.card-cadastro::before {
+
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0,75,255,.08),
+      transparent 40%
+    );
+
+  pointer-events: none;
 }
 
-.user-table tbody tr:hover {
-  background: #fafafa;
+.card-cadastro:hover {
+
+  transform: translateY(-6px);
+
+  border-color: #004BFF;
+
+  box-shadow:
+    0 18px 45px rgba(0,75,255,.25);
 }
 
-.actions-col {
-  text-align: right;
-  white-space: nowrap;
+.top-bar {
+  position: relative;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 20px;
 }
 
-/* =========================
-   ICON BUTTONS
-========================= */
-.icon-btn {
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  padding: 4px;
-  border-radius: 6px;
-  transition: 0.2s;
+.logo {
+  position: absolute;
+
+  left: 10%;
+  transform: translateX(-50%);
+
+  height: 65px;
+
+  object-fit: contain;
+
+  filter:
+    brightness(0)
+    invert(1);
+}
+
+/* TITULO */
+
+h2 {
+  text-align: center;
+
+  color: white;
+
+  font-size: 2rem;
+
+  margin-bottom: 24px;
+}
+
+/* FORM */
+
+.form {
+  display: flex;
+  flex-direction: column;
+
+  gap: 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+
+  margin-bottom: 18px;
+}
+
+.field label {
+  margin-bottom: 6px;
+
+  color: #cbd5e1;
+
+  font-size: .9rem;
+
+  font-weight: 600;
+}
+
+.field.required label::after {
+  content: " *";
+
+  color: #ef4444;
+}
+
+input,
+select {
+   appearance: none;
+
+  width: 100%;
+
+  padding: 12px 14px;
+
+  border-radius: 12px;
+
+  border: 1px solid rgba(255,255,255,.08);
+
+  background: rgba(255,255,255,.03);
+
+  color: white;
+
   font-size: 14px;
+
+  transition: .25s;
 }
 
-.icon-btn:hover {
-  background: #f0f0f0;
+input::placeholder {
+  color: #94a3b8;
 }
 
-.icon-btn.edit {
-  color: #5e72a8;
+input:focus,
+select:focus {
+  outline: none;
+
+  border-color: #004BFF;
+
+  box-shadow:
+    0 0 0 4px rgba(0,75,255,.15);
 }
 
-.icon-btn.delete {
-  color: #e53935;
-}
+.form-card,
+.table-card {
+  background: rgba(255,255,255,.03);
 
-/* =========================
-   RESPONSIVO
-========================= */
-@media (max-width: 600px) {
-  .pill-group {
-    flex-wrap: wrap;
-  }
+  border: 1px solid rgba(255,255,255,.08);
 
-  .actions-form {
-    flex-direction: column;
-  }
+  border-radius: 18px;
 
-  .actions-col {
-    text-align: left;
-  }
-}
+  padding: 24px;
 
-.input-error {
-  border: 1px solid #e53935 !important;
-  background: #ffebee;
-}
-
-.error-text {
-  color: #e53935;
-  font-size: 12px;
-  margin-top: 4px;
+  margin-bottom: 20px;
 }
 
 .password-wrapper {
   position: relative;
-  width: 100%;
 }
 
 .password-wrapper input {
-  width: 100%;
-  padding-right: 40px; /* espaço pro ícone */
+  padding-right: 50px;
 }
 
-.toggle {
+.btn-eye {
   position: absolute;
-  right: 10px;
-  top: 66%;
+
+  right: 14px;
+  top: 50%;
+
   transform: translateY(-50%);
+
+  background: transparent !important;
+
+  border: none;
+
+  color: #94a3b8;
+
   cursor: pointer;
+
   font-size: 18px;
-  opacity: 0.6;
-  transition: 0.2s;
-  user-select: none;
+
+  padding: 0;
+  margin: 0;
+
+  width: auto;
+
+  box-shadow: none;
 }
 
-.toggle:hover {
-  opacity: 1;
+.btn-eye:hover {
+  color: #004BFF;
+  background: transparent !important;
+  transform: translateY(-50%);
 }
 
+/* BOTÃO PRINCIPAL */
+
+.btn-primary {
+  width: 100%;
+
+  margin-top: 12px;
+
+  padding: 14px;
+
+  border-radius: 12px;
+
+  border: none;
+
+  background: #004BFF;
+
+  color: white;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: .25s;
+
+  box-shadow:
+    0 8px 20px rgba(0,75,255,.25);
+}
+
+.btn-primary:hover {
+  background: #0038c7;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 28px rgba(0,75,255,.35);
+}
+
+.btn-primary:disabled {
+  opacity: .6;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+/* BOTÃO VOLTAR */
+
+.btn-secondary {
+  background: transparent;
+
+  border: 2px solid #004BFF;
+
+  color: #004BFF;
+
+  padding: 10px 16px;
+
+  border-radius: 10px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: .25s;
+}
+
+.btn-secondary:hover {
+  background: rgba(0,75,255,.12);
+
+  color: white;
+}
+
+/* SUCESSO */
+
+.sucesso-msg {
+  margin-bottom: 20px;
+
+  padding: 16px;
+
+  border-radius: 12px;
+
+  text-align: center;
+
+  font-weight: 700;
+
+  color: #86efac;
+
+  background: rgba(34,197,94,.12);
+
+  border: 1px solid rgba(34,197,94,.35);
+}
+
+/* RESPONSIVO */
+
+@media (max-width: 768px) {
+
+  .page {
+    padding: 16px;
+  }
+
+  .card-cadastro {
+    padding: 22px;
+  }
+
+  .top-bar {
+    flex-direction: column;
+
+    text-align: center;
+  }
+
+ 
+.logo {
+    position: absolute;
+
+    left: auto;
+    right: 10px;
+
+    transform: none;
+
+    height: 42px;
+  }
+
+
+  h2 {
+    font-size: 1.6rem;
+  }
+
+}
+
+.btn-small {
+  width: auto;
+
+  padding: 4px 10px;
+
+  font-size: 0.75rem;
+
+  border-radius: 8px;
+}
+
+.btn-back-mobile {
+  display: none;
+
+  width: 40px;
+  height: 40px;
+
+  border-radius: 50%;
+
+  border: 1px solid rgba(255,255,255,.15);
+
+  background: rgba(255,255,255,.05);
+
+  color: white;
+
+  font-size: 20px;
+
+  cursor: pointer;
+
+  transition: .25s;
+}
+
+.btn-back-mobile:hover {
+  background: rgba(0,75,255,.15);
+
+  border-color: #004BFF;
+}
+
+.desktop-only {
+  display: flex;
+}
+
+@media (max-width: 768px) {
+
+  .top-bar {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .btn-back-mobile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .desktop-only {
+    display: none;
+  }
+
+  .logo {
+    height: 42px;
+  }
+}
+
+
+.left-actions,
+.right-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.role-selector {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.role-card {
+  padding: 18px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+
+  text-align: center;
+
+  gap: 6px;
+
+  border-radius: 14px;
+
+  cursor: pointer;
+
+  color: white;
+
+  background: rgba(255,255,255,.03);
+
+  border: 1px solid rgba(255,255,255,.08);
+
+  transition: .25s;
+}
+
+.role-card:hover {
+  border-color: #004BFF;
+}
+
+.role-card.active {
+  border-color: #004BFF;
+
+  background: rgba(0,75,255,.15);
+
+  box-shadow: 0 0 20px rgba(0,75,255,.20);
+}
+
+.role-card span {
+  font-size: 28px;
+}
+
+.role-card small {
+  color: #94a3b8;
+}
+
+.status-selector {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.status-card {
+  padding: 16px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  gap: 6px;
+
+  cursor: pointer;
+
+  color: white;
+
+  border-radius: 14px;
+
+  background: rgba(255,255,255,.03);
+
+  border: 1px solid rgba(255,255,255,.08);
+
+  transition: .25s;
+}
+
+.status-card span {
+  font-size: 26px;
+}
+
+.status-card small {
+  color: #94a3b8;
+}
+
+.status-card:hover {
+  transform: translateY(-2px);
+}
+
+.status-card.ativo.active {
+  border-color: #22c55e;
+  background: rgba(34,197,94,.15);
+
+  box-shadow:
+    0 0 20px rgba(34,197,94,.20);
+}
+
+.status-card.inativo.active {
+  border-color: #ef4444;
+  background: rgba(239,68,68,.15);
+
+  box-shadow:
+    0 0 20px rgba(239,68,68,.20);
+}
+
+.password-row {
+  display: flex;
+
+  gap: 12px;
+
+  align-items: stretch;
+
+  margin-top: 4px;
+}
+
+
+.password-row input {
+  flex: 1;
+}
+
+.btn-visibility {
+  
+ width: 60px;
+
+  min-width: 60px;
+
+  font-size: 18px;
+
+
+  border-radius: 12px;
+
+  border: 1px solid rgba(255,255,255,.08);
+
+  background: rgba(255,255,255,.03);
+
+  color: white;
+
+  cursor: pointer;
+
+  transition: .25s;
+}
+
+.btn-visibility:hover {
+  border-color: #004BFF;
+  background: rgba(0,75,255,.12);
+}
+
+.btn-save {
+  width: 100%;
+
+  margin-top: 24px;
+
+  padding: 16px;
+
+  border: none;
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #004BFF,
+      #2563eb
+    );
+
+  color: white;
+
+  font-size: 15px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: .25s;
+
+  box-shadow:
+    0 10px 25px rgba(0,75,255,.25);
+}
+
+.btn-save:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 15px 35px rgba(0,75,255,.35);
+}
 
 </style>
