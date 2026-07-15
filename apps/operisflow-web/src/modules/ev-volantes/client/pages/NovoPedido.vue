@@ -770,7 +770,7 @@ h4 {
 
 .modelo-descricao {
   font-size: 13px;
-  color: #555;
+  color: #ddd6d6;
 }
 
 .input-qtd {
@@ -1007,7 +1007,7 @@ h4 {
 }
 
 .grupo-item-descricao {
-  color: #94a3b8;
+  color: #d7dce4;
 }
 
 .grupo-item-qtd {
@@ -1025,7 +1025,7 @@ h4 {
 
 .grupo-item-descricao {
   font-size: 12px;
-  color: #666;
+  color: #d7dce4;
 }
 
 .grupo-item-acoes {

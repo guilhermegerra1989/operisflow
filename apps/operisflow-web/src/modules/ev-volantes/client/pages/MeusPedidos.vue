@@ -73,7 +73,7 @@ function logout() {
     <!-- HEADER COM NOME E LOGOUT -->
     <div class="top-bar">
       <img
-        src="../../../../assets/ev-volantes-logo.png"
+        src="../../../../assets/ev_volantes_image.png"
         alt="EV Volantes"
         class="logo"
       />
@@ -156,11 +156,24 @@ function logout() {
 
 <style scoped>
 .container {
-  padding: 16px;
+  min-height: 100vh;
+
+  padding: 32px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #111111,
+      #171717,
+      #0d0d0d
+    );
 }
 
 h2 {
-  margin-bottom: 16px;
+  text-align: center;
+  color: white;
+  font-size: 2rem;
+  margin-bottom: 24px;
 }
 
 .empty {
@@ -170,52 +183,110 @@ h2 {
 }
 
 .card {
-  background: white;
-  padding: 16px;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  margin-bottom: 12px;
+  margin-bottom: 20px;
+
+  padding: 20px;
+
+  border-radius: 20px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(20,20,20,.65),
+      rgba(10,10,10,.68)
+    );
+
+  backdrop-filter: blur(12px);
+
+  border: 1px solid rgba(0,75,255,.18);
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.25);
+
+  transition: .25s;
+}
+
+.card:hover {
+  border-color: rgba(0,75,255,.5);
 }
 
 .footer {
-  display: flex;
-  justify-content: space-between;
-  font-size: 12px;
-  color: #777;
-  margin-top: 8px;
+  margin-top: 16px;
 }
 
 .status {
-  padding: 2px 8px;
-  border-radius: 12px;
+  display: inline-flex;
+
+  align-items: center;
+
+  padding: 8px 14px;
+
+  border-radius: 999px;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
   text-transform: uppercase;
-  font-size: 11px;
 }
 
 /* Exemplos de cores por status – ajuste se quiser */
 .status.aberto {
-  background: #fff3cd;
-  color: #856404;
+  background: rgba(245,158,11,.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245,158,11,.3);
 }
+
+
 .status.approved {
-  background: #d4edda;
-  color: #155724;
+  background: rgba(34,197,94,.15);
+  color: #4ade80;
+  border: 1px solid rgba(34,197,94,.3);
 }
+
+
 .status.done {
-  background: #cce5ff;
-  color: #004085;
+  background: rgba(59,130,246,.15);
+  color: #60a5fa;
+  border: 1px solid rgba(59,130,246,.3);
 }
+
 
 .btn-novo {
   display: block;
+
   text-align: center;
-  padding: 12px;
-  background: #5e72a8;
-  color: white;
-  border-radius: 10px;
-  font-weight: 700;
-  margin-bottom: 16px;
+
+  padding: 14px;
+
+  margin-bottom: 24px;
+
+  border-radius: 14px;
+
   text-decoration: none;
+
+  color: white;
+
+  font-weight: 700;
+
+  background:
+    linear-gradient(
+      135deg,
+      #004BFF,
+      #2563eb
+    );
+
+  box-shadow:
+    0 12px 30px rgba(0,75,255,.25);
+
+  transition: all .25s ease;
+}
+
+.btn-novo:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 16px 40px rgba(0,75,255,.35);
 }
 
 /* TOP BAR */
@@ -227,8 +298,12 @@ h2 {
 }
 
 .logo {
-  height: 36px;
+  height: 55px;
   object-fit: contain;
+
+  filter:
+    brightness(0)
+    invert(1);
 }
 
 .btn-logout {
@@ -257,51 +332,72 @@ h2 {
 .pedido-title {
   font-size: 16px;
   font-weight: 700;
+  color: white;
 }
 
 .pedido-date {
   font-size: 12px;
-  color: #666;
+  color: #94a3b8;
 }
 
 .pedido-description {
-  font-size: 13px;
-  margin-bottom: 10px;
+  margin-top: 10px;
+  margin-bottom: 15px;
+
+  padding: 10px;
+
+  border-radius: 10px;
+
+  background: rgba(255,255,255,.04);
+
+  color: #cbd5e1;
 }
 
 /* MARCAS E ITENS */
 .pedido-marca {
-  margin-bottom: 12px;
-  padding: 10px;
-  background: #fafafa;
-  border-radius: 8px;
+  margin-top: 12px;
+
+  padding: 14px;
+
+  border-radius: 14px;
+
+  background: rgba(255,255,255,.03);
+
+  border: 1px solid rgba(255,255,255,.05);
 }
 
 .pedido-marca-header {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+
+  color: #4d7cff;
+
   font-weight: 700;
-  color: #5e72a8;
-  margin-bottom: 6px;
+
+  margin-bottom: 10px;
+
+  border-bottom: 1px solid rgba(255,255,255,.06);
+
+  padding-bottom: 8px;
 }
 
 .marca-logo {
-  width: 22px;
-  height: 22px;
-  object-fit: contain;
+  width: 40px;
+  height: 40px;
 }
-
 
 .pedido-item {
   display: grid;
-  grid-template-columns: 60px 1fr auto;
-  align-items: center;
-  column-gap: 12px;
+  grid-template-columns: 70px 1fr auto;
 
-  width: 100%;              /* MUITO IMPORTANTE */
-  padding: 6px 0;
-  border-bottom: 1px dotted #ddd;
+  gap: 12px;
+
+  align-items: center;
+
+  padding: 12px 0;
+
+  border-bottom: 1px solid rgba(255,255,255,.06);
 }
 
 .pedido-item:last-child {
@@ -309,15 +405,18 @@ h2 {
 }
 
 .div_image {
-  width: 60px;
-  height: 60px;
+  width: 70px;
+  height: 70px;
+
+  background: white;
+
+  border-radius: 12px;
+
+  overflow: hidden;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-  border-radius: 6px;
-  background: #fff;
-  flex-shrink: 0;
 }
 
 .div_image img {
@@ -335,21 +434,27 @@ h2 {
 
 
 .pedido-item-left strong {
-  font-size: 13px;
+  color: white;
+  font-size: 14px;
 }
 
 .pedido-item-left span {
-  font-size: 12px;
-  color: #555;
+  color: #94a3b8;
+  font-size: 13px;
 }
 
 .pedido-item-right {
-  justify-self: end;      /* grid magic */
+  background: rgba(0,75,255,.15);
+
+  color: #4d7cff;
+
+  border: 1px solid rgba(0,75,255,.3);
+
+  padding: 8px 12px;
+
+  border-radius: 999px;
+
   font-weight: 700;
-  font-size: 14px;
-  white-space: nowrap;
-  text-align: right;
-  min-width: 60px;
 }
 
 </style>
