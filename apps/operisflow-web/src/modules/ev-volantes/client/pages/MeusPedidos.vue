@@ -69,7 +69,10 @@ function logout() {
 </script>
 
 <template>
+  
+<div class="page">
   <div class="container">
+
     <!-- HEADER COM NOME E LOGOUT -->
     <div class="top-bar">
       <img
@@ -152,14 +155,49 @@ function logout() {
       </div>
     </div>
   </div>
+  </div>
 </template>
 
 <style scoped>
-.container {
+.page {
   min-height: 100vh;
+
+  display: flex;
+  justify-content: center;
+
+  padding: 30px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #111111,
+      #171717,
+      #0d0d0d
+    );
+}
+
+.container {
+  width: 100%;
+  max-width: 1000px;
 
   padding: 32px;
 
+  border-radius: 24px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(20,20,20,.65),
+      rgba(10,10,10,.68)
+    );
+
+  border: 1px solid rgba(0,75,255,.25);
+
+  box-shadow:
+    0 15px 40px rgba(0,0,0,.35);
+}
+
+body {
   background:
     linear-gradient(
       135deg,
