@@ -571,15 +571,10 @@ h3 {
 
 .error {
   background: rgba(239,68,68,.08);
-
   border: 1px solid rgba(239,68,68,.2);
-
   color: #f87171;
-
   padding: 12px;
-
   border-radius: 12px;
-
   margin-bottom: 16px;
 }
 
