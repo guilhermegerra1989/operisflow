@@ -55,7 +55,6 @@ const email = ref("");
 const password = ref("");
 
 const role = ref<"client" | "admin" | "operator">("admin"); // ✅ DEFAULT ADMIN
-const editing = computed(() => !!editingUserId.value);
 const active = ref(true);
 const rotaId = ref("");
 
@@ -64,7 +63,6 @@ const telefoneErro = ref("");
 // CAMPOS CLIENTE
 const endereco = ref("");
 const cnpj = ref("");
-const telefone = ref("");
 
 
 const telcomercial = ref("");
