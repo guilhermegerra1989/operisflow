@@ -1,13 +1,20 @@
 <template>
-  <div class="container">
+   <div class="page">
+      <div class="container">
     <!-- HEADER COM LOGO E VOLTAR -->
     <div class="top-bar">
-      <img
-        src="../../../../assets/ev-volantes-logo.png"
-        alt="EV Volantes"
-        class="logo"
-      />
-      <button class="btn-voltar" @click="voltar()">Dashboard</button>
+            <button class="btn-back-mobile" @click="voltar">
+              ←
+            </button>
+
+            <img src="../../../../assets/ev_volantes_image.png"
+              alt="EV Volantes"
+              class="logo"
+            />
+
+            <button class="btn-secondary btn-small desktop-only" @click="voltar">
+              Voltar
+            </button>
     </div>
 
     <h2>Novo Pedido</h2>
@@ -208,6 +215,7 @@
       Enviar Pedido
     </button>
   </div>
+</div>
 </template>
 
 
@@ -560,10 +568,53 @@ async function criar() {
 
 
 <style scoped>
+.page {
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 30px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #111111,
+      #171717,
+      #0d0d0d
+    );
+}
+
 .container {
-  max-width: 480px;
-  margin: 0 auto;
-  padding: 16px;
+  width: 100%;
+  max-width: 1000px;
+
+  padding: 32px;
+
+  border-radius: 24px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(20,20,20,.65),
+      rgba(10,10,10,.68)
+    );
+
+  border: 1px solid rgba(0,75,255,.25);
+
+  box-shadow:
+    0 15px 40px rgba(0,0,0,.35);
+}
+
+body {
+  background:
+    linear-gradient(
+      135deg,
+      #111111,
+      #171717,
+      #0d0d0d
+    );
 }
 
 .input {
@@ -579,43 +630,57 @@ async function criar() {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+
+  margin-bottom: 24px;
 }
 
 .logo {
-  height: 36px;
+  height: 55px;
+
   object-fit: contain;
+
+  filter:
+    brightness(0)
+    invert(1);
 }
 
-.btn-voltar {
+.btn-logout {
   background: transparent;
-  border: 1px solid #5e72a8;
-  color: #5e72a8;
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 600;
+
+  border: 2px solid #004BFF;
+
+  color: #004BFF;
+
+  padding: 10px 16px;
+
+  border-radius: 10px;
+
+  font-weight: 700;
+
   cursor: pointer;
-  max-width: 100px;
+
+  transition: .25s;
 }
 
-.btn-voltar:hover {
-  background: #ffebee;
+.btn-logout:hover {
+  background: rgba(0,75,255,.12);
+
+  color: white;
 }
 
 h2 {
-  font-size: 20px;
-  margin-bottom: 8px;
+  text-align: center;
+
+  color: white;
+
+  font-size: 2rem;
+
+  margin-bottom: 24px;
 }
 
-h3 {
-  font-size: 18px;
-  margin: 16px 0 8px 0;
-}
-
+h3,
 h4 {
-  font-size: 16px;
-  margin-bottom: 8px;
+  color: white;
 }
 
 .divider {
@@ -961,5 +1026,133 @@ h4 {
   border-radius: 8px;
   margin: 8px 0 12px;
   font-size: 13px;
+}
+
+.btn-secondary {
+  background: transparent;
+
+  border: 2px solid #004BFF;
+
+  color: #004BFF;
+
+  padding: 10px 16px;
+
+  border-radius: 10px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: .25s;
+}
+
+.btn-secondary:hover {
+  background: rgba(0,75,255,.12);
+
+  color: white;
+}
+
+.btn-small {
+  width: auto;
+
+  padding: 4px 10px;
+
+  font-size: 0.75rem;
+
+  border-radius: 8px;
+}
+
+.btn-back-mobile {
+  display: none;
+
+  width: 40px;
+  height: 40px;
+
+  border-radius: 50%;
+
+  border: 1px solid rgba(255,255,255,.15);
+
+  background: rgba(255,255,255,.05);
+
+  color: white;
+
+  font-size: 20px;
+
+  cursor: pointer;
+
+  transition: .25s;
+}
+
+.btn-back-mobile:hover {
+  background: rgba(0,75,255,.15);
+
+  border-color: #004BFF;
+}
+
+.desktop-only {
+  display: flex;
+}
+
+@media (max-width: 768px) {
+
+  .top-bar {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .btn-back-mobile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .desktop-only {
+    display: none;
+  }
+
+  .logo {
+    height: 42px;
+  }
+}
+
+label {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: #cbd5e1;
+
+  font-weight: 600;
+}
+
+.input {
+  width: 100%;
+
+  padding: 12px 14px;
+
+  margin-top: 6px;
+  margin-bottom: 16px;
+
+  border-radius: 12px;
+
+  border: 1px solid rgba(255,255,255,.08);
+
+  background: rgba(255,255,255,.03);
+
+  color: white;
+
+  font-size: 14px;
+
+  transition: .25s;
+}
+
+.input:focus {
+  outline: none;
+
+  border-color: #004BFF;
+
+  box-shadow:
+    0 0 0 4px rgba(0,75,255,.15);
 }
 </style>
