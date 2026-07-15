@@ -200,7 +200,7 @@ async function salvarUsuario() {
 
   // valida cliente
   if (role.value === "client") {
-    if (!endereco.value || !cnpj.value || !telcomercial.value) {
+    if (!endereco.value || !cnpj.value || !telcomercial.value || !inscricao_estadual.value || !estado.value || !bairro.value || !cep.value) {
       alert("Preencha os dados do cliente");
       return;
     }
