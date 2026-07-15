@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { apiPostPublic } from "../../api/apiClient";
+
+const tipo = ref<"client" | "admin" | "operator">("client");
 
 const cnpj = ref("");
 const email = ref("");
@@ -14,9 +16,22 @@ const mostrarConfirmacao = ref(false);
 const loading = ref(false);
 const sucesso = ref(false);
 
+const mostrarCamposSenha = computed(() => {
+
+  if (tipo.value === "client") {
+    return !!cnpj.value && !!email.value;
+  }
+
+  return !!email.value;
+
+});
+
 function validar() {
 
-  if (!cnpj.value) {
+  if (
+    tipo.value === "client" &&
+    !cnpj.value
+  ) {
     return "CNPJ obrigatório";
   }
 
@@ -52,14 +67,15 @@ async function redefinirSenha() {
 
     loading.value = true;
 
-    await apiPostPublic(
-      "/auth/reset-password",
-      {
-        cnpj: cnpj.value,
-        email: email.value,
-        password: novaSenha.value
-      }
-    );
+   await apiPostPublic(
+    "/auth/reset-password",
+    {
+      tipo: tipo.value,
+      cnpj: cnpj.value,
+      email: email.value,
+      password: novaSenha.value
+    }
+  );
 
     sucesso.value = true;
 
@@ -117,6 +133,24 @@ function voltarLogin() {
         Informe seus dados para redefinir a senha.
       </p>
 
+      <div class="role-selector">
+        <div class="role-card" :class="{ active: tipo === 'client' }" @click="tipo = 'client'">
+          <span>🏢</span>
+          <strong>Cliente</strong>
+          <small>Recuperar por CNPJ</small>
+        </div>
+
+        <div class="role-card" :class="{ active: tipo === 'admin' }" @click="tipo = 'admin'">
+          <span>👑</span>
+          <strong>Administrador</strong>
+        </div>
+
+        <div class="role-card" :class="{ active: tipo === 'operator' }" @click="tipo = 'operator'">
+          <span>⚙️</span>
+          <strong>Operador</strong>
+        </div>
+      </div>
+
       <div
         v-if="sucesso"
         class="sucesso-msg"
@@ -127,7 +161,7 @@ function voltarLogin() {
 
       <div class="form">
 
-        <div class="field required">
+        <div v-if="tipo === 'client'" class="field required">
           <label>CNPJ</label>
           <input v-model="cnpj" />
         </div>
@@ -140,67 +174,59 @@ function voltarLogin() {
           />
         </div>
 
-        <div class="field required">
+        <div v-if="mostrarCamposSenha">
 
-          <label>Nova Senha</label>
+          <div class="field required">
 
-          <div class="password-wrapper">
+            <label>Nova Senha</label>
 
-            <input
-              v-model="novaSenha"
-              :type="
-                mostrarSenha
-                  ? 'text'
-                  : 'password'
-              "
-            />
+            <div class="password-wrapper">
 
-            <button
-              type="button"
-              class="btn-eye"
-              @click="
-                mostrarSenha =
-                !mostrarSenha
-              "
-            >
-              {{ mostrarSenha ? '🙈' : '👁️' }}
-            </button>
+              <input
+                v-model="novaSenha"
+                :type="mostrarSenha ? 'text' : 'password'"
+              />
+
+              <button
+                type="button"
+                class="btn-eye"
+                @click="mostrarSenha = !mostrarSenha"
+              >
+                {{ mostrarSenha ? '🙈' : '👁️' }}
+              </button>
+
+            </div>
 
           </div>
 
-        </div>
 
-        <div class="field required">
+          <div class="field required">
 
-          <label>Confirmar Senha</label>
+            <label>Confirmar Senha</label>
 
-          <div class="password-wrapper">
+            <div class="password-wrapper">
 
-            <input
-              v-model="confirmarSenha"
-              :type="
-                mostrarConfirmacao
-                  ? 'text'
-                  : 'password'
-              "
-            />
+              <input
+                v-model="confirmarSenha"
+                :type="mostrarConfirmacao ? 'text' : 'password'"
+              />
 
-            <button
-              type="button"
-              class="btn-eye"
-              @click="
-                mostrarConfirmacao =
-                !mostrarConfirmacao
-              "
-            >
-              {{ mostrarConfirmacao ? '🙈' : '👁️' }}
-            </button>
+              <button
+                type="button"
+                class="btn-eye"
+                @click="mostrarConfirmacao = !mostrarConfirmacao"
+              >
+                {{ mostrarConfirmacao ? '🙈' : '👁️' }}
+              </button>
+
+            </div>
 
           </div>
 
         </div>
 
         <button
+          v-if="mostrarCamposSenha"
           class="btn-primary"
           @click="redefinirSenha"
           :disabled="loading"
@@ -215,7 +241,6 @@ function voltarLogin() {
       </div>
 
     </div>
-
   </div>
 
 </div>
@@ -581,6 +606,70 @@ select:focus {
   margin-bottom: 24px;
 
   line-height: 1.5;
+}
+
+.role-selector {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+
+  margin-bottom: 24px;
+}
+
+.role-card {
+  padding: 18px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  gap: 6px;
+
+  border-radius: 14px;
+
+  cursor: pointer;
+
+  color: white;
+
+  background: rgba(255,255,255,.03);
+
+  border: 1px solid rgba(255,255,255,.08);
+
+  transition: .25s;
+}
+
+.role-card:hover {
+  border-color: #004BFF;
+}
+
+.role-card.active {
+  border-color: #004BFF;
+
+  background: rgba(0,75,255,.15);
+
+  box-shadow:
+    0 0 20px rgba(0,75,255,.20);
+}
+
+.role-card span {
+  font-size: 28px;
+}
+
+.role-card small {
+  color: #94a3b8;
+}
+
+.form {
+  max-width: 500px;
+  margin: 0 auto;
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 </style>
