@@ -24,6 +24,16 @@ const loading = ref(false);
 const users = ref<User[]>([]);
 const rotas = ref<Rota[]>([]);
 
+const estados = [
+  "AC", "AL", "AP", "AM",
+  "BA", "CE", "DF", "ES",
+  "GO", "MA", "MT", "MS",
+  "MG", "PA", "PB", "PR",
+  "PE", "PI", "RJ", "RN",
+  "RS", "RO", "RR", "SC",
+  "SP", "SE", "TO"
+];
+
 // ✅ rota padrão (UUID válido da API)
 const defaultRotaId = ref<string | null>(null);
 
@@ -44,6 +54,15 @@ const telefoneErro = ref("");
 const endereco = ref("");
 const cnpj = ref("");
 const telefone = ref("");
+
+
+const telcomercial = ref("");
+const telpessoal = ref("");
+const bairro = ref("");
+const cep = ref("");
+const estado = ref("");
+const inscricao_estadual = ref("");
+const inscricao_municipal = ref("");
 
 const editingUserId = ref<string | null>(null);
 
@@ -86,6 +105,14 @@ function resetForm() {
   cnpj.value = "";
   telefone.value = "";
 
+  telcomercial.value = "";
+  telpessoal.value = "";
+  bairro.value = "";
+  cep.value = "";
+  estado.value = "";
+  inscricao_estadual.value = "";
+  inscricao_municipal.value = "";
+
   editingUserId.value = null;
 }
 
@@ -94,13 +121,19 @@ function resetForm() {
 // =========================
 watch(role, (r) => {
   if (r !== "client") {
-    endereco.value = "";
-    cnpj.value = "";
-    telefone.value = "";
+    resetForm();
   }
 });
 
-watch(telefone, (val) => {
+watch(telcomercial, (val) => {
+  if (val.length > 50) {
+    telefoneErro.value = "Máximo de 50 caracteres";
+  } else {
+    telefoneErro.value = "";
+  }
+});
+
+watch(telpessoal, (val) => {
   if (val.length > 50) {
     telefoneErro.value = "Máximo de 50 caracteres";
   } else {
@@ -203,7 +236,13 @@ function começarEditarUsuario(user: any) {
 
   endereco.value = user.endereco || "";
   cnpj.value = user.cnpj || "";
-  telefone.value = user.telefone || "";
+  telcomercial.value = user.telcomercial || "";
+  telpessoal.value = user.telpessoal || "";
+  cep.value = user.cep || "";
+  bairro.value = user.bairro || "";
+  estado.value = user.estado || "";
+  inscricao_estadual.value = user.inscricao_estadual || "";
+  inscricao_municipal.value = user.inscricao_municipal || "";
 
   password.value = user.password || "";
 }
@@ -303,17 +342,24 @@ onMounted(loadUsers);
         <input v-model="name" placeholder="Nome do usuário" />
     </div>
 
+     <div v-if="role === 'client'" class="field required">
+        <div class="field required">
+            <label>Razão Social</label>
+            <input v-model="razao_social" placeholder="Razão Social" />
+        </div>
+
+        <div class="field">
+            <label>Nome Fantasia</label>
+            <input v-model="nome_fantasia" placeholder="Nome Fantasia" />
+        </div>
+
+        <div class="field required">
+            <label>CNPJ</label>
+            <input v-model="cnpj" placeholder="CNPJ" />
+        </div>
+    </div>
+
     <div class="field required">
-        <label>Razão Social</label>
-        <input v-model="razao_social" placeholder="Razão Social" />
-    </div>
-
-    <div class="field">
-        <label>Nome Fantasia</label>
-        <input v-model="nome_fantasia" placeholder="Nome Fantasia" />
-    </div>
-
-     <div class="field required">
         <label>Email</label>
         <input v-model="email" placeholder="Email (login do sistema)" />
      </div>
@@ -327,6 +373,76 @@ onMounted(loadUsers);
           </button>
         </div>
     </div>
+
+    <!-- ROTA -->
+    <div v-if="role === 'client'" class="field required">
+      <label>Rota</label>
+      <select v-model="rotaId" class="input">
+        <option value="">Selecione</option>
+        <option v-for="r in rotas" :key="r.id" :value="r.id">{{ r.nome }}</option>
+      </select>
+    </div>
+
+    <!-- CAMPOS CLIENTE -->
+    <div v-if="role === 'client'" class="client-section">
+
+      <div class="field required">
+        <label>Tel (Comercial)</label>
+        <input v-model="telcomercial" maxlength="50" :class="{ 'input-error': telefoneErro }"/>
+        <small v-if="telefoneErro" class="error-text">
+          {{ telefoneErro }}
+        </small>
+      </div>
+
+      <div class="field">
+        <label>Tel (Pessoal)</label>
+        <input v-model="telpessoal" maxlength="50" :class="{ 'input-error': telefoneErro }" />
+        <small v-if="telefoneErro" class="error-text">
+          {{ telefoneErro }}
+        </small>
+      </div>
+
+      <div class="field required">
+        <label>Endereço</label>
+        <input v-model="endereco" />
+      </div>
+
+      <div class="field required">
+        <label>Bairro</label>
+        <input v-model="bairro" />
+      </div>
+
+      <div class="field required">
+        <label>Estado / UF</label>
+
+        <select v-model="estado">
+          <option
+            v-for="uf in estados"
+            :key="uf"
+            :value="uf"
+          >
+            {{ uf }}
+          </option>
+        </select>
+      </div>
+
+      <div class="field required">
+        <label>Cep</label>
+        <input v-model="cep" />
+      </div>
+
+      <div class="field required">
+        <label>IE (Incrição Estadual)</label>
+        <input v-model="inscricao_estadual" />
+      </div>
+
+      <div class="field">
+        <label>IM (Incrição Municipal)</label>
+        <input v-model="inscricao_municipal" />
+      </div>
+
+    </div>
+
 
     <!-- STATUS -->
     <div class="field required">
@@ -349,45 +465,6 @@ onMounted(loadUsers);
       </div>
     </div>
 
-    <!-- ROTA -->
-    <div v-if="role === 'client'" class="field required">
-      <label>Rota</label>
-      <select v-model="rotaId" class="input">
-        <option value="">Selecione</option>
-        <option v-for="r in rotas" :key="r.id" :value="r.id">{{ r.nome }}</option>
-      </select>
-    </div>
-
-    <!-- CAMPOS CLIENTE -->
-    <div v-if="role === 'client'" class="client-section">
-
-      <div class="field">
-        <label>Endereço</label>
-        <input v-model="endereco" placeholder="Endereço completo" />
-      </div>
-
-      <div class="field">
-        <label>CNPJ</label>
-        <input v-model="cnpj" placeholder="CNPJ" />
-      </div>
-
-      <div class="field">
-        <label>Telefone / Contato</label>
-        
-        <input
-          v-model="telefone"
-          placeholder="Telefone ou contato"
-          :class="{ 'input-error': telefoneErro }"
-          maxlength="50"
-        />
-
-        <small v-if="telefoneErro" class="error-text">
-          {{ telefoneErro }}
-        </small>
-      </div>
-
-    </div>
-
     <!-- BOTÕES -->
     <button  class="btn-save" @click="salvarUsuario" :disabled="loading" >
       <span v-if="loading">
@@ -398,7 +475,6 @@ onMounted(loadUsers);
         {{ editingUserId  ? 'Salvar Alterações' : 'Criar Usuário' }}
       </span>
     </button>
-
 
 
     <!-- TABELA -->

@@ -69,6 +69,14 @@ CREATE TABLE IF NOT EXISTS users (
   cnpj VARCHAR(50),
   telefone VARCHAR(100),
 
+  tel_comercial VARCHAR(100),
+  tel_pessoal VARCHAR(100),
+  bairro VARCHAR(100),
+  estado VARCHAR(10),
+  cep VARCHAR(20),
+  inscricao_estadual VARCHAR(100),
+  inscricao_municipal VARCHAR(100),
+
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW(),
 

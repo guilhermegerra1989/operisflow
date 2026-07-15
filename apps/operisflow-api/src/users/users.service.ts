@@ -18,13 +18,12 @@ export class UsersService {
     const { password, ...rest } = user;
     return rest;
   }
-  
 
   async findAll(tenantId: string) {
     const result = await this.db.query(
       `
       SELECT id, tenant_id, name, email, role, active, rota_id, password, nome_fantasia, razao_social,
-       endereco, cnpj, telefone,
+       endereco, cnpj, telefone,tel_comercial,tel_pessoal,bairro,estado,cep,inscricao_estadual,inscricao_municipal,
        created_at, updated_at
       FROM users
       WHERE tenant_id = $1
@@ -39,7 +38,7 @@ export class UsersService {
     const result = await this.db.query(
       `
       SELECT id, tenant_id, name, email, role, active, rota_id, password, nome_fantasia, razao_social,
-       endereco, cnpj, telefone,
+       endereco, cnpj, telefone,tel_comercial,tel_pessoal,bairro,estado,cep,inscricao_estadual,inscricao_municipal,
        created_at, updated_at
       FROM users
       WHERE tenant_id = $1 AND id = $2
@@ -71,9 +70,11 @@ export class UsersService {
     const result = await this.db.query(
       `
       INSERT INTO users 
-      (tenant_id, name, email, password, role, active, rota_id, endereco, cnpj, telefone, nome_fantasia, razao_social)
-      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)
-      RETURNING id, tenant_id, name, email, role, active, rota_id, endereco, cnpj, telefone, created_at, updated_at, nome_fantasia, razao_social
+      (tenant_id, name, email, password, role, active, rota_id, endereco, cnpj, telefone, nome_fantasia, razao_social,tel_comercial,
+      tel_pessoal, bairro, estado, cep, inscricao_estadual, inscricao_municipal)
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19)
+      RETURNING id, tenant_id, name, email, role, active, rota_id, endereco, cnpj, telefone, created_at, updated_at, nome_fantasia, razao_social, tel_comercial,
+      tel_pessoal, bairro, estado, cep, inscricao_estadual, inscricao_municipal
       `,
       [
         tenantId,
@@ -87,7 +88,14 @@ export class UsersService {
         cnpj,
         telefone,
         dto.nome_fantasia,
-        dto.razao_social
+        dto.razao_social,
+        dto.tel_comercial,
+        dto.tel_pessoal,
+        dto.bairro,
+        dto.estado,
+        dto.cep,
+        dto.inscricao_estadual,
+        dto.inscricao_municipal
       ],
     );
 
@@ -129,9 +137,17 @@ export class UsersService {
         telefone = $11,
         nome_fantasia = $12,
         razao_social = $13,
+        tel_comercial = $14,
+        tel_pessoal = $15,
+        bairro = $16,
+        estado = $17,
+        cep = $18,
+        inscricao_estadual = $19, 
+        inscricao_municipal = $20,
         updated_at = NOW()
       WHERE tenant_id = $1 AND id = $2
-      RETURNING id, tenant_id, name, email, role, active, rota_id, endereco, cnpj, telefone, updated_at, nome_fantasia, razao_social
+      RETURNING id, tenant_id, name, email, role, active, rota_id, endereco, cnpj, telefone, updated_at, nome_fantasia, razao_social, tel_comercial, tel_pessoal, bairro,
+        estado, cep,  inscricao_estadual, inscricao_municipal
       `,
       [
         tenantId,
@@ -146,7 +162,14 @@ export class UsersService {
         cnpj,
         telefone,
         dto.nome_fantasia,
-        dto.razao_social
+        dto.razao_social,
+        dto.tel_comercial,
+        dto.tel_pessoal,
+        dto.bairro,
+        dto.estado,
+        dto.cep,
+        dto.inscricao_estadual,
+        dto.inscricao_municipal
       ],
     );
 

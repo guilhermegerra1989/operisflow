@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, watch} from "vue";
 import { apiPostPublic } from "../../api/apiClient";
 
 // =========================
@@ -21,6 +21,8 @@ const estado = ref("SP");
 const inscricao_estadual = ref("");
 const inscricao_municipal = ref("");
 
+const telefoneErro = ref("");
+
 const role = ref("client");
 
 const loading = ref(false);
@@ -37,6 +39,22 @@ const estados = [
   "RS", "RO", "RR", "SC",
   "SP", "SE", "TO"
 ];
+
+watch(telcomercial, (val) => {
+  if (val.length > 50) {
+    telefoneErro.value = "Máximo de 50 caracteres";
+  } else {
+    telefoneErro.value = "";
+  }
+});
+
+watch(telpessoal, (val) => {
+  if (val.length > 50) {
+    telefoneErro.value = "Máximo de 50 caracteres";
+  } else {
+    telefoneErro.value = "";
+  }
+});
 
 // =========================
 // VALIDAÇÃO
@@ -86,6 +104,14 @@ async function cadastrarCliente() {
     endereco: endereco.value,
     cnpj: cnpj.value,
     telefone: telcomercial.value,
+    tel_comercial: telcomercial.value,
+    tel_pessoal: telpessoal.value,
+    bairro: bairro.value,
+    cep: cep.value,
+    estado: estado.value,
+    inscricao_estadual: inscricao_estadual.value,
+    inscricao_municipal: inscricao_municipal.value
+
   };
 
   try {
@@ -99,7 +125,7 @@ async function cadastrarCliente() {
     // ✅ redireciona depois de 2s
     setTimeout(() => {
       window.location.href = "/ev-volantes/login";
-    }, 2000);
+    }, 3000);
 
   } catch {
     alert("Erro ao cadastrar");
@@ -142,11 +168,6 @@ function voltarLogin() {
     <h2>
       Cadastro de Cliente
     </h2>
-
-    <div v-if="sucesso" class="sucesso-msg">
-      ✅ Usuário cadastrado com sucesso!
-      Redirecionando...
-    </div>
 
 
     <!-- FORM -->
@@ -192,11 +213,17 @@ function voltarLogin() {
       <div class="field required">
         <label>Tel (Comercial)</label>
         <input v-model="telcomercial" maxlength="50" />
+        <small v-if="telefoneErro" class="error-text">
+          {{ telefoneErro }}
+        </small>
       </div>
 
       <div class="field">
         <label>Tel (Pessoal)</label>
         <input v-model="telpessoal" maxlength="50" />
+        <small v-if="telefoneErro" class="error-text">
+          {{ telefoneErro }}
+        </small>
       </div>
 
       <div class="field required">
@@ -245,6 +272,22 @@ function voltarLogin() {
       >
         {{ loading ? "Cadastrando..." : "Criar Conta" }}
       </button>
+
+      <div v-if="sucesso" class="success-overlay">
+        <div class="success-modal">
+          <div class="success-icon">✅</div>
+
+          <h3>Cadastro realizado!</h3>
+
+          <p>
+            Sua conta foi criada com sucesso.
+          </p>
+
+          <div class="spinner"></div>
+
+          <small>Redirecionando para o login...</small>
+        </div>
+      </div>
 
 
     </div>
@@ -656,6 +699,62 @@ select:focus {
     height: 42px;
   }
 }
+
+.success-overlay {
+  position: fixed;
+  inset: 0;
+
+  background: rgba(0,0,0,.75);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 9999;
+
+  backdrop-filter: blur(4px);
+}
+
+.success-modal {
+  width: 350px;
+
+  padding: 30px;
+
+  border-radius: 20px;
+
+  text-align: center;
+
+  background: #151515;
+
+  color: white;
+
+  border: 1px solid #22c55e;
+}
+
+.success-icon {
+  font-size: 64px;
+  margin-bottom: 10px;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+
+  margin: 20px auto;
+
+  border: 4px solid rgba(255,255,255,.2);
+  border-top: 4px solid #22c55e;
+  border-radius: 50%;
+
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 
 
 
