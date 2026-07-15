@@ -55,6 +55,7 @@ const email = ref("");
 const password = ref("");
 
 const role = ref<"client" | "admin" | "operator">("admin"); // ✅ DEFAULT ADMIN
+const editing = computed(() => !!editingUserId.value);
 const active = ref(true);
 const rotaId = ref("");
 
@@ -134,15 +135,18 @@ function resetForm() {
 // =========================
 // WATCH
 // =========================
-watch(role, (newRole, oldRole) => {
-  if (!oldRole) return;
+function trocarRole(
+  novoRole: "client" | "admin" | "operator"
+) {
+  if (editingUserId.value) {
+    role.value = novoRole;
+    return;
+  }
 
-  const roleSelecionada = newRole;
+  clearFields();
 
-  resetForm();
-
-  role.value = roleSelecionada;
-});
+  role.value = novoRole;
+}
 
 watch(telcomercial, (val) => {
   if (val.length > 50) {
@@ -204,28 +208,37 @@ async function salvarUsuario() {
     }
   }
 
-  const payload: any = {
-    name: name.value,
-    nome_fantasia: nome_fantasia.value,
-    razao_social: razao_social.value,
-    email: email.value,
-    role: role.value,
-    active: active.value,
-    rota_id: rotaFinal, // ✅ SEM ERRO
-  };
+const payload: any = {
+  name: name.value,
+  nome_fantasia: nome_fantasia.value,
+  razao_social: razao_social.value,
+  email: email.value,
+  role: role.value,
+  active: active.value,
+  rota_id: rotaFinal,
+
+  tel_comercial: telcomercial.value,
+  tel_pessoal: telpessoal.value,
+  estado: estado.value,
+  cep: cep.value,
+  bairro: bairro.value,
+  inscricao_estadual: inscricao_estadual.value,
+  inscricao_municipal: inscricao_municipal.value
+};
 
   if (password.value) payload.password = password.value;
 
   if (role.value === "client") {
     payload.endereco = endereco.value;
     payload.cnpj = cnpj.value;
-    payload.telefone = telefone.value;
+    payload.telefone = telcomercial.value;
   }
 
   try {
     loading.value = true;
 
     if (editingUserId.value) {
+      debugger
       await apiPatch(`/users/${editingUserId.value}`, payload);
     } else {
       await apiPost("/users", payload);
@@ -255,8 +268,8 @@ function começarEditarUsuario(user: any) {
 
   endereco.value = user.endereco || "";
   cnpj.value = user.cnpj || "";
-  telcomercial.value = user.telcomercial || "";
-  telpessoal.value = user.telpessoal || "";
+  telcomercial.value = user.tel_comercial || "";
+  telpessoal.value = user.tel_pessoal || "";
   cep.value = user.cep || "";
   bairro.value = user.bairro || "";
   estado.value = user.estado || "";
@@ -336,19 +349,20 @@ onMounted(loadUsers);
       <div class="field required">
         <label>Tipo</label>
         <div class="role-selector">
-          <div class="role-card" :class="{ active: role === 'client' }" @click="role = 'client'">
+          <div class="role-card" :class="{ active: role === 'client' }" @click="trocarRole('client')"
+>
             <span>🏢</span>
             <strong>Cliente</strong>
             <small>Cadastro empresarial</small>
           </div>
 
-          <div class="role-card" :class="{ active: role === 'admin' }" @click="role = 'admin'" >
+          <div class="role-card" :class="{ active: role === 'admin' }" @click="trocarRole('admin')" >
             <span>👑</span>
             <strong>Administrador</strong>
             <small>Acesso total</small>
           </div>
 
-          <div class="role-card" :class="{ active: role === 'operator' }" @click="role = 'operator'">
+          <div class="role-card" :class="{ active: role === 'operator' }" @click="trocarRole('operator')">
             <span>⚙️</span>
             <strong>Operador</strong>
             <small>Operação diária</small>
