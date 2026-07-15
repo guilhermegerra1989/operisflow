@@ -156,6 +156,27 @@ function logout() {
     </div>
   </div>
   </div>
+
+<!-- WHATSAPP -->
+    <a
+      href="https://wa.me/5512982669702?text=Olá! Vim pelo site e gostaria de mais informações."
+      target="_blank"
+      rel="noopener noreferrer"
+      class="whatsapp-container"
+    >
+      <div class="whatsapp-button">
+        <!-- SVG LIMPO -->
+        <svg viewBox="0 0 24 24">
+          <path
+            fill="currentColor"
+            d="M20.52 3.48A11.87 11.87 0 0012.06 0C5.6 0 .34 5.28.34 11.8c0 2.08.54 4.1 1.56 5.88L0 24l6.52-1.7a11.74 11.74 0 005.54 1.4h.01c6.46 0 11.72-5.28 11.72-11.8 0-3.15-1.22-6.1-3.27-8.42zm-8.46 18.1h-.01a9.8 9.8 0 01-5-1.36l-.36-.21-3.87 1.01 1.03-3.77-.24-.39a9.77 9.77 0 01-1.5-5.26c0-5.41 4.38-9.8 9.77-9.8 2.61 0 5.07 1.02 6.92 2.88a9.73 9.73 0 012.87 6.93c0 5.4-4.38 9.79-9.76 9.79zm5.45-7.32c-.3-.15-1.78-.88-2.06-.98-.28-.1-.48-.15-.68.15s-.78.98-.96 1.18c-.17.2-.35.23-.64.08-.3-.15-1.25-.46-2.38-1.48-.88-.79-1.47-1.76-1.64-2.06-.17-.3-.02-.46.13-.6.14-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.38-.02-.53-.07-.15-.68-1.64-.93-2.24-.24-.58-.49-.5-.68-.5h-.58c-.2 0-.52.08-.8.38-.28.3-1.04 1.02-1.04 2.48s1.06 2.88 1.21 3.08c.15.2 2.1 3.2 5.1 4.48.71.31 1.27.5 1.7.64.71.23 1.35.2 1.86.12.57-.09 1.78-.73 2.03-1.44.25-.7.25-1.3.17-1.44-.08-.13-.27-.2-.57-.35z"
+          />
+        </svg>
+      </div>
+
+      <span class="whatsapp-label">Fale conosco</span>
+    </a>
+
 </template>
 
 <style scoped>
@@ -493,6 +514,131 @@ h2 {
   border-radius: 999px;
 
   font-weight: 700;
+}
+
+.whatsapp-container {
+  animation: shakeWhatsapp 6s infinite;
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  text-decoration: none;
+  z-index: 999;
+}
+
+@keyframes shakeWhatsapp {
+
+  0%,
+  90%,
+  100% {
+    transform: rotate(0);
+  }
+
+  91% {
+    transform: rotate(-8deg);
+  }
+
+  92% {
+    transform: rotate(8deg);
+  }
+
+  93% {
+    transform: rotate(-8deg);
+  }
+
+  94% {
+    transform: rotate(8deg);
+  }
+
+  95% {
+    transform: rotate(0);
+  }
+}
+
+.whatsapp-button {
+  width: 60px;
+  height: 60px;
+
+  border-radius: 50%;
+
+  background: #25d366;
+
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  animation: pulseWhatsapp 2s infinite;
+}
+
+@keyframes pulseWhatsapp {
+
+  0% {
+    box-shadow:
+      0 0 0 0 rgba(37,211,102,.6);
+  }
+
+  70% {
+    box-shadow:
+      0 0 0 18px rgba(37,211,102,0);
+  }
+
+  100% {
+    box-shadow:
+      0 0 0 0 rgba(37,211,102,0);
+  }
+
+}
+
+/* SVG */
+.whatsapp-button svg {
+  width: 26px;
+  height: 26px;
+}
+
+/* hover */
+.whatsapp-button:hover {
+  transform: scale(1.08);
+  background: #1ebe5d;
+}
+
+/* label */
+.whatsapp-label {
+  background: rgba(15, 23, 42, 0.95);
+  color: #e2e8f0;
+
+  padding: 8px 12px;
+  border-radius: 8px;
+
+  font-size: 0.8rem;
+  white-space: nowrap;
+
+  opacity: 0;
+  transform: translateX(10px);
+  transition: 0.25s;
+}
+
+/* aparecer no hover */
+.whatsapp-container:hover .whatsapp-label {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* mobile */
+@media (max-width: 768px) {
+  .whatsapp-button {
+    width: 52px;
+    height: 52px;
+  }
+
+  .whatsapp-label {
+    display: none;
+  }
 }
 
 </style>

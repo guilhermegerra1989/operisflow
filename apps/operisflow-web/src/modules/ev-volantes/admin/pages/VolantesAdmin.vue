@@ -254,10 +254,13 @@ function exportToCsv() {
 </script>
 
 <template>
+  
+<div class="page">
   <div class="container">
+
     <div class="top-bar">
       <img
-        src="../../../../assets/ev-volantes-logo.png"
+        src="../../../../assets/ev_volantes_image.png"
         alt="EV Volantes"
         class="logo"
       />
@@ -385,11 +388,26 @@ function exportToCsv() {
       </div>
     </div>
   </div>
+  </div>
 </template>
 
 <style scoped>
 h2 {
-  margin-bottom: 16px;
+  text-align: center;
+
+  color: white;
+
+  font-size: 2rem;
+
+  margin-bottom: 24px;
+}
+
+h3 {
+  text-align: center;
+
+  color: white;
+
+  margin-bottom: 24px;
 }
 
 .error {
@@ -398,11 +416,28 @@ h2 {
 }
 
 .card {
-  background: #ffffff;
-  padding: 16px;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  margin-bottom: 16px;
+  margin-bottom: 20px;
+
+  padding: 20px;
+
+  border-radius: 20px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.03),
+      rgba(255,255,255,.01)
+    );
+
+  border: 1px solid rgba(255,255,255,.06);
+
+  backdrop-filter: blur(12px);
+}
+
+
+select option {
+  background: #111;
+  color: white;
 }
 
 .form-card {
@@ -410,20 +445,44 @@ h2 {
 }
 
 .label {
+  color: #cbd5e1;
+
   font-size: 14px;
+
   font-weight: 600;
+
   display: block;
+
   margin-top: 10px;
 }
 
 .input {
   width: 100%;
-  padding: 10px;
-  margin-top: 4px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
+
+  padding: 12px 14px;
+
+  margin-top: 6px;
+
+  border-radius: 12px;
+
+  border: 1px solid rgba(255,255,255,.08);
+
+  background: rgba(255,255,255,.03);
+
+  color: white;
+
   font-size: 14px;
+
+  transition: .25s;
+}
+
+.input:focus {
+  outline: none;
+
+  border-color: #004BFF;
+
+  box-shadow:
+    0 0 0 4px rgba(0,75,255,.15);
 }
 
 .form-actions {
@@ -434,19 +493,33 @@ h2 {
 }
 
 .btn-primary {
-  background: #5e72a8;
+  background:
+    linear-gradient(
+      135deg,
+      #004BFF,
+      #2563eb
+    );
+
   color: white;
+
   border: none;
-  padding: 10px 16px;
-  border-radius: 8px;
+
+  padding: 12px 16px;
+
+  border-radius: 12px;
+
+  font-weight: 700;
+
   cursor: pointer;
-  font-weight: 600;
+
+  transition: .25s;
 }
 
-.btn-primary:hover,
-.btn-secondary:hover,
-.btn-small:hover {
-  opacity: 0.9;
+.btn-primary:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 25px rgba(0,75,255,.35);
 }
 
 .list-card {
@@ -461,18 +534,25 @@ h2 {
 
 .table th,
 .table td {
-  padding: 8px;
-  border-bottom: 1px solid #eee;
-  text-align: left;
+  color: #e2e8f0;
+
+  border-bottom: 1px solid rgba(255,255,255,.05);
+}
+.table tr:hover {
+  background: rgba(0,75,255,.05);
 }
 
 .table td img {
-  width: 60px;
-  height: 60px;
+  width: 70px;
+  height: 70px;
+
   object-fit: cover;
-  border-radius: 6px;
-  display: block;
-  margin: 0 auto;
+
+  border-radius: 12px;
+
+  background: white;
+
+  padding: 2px;
 }
 
 .actions {
@@ -490,13 +570,26 @@ h2 {
 }
 
 .btn-small.danger {
-  background: #ffcdd2;
-  color: #b71c1c;
+  background: rgba(239,68,68,.12);
+
+  color: #f87171;
+
+  border: 1px solid rgba(239,68,68,.25);
 }
 
+
 .btn-edit {
-  background: #5e72a8;
-  color: #ffffff;
+  background: rgba(0,75,255,.15);
+
+  color: #4d7cff;
+
+  border: 1px solid rgba(0,75,255,.3);
+
+  padding: 8px 12px;
+
+  border-radius: 10px;
+
+  font-weight: 600;
 }
 
 .btn-edit:hover {
@@ -504,12 +597,51 @@ h2 {
 }
 
 .logo {
-  height: 36px;
+  height: 55px;
+
   object-fit: contain;
+
+  filter:
+    brightness(0)
+    invert(1);
+}
+
+.page {
+  min-height: 100vh;
+
+  display: flex;
+  justify-content: center;
+
+  padding: 30px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #111111,
+      #171717,
+      #0d0d0d
+    );
 }
 
 .container {
-  padding: 16px;
+  width: 100%;
+  max-width: 1200px;
+
+  padding: 32px;
+
+  border-radius: 24px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(20,20,20,.65),
+      rgba(10,10,10,.68)
+    );
+
+  border: 1px solid rgba(0,75,255,.25);
+
+  box-shadow:
+    0 15px 40px rgba(0,0,0,.35);
 }
 
 /* TOPO */
@@ -530,20 +662,23 @@ h2 {
   gap: 8px;
 }
 
-/* Botões */
 .btn-secondary {
   background: transparent;
-  border: 1px solid #1e88e5;
-  color: #5e72a8;
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
+
+  border: 2px solid #004BFF;
+
+  color: #004BFF;
+
+  padding: 8px 14px;
+
+  border-radius: 10px;
+
+  font-weight: 700;
 }
 
 .btn-secondary:hover {
-  background: #e3f2fd;
+  background: rgba(0,75,255,.12);
+  color: white;
 }
 
 .btn-logout {
@@ -562,8 +697,11 @@ h2 {
 }
 
 .form-card.editing {
-  border: 2px solid #5e72a8;
-  box-shadow: 0 0 0 2px rgba(94, 114, 168, 0.15);
+  border: 1px solid #004BFF;
+
+  box-shadow:
+    0 0 0 1px rgba(0,75,255,.4),
+    0 0 25px rgba(0,75,255,.15);
 }
 
 .marcas-lista {
@@ -571,26 +709,50 @@ h2 {
 }
 
 .marca-group {
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  margin-bottom: 12px;
+  border: 1px solid rgba(255,255,255,.06);
+
+  border-radius: 16px;
+
   overflow: hidden;
+
+  margin-bottom: 14px;
+
+  background: rgba(255,255,255,.02);
 }
 
 .marca-header {
-  padding: 12px;
-  background: #f7f7f7;
+  padding: 14px 16px;
+
+  background: rgba(255,255,255,.03);
+
   display: flex;
+
   justify-content: space-between;
+
   align-items: center;
+
   cursor: pointer;
+
+  transition: .25s;
 }
+
+.marca-header:hover {
+  background: rgba(0,75,255,.08);
+}
+
 
 .marca-info {
   display: flex;
   align-items: center;
   gap: 12px;
 }
+
+.marca-info span {
+  color: #4d7cff;
+
+  font-weight: 700;
+}
+
 
 .marca-logo {
   width: 40px;
@@ -605,7 +767,8 @@ h2 {
 
 .volantes {
   padding: 10px 12px;
-  background: #fff;
+
+  background: rgba(255,255,255,.02);
 }
 
 .fade-enter-active,
@@ -617,5 +780,16 @@ h2 {
 .fade-leave-to {
   opacity: 0;
   transform: translateY(-5px);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+
+  border-color: #004BFF;
+
+  box-shadow:
+    0 0 0 1px rgba(0,75,255,.4),
+    0 0 25px rgba(0,75,255,.20),
+    0 10px 30px rgba(0,0,0,.35);
 }
 </style>
