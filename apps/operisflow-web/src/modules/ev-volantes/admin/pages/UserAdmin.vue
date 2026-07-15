@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted, watch, computed} from "vue";
 import { apiPost, apiGet, apiDelete, apiPatch } from "../../api/apiClient";
 
 type User = {
@@ -23,6 +23,16 @@ const loading = ref(false);
 
 const users = ref<User[]>([]);
 const rotas = ref<Rota[]>([]);
+
+const search = ref("");
+
+const filteredUsers = computed(() =>
+  users.value.filter(u =>
+    u.name.toLowerCase()
+      .includes(search.value.toLowerCase())
+  )
+);
+
 
 const estados = [
   "AC", "AL", "AP", "AM",
@@ -86,30 +96,25 @@ async function loadUsers() {
   }
 }
 
-// =========================
-// RESET
-// =========================
-function resetForm() {
+function clearFields() {
   name.value = "";
   nome_fantasia.value = "";
   razao_social.value = "";
   email.value = "";
   password.value = "";
 
-  role.value = "admin"; // ✅ default admin
-  active.value = true;
-
   rotaId.value = "";
 
   endereco.value = "";
   cnpj.value = "";
-  telefone.value = "";
 
   telcomercial.value = "";
   telpessoal.value = "";
+
   bairro.value = "";
   cep.value = "";
   estado.value = "";
+
   inscricao_estadual.value = "";
   inscricao_municipal.value = "";
 
@@ -117,12 +122,26 @@ function resetForm() {
 }
 
 // =========================
+// RESET
+// =========================
+function resetForm() {
+  clearFields();
+
+  role.value = "admin";
+  active.value = true;
+}
+
+// =========================
 // WATCH
 // =========================
-watch(role, (r) => {
-  if (r !== "client") {
-    resetForm();
-  }
+watch(role, (newRole, oldRole) => {
+  if (!oldRole) return;
+
+  const roleSelecionada = newRole;
+
+  resetForm();
+
+  role.value = roleSelecionada;
 });
 
 watch(telcomercial, (val) => {
@@ -155,7 +174,7 @@ async function salvarUsuario() {
     return;
   }
 
-  if (telefone.value.length > 50) {
+  if (telcomercial.value.length > 50) {
     alert("Telefone deve ter no máximo 50 caracteres");
     return;
   }
@@ -179,7 +198,7 @@ async function salvarUsuario() {
 
   // valida cliente
   if (role.value === "client") {
-    if (!endereco.value || !cnpj.value || !telefone.value) {
+    if (!endereco.value || !cnpj.value || !telcomercial.value) {
       alert("Preencha os dados do cliente");
       return;
     }
@@ -309,9 +328,10 @@ onMounted(loadUsers);
     </div>
 
 
-<div class="container">
 
     <h2>{{ editingUserId ? 'Editar Usuário' : 'Novo Usuário' }}</h2>
+
+    <div class="form-container">
 
       <div class="field required">
         <label>Tipo</label>
@@ -374,15 +394,7 @@ onMounted(loadUsers);
         </div>
     </div>
 
-    <!-- ROTA -->
-    <div v-if="role === 'client'" class="field required">
-      <label>Rota</label>
-      <select v-model="rotaId" class="input">
-        <option value="">Selecione</option>
-        <option v-for="r in rotas" :key="r.id" :value="r.id">{{ r.nome }}</option>
-      </select>
-    </div>
-
+   
     <!-- CAMPOS CLIENTE -->
     <div v-if="role === 'client'" class="client-section">
 
@@ -402,7 +414,7 @@ onMounted(loadUsers);
         </small>
       </div>
 
-      <div class="field required">
+      <div class="field required full">
         <label>Endereço</label>
         <input v-model="endereco" />
       </div>
@@ -413,6 +425,11 @@ onMounted(loadUsers);
       </div>
 
       <div class="field required">
+        <label>Cep</label>
+        <input v-model="cep" />
+      </div>
+
+      <div class="field required full">
         <label>Estado / UF</label>
 
         <select v-model="estado">
@@ -426,9 +443,13 @@ onMounted(loadUsers);
         </select>
       </div>
 
-      <div class="field required">
-        <label>Cep</label>
-        <input v-model="cep" />
+       <!-- ROTA -->
+      <div class="field required full">
+        <label>Rota</label>
+        <select v-model="rotaId" class="input">
+          <option value="">Selecione</option>
+          <option v-for="r in rotas" :key="r.id" :value="r.id">{{ r.nome }}</option>
+        </select>
       </div>
 
       <div class="field required">
@@ -477,13 +498,21 @@ onMounted(loadUsers);
     </button>
 
 
+    </div> <!--FIM FORM-CONTAINER -->
+
+
     <!-- TABELA -->
 
     <div class="table-card">
 
-      <h3>Lista de Usuários</h3>
+      <h3 style="color: beige;">Lista de Usuários</h3>
+
+
 
       <div class="table-wrapper">
+
+        <input v-model="search" placeholder="Pesquisar usuário..." style="margin-bottom: 10px;"/>
+
           <div class="table-wrapper">
             <table class="user-table">
               <thead>
@@ -496,10 +525,21 @@ onMounted(loadUsers);
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="u in users" :key="u.id">
+                <tr v-for="u in filteredUsers" :key="u.id" style="color: beige;">
                   <td>{{ u.name }}</td>
-                  <td>{{ u.role }}</td>
-                  <td>{{ u.active ? 'Ativo' : 'Inativo' }}</td>
+                  <td>
+                    <span class="role-badge" :class="u.role">
+                      {{ u.role }}
+                    </span>
+                  </td>
+                  <td>
+                    <span
+                      class="status-badge"
+                      :class="u.active ? 'ativo' : 'inativo'"
+                    >
+                      {{ u.active ? 'Ativo' : 'Inativo' }}
+                    </span>
+                  </td>
                   <td class="actions-col">
 
                     <button class="icon-btn edit" @click="começarEditarUsuario(u)" title="Editar">
@@ -525,7 +565,6 @@ onMounted(loadUsers);
   </div>
 
 
-    </div>
   </div>
 
 </div>
@@ -647,13 +686,27 @@ h2 {
   margin-bottom: 24px;
 }
 
-/* FORM */
+.form-container {
+  width: 100%;
+  max-width: 550px;
+  margin: 0 auto;
+}
 
 .form {
   display: flex;
   flex-direction: column;
 
   gap: 16px;
+}
+
+.client-section {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.full {
+  grid-column: 1 / -1;
 }
 
 .field {
@@ -716,7 +769,7 @@ select:focus {
 
 .form-card,
 .table-card {
-  background: rgba(255,255,255,.03);
+  background: rgb(99, 93, 93);
 
   border: 1px solid rgba(255,255,255,.08);
 
@@ -724,6 +777,8 @@ select:focus {
 
   padding: 24px;
 
+
+  margin-top: 20px;
   margin-bottom: 20px;
 }
 
@@ -1157,6 +1212,77 @@ select:focus {
 
   box-shadow:
     0 15px 35px rgba(0,75,255,.35);
+}
+
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.user-table thead {
+  background: rgba(0,75,255,.15);
+}
+
+.user-table th {
+  padding: 14px;
+  color: #e2e8f0;
+  text-align: left;
+}
+
+.user-table td {
+  padding: 14px;
+  border-top: 1px solid rgba(255,255,255,.05);
+}
+
+.user-table tbody tr {
+  transition: .2s;
+}
+
+.user-table tbody tr:hover {
+  background: rgba(255,255,255,.03);
+}
+
+.role-badge {
+  padding: 6px 10px;
+  border-radius: 30px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.role-badge.client {
+  background: rgba(59,130,246,.15);
+  color: #60a5fa;
+}
+
+.role-badge.admin {
+  background: rgba(168,85,247,.15);
+  color: #c084fc;
+}
+
+.role-badge.operator {
+  background: rgba(245,158,11,.15);
+  color: #fbbf24;
+}
+
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 30px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.status-badge.ativo {
+  color: #22c55e;
+  background: rgba(34,197,94,.15);
+}
+
+.status-badge.inativo {
+  color: #ef4444;
+  background: rgba(239,68,68,.15);
+}
+
+.icon-btn {
+ background: beige;
 }
 
 </style>
