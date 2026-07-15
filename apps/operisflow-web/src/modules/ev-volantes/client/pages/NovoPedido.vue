@@ -697,24 +697,40 @@ h4 {
 }
 
 .btn-marca {
-  flex: 1 1 100%;       
-  display: flex;           
-  align-items: center;      
-  gap: 10px;                
-  padding: 10px;            
-  border-radius: 8px;
-  border: 1px solid #5e72a8;
-  background: #ffffff;
-  color: #5e72a8;
-  font-size: 15px;         
+  flex: 1 1 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 14px;
+  border-radius: 14px;
+
+  border: 1px solid rgba(0, 75, 255, .35);
+
+  background: rgba(255,255,255,.03);
+  backdrop-filter: blur(10px);
+
+  color: white;
+  font-size: 15px;
   font-weight: 600;
+
   cursor: pointer;
-  transition: background 0.2s ease;
+
+  transition: all .25s ease;
 }
 
 .btn-marca:hover {
-  background: #eef1ff;
+  transform: translateY(-2px);
+
+  border-color: #004BFF;
+
+  background: rgba(0,75,255,.12);
+
+  box-shadow:
+    0 0 0 1px rgba(0,75,255,.3),
+    0 8px 25px rgba(0,75,255,.25);
 }
+
 
 .marca-logo {
   width: 26px;           
@@ -771,6 +787,27 @@ h4 {
   gap: 8px;
 }
 
+.acoes-modelos .btn-outline {
+  border: none;
+
+  background: linear-gradient(
+    135deg,
+    #004BFF,
+    #2563eb
+  );
+
+  color: white;
+
+  font-weight: 700;
+}
+
+.acoes-modelos .btn-outline:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 10px 30px rgba(0,75,255,.35);
+}
+
 .itens-lista {
   margin-bottom: 16px;
 }
@@ -804,37 +841,61 @@ h4 {
 }
 
 .btn-outline {
-  background: transparent;
-  border: 1px dashed #5e72a8;
-  color: #5e72a8;
-  padding: 8px;
   width: 100%;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 14px;
+
+  padding: 14px;
+
+  border-radius: 14px;
+
+  border: 1px dashed rgba(0,75,255,.5);
+
+  background: rgba(255,255,255,.03);
+
+  color: #4d7cff;
+
+  font-size: 15px;
+  font-weight: 700;
+
   cursor: pointer;
-  margin-top: 4px;
+
+  transition: all .25s ease;
 }
 
 .btn-outline:hover {
-  background: #eef1ff;
+  background: rgba(0,75,255,.12);
+
+  border-color: #004BFF;
+
+  color: white;
+
+  box-shadow:
+    0 8px 25px rgba(0,75,255,.2);
 }
 
 .btn-secundario {
-  background: #e0e0e0;
-  border: none;
-  color: #424242;
-  padding: 8px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 500;
+  background: rgba(255,255,255,.05);
+
+  border: 1px solid rgba(255,255,255,.08);
+
+  color: #cbd5e1;
+
+  padding: 12px;
+
+  border-radius: 12px;
+
+  font-weight: 600;
+
   cursor: pointer;
-  width: 100%;
-  margin-top: 4px;
+
+  transition: all .25s ease;
 }
 
 .btn-secundario:hover {
-  background: #d5d5d5;
+  background: rgba(255,255,255,.08);
+
+  border-color: rgba(255,255,255,.15);
+
+  color: white;
 }
 
 .btn-remover {
@@ -907,11 +968,11 @@ h4 {
 
 .grupo-marca {
   margin-bottom: 16px;
-  padding: 10px 12px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  background: #ffffff;
-  animation: fadeItem 0.3s ease;
+  padding: 14px;
+  border-radius: 16px;
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.06);
+  backdrop-filter: blur(10px);
 }
 
 .grupo-titulo {
@@ -937,11 +998,20 @@ h4 {
 }
 
 .grupo-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 6px 0;
-  border-bottom: 1px solid #f2f2f2;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+
+.grupo-item-codigo {
+  color: white;
+}
+
+.grupo-item-descricao {
+  color: #94a3b8;
+}
+
+.grupo-item-qtd {
+  color: #4d7cff;
 }
 
 .grupo-item:last-child {
@@ -951,11 +1021,6 @@ h4 {
 .grupo-item-info {
   flex: 1;
   margin-right: 10px;
-}
-
-.grupo-item-codigo {
-  font-size: 13px;
-  font-weight: 600;
 }
 
 .grupo-item-descricao {
