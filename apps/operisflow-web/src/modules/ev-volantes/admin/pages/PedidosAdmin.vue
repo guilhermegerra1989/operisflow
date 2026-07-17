@@ -26,7 +26,15 @@ type Pedido = {
   phone?: string;
   tipo?: string;
   items: PedidoItem[];
+  telcomercial: string;
+  telpessoal: string;
+  bairro: string;
+  estado: string;
+  cep: string;
+  inscricao_estadual: string;
+  inscricao_municipal: string;
 };
+
 
 interface Order {
   orderNumber: string;
@@ -40,6 +48,13 @@ interface Order {
     phone: string;
     nome_fantasia: string;
     razao_social: string;
+    telcomercial: string;
+    telpessoal: string;
+    bairro: string;
+    estado: string;
+    cep: string;
+    inscricao_estadual: string;
+    inscricao_municipal: string;
   };
   items: Array<{
     code: string;
@@ -75,6 +90,13 @@ const filteredPedidos = computed(() => {
         p.address ?? "",
         p.cnpj ?? "",
         p.phone ?? "",
+        p.telcomercial ?? "",
+        p.telpessoal ?? "",
+        p.bairro ?? "",
+        p.estado ?? "",
+        p.cep ?? "",
+        p.inscricao_estadual ?? "",
+        p.inscricao_municipal ?? "",
         ...p.items.map((i) => i.codigo ?? ""),
         ...p.items.map((i) => i.descricao ?? ""),
         ...p.items.map((i) => i.marcaNome ?? ""),
@@ -171,7 +193,6 @@ async function reAbrirPedido(pedidoId: string) {
 
 async function exportOrder(pedido: Pedido) {
   const order = mapPedidoToOrder(pedido);
-  
   const blob = await apiPostBlob("/orders/export", order);
 
   const url = URL.createObjectURL(blob);
@@ -186,7 +207,6 @@ async function exportOrder(pedido: Pedido) {
 }
 
 function mapPedidoToOrder(pedido: Pedido): Order {
-
   return {
     orderNumber: String(pedido.numeroPedido ?? pedido.id),
     createdAt: pedido.createdAt,
@@ -200,6 +220,14 @@ function mapPedidoToOrder(pedido: Pedido): Order {
       phone: pedido.phone ?? "",    
       nome_fantasia: pedido.nome_fantasia ?? "",  
       razao_social: pedido.razao_social ?? "", 
+      telcomercial: pedido.telcomercial ?? "",
+      telpessoal: pedido.telpessoal ?? "",
+      bairro: pedido.bairro ?? "",
+      estado: pedido.estado ?? "",
+      cep: pedido.cep ?? "",
+      inscricao_estadual: pedido.inscricao_estadual ?? "",
+      inscricao_municipal: pedido.inscricao_municipal ?? "",
+
     },
 
     items: pedido.items.map((item) => ({
@@ -275,11 +303,12 @@ onMounted(loadPedidos);
 </script>
 
 <template>
-  <div class="container">
+  <div class="page">
+    <div class="container">
     <!-- HEADER -->
     <div class="top-bar">
       <img
-        src="../../../../assets/ev-volantes-logo.png"
+        src="../../../../assets/ev_volantes_image.png"
         alt="EV Volantes"
         class="logo"
       />
@@ -338,14 +367,6 @@ onMounted(loadPedidos);
                 <!-- <span> ({{ item.marcaNome }})</span> -->
               </div>
             </td>
-
-            <!-- <td>
-              <div v-for="item in pedido.items" :key="item.volanteId">
-                {{ item.descricao }}
-              </div>
-            </td> -->
-
-           
 
             <td>
               <div v-for="item in pedido.items" :key="item.volanteId">
@@ -418,18 +439,65 @@ onMounted(loadPedidos);
       Nenhum pedido encontrado com os filtros atuais.
     </div>
   </div>
+  </div>
 </template>
 
 <style scoped>
 
-/* =========================
-   CONTAINER / LAYOUT
-   ========================= */
+.page {
+  min-height: 100vh;
+
+  background:
+    linear-gradient(
+      135deg,
+      #111111,
+      #171717,
+      #0d0d0d
+    );
+
+  padding: 30px;
+}
+
 .container {
-  padding: 16px;
-  width: 100%;
-  max-width: 1200px;
+  max-width: 1300px;
   margin: 0 auto;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(20,20,20,.65),
+      rgba(10,10,10,.68)
+    );
+
+  border: 1px solid rgba(0,75,255,.25);
+
+  border-radius: 24px;
+
+  padding: 32px;
+
+  box-shadow:
+    0 15px 40px rgba(0,0,0,.35);
+}
+
+.container:hover {
+
+  transform: translateY(-4px);
+
+  border-color: #004BFF;
+
+  box-shadow:
+    0 18px 45px rgba(0,75,255,.25);
+}
+
+
+:deep(body) {
+  background:
+    linear-gradient(
+      135deg,
+      #111111,
+      #171717,
+      #0d0d0d
+    );
 }
 
 @media (min-width: 900px) {
@@ -438,10 +506,12 @@ onMounted(loadPedidos);
     max-width: 1300px;
   }
 
-  h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
+h2 {
+  color: white;
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 24px;
+}
 
   .filters {
     gap: 20px;
@@ -462,23 +532,17 @@ onMounted(loadPedidos);
   }
 }
 
-h2 {
-  margin-bottom: 16px;
-}
-
-/* =========================
-   TOP BAR
-   ========================= */
 .top-bar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 24px;
 }
 
 .logo {
-  height: 36px;
+  height: 55px;
   object-fit: contain;
+  filter: brightness(0) invert(1);
 }
 
 .top-actions {
@@ -491,13 +555,23 @@ h2 {
    ========================= */
 .btn-secondary {
   background: transparent;
-  border: 1px solid #0759a0;
-  color: #5e72a8;
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
+
+  border: 2px solid #004BFF;
+
+  color: #004BFF;
+
+  padding: 10px 16px;
+
+  border-radius: 10px;
+
+  font-weight: 700;
+
+  transition: .25s;
+}
+
+.btn-secondary:hover {
+  background: rgba(0,75,255,.12);
+  color: white;
 }
 
 .btn-secondary:hover {
@@ -506,27 +580,34 @@ h2 {
 
 .btn-logout {
   background: transparent;
-  border: 1px solid #e53935;
-  color: #e53935;
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 600;
+
+  border: 2px solid #ef4444;
+
+  color: #ef4444;
+
+  padding: 10px 16px;
+
+  border-radius: 10px;
+
+  font-weight: 700;
+
   cursor: pointer;
+
+  transition: .25s;
 }
 
 .btn-logout:hover {
-  background: #ffebee;
+  background: rgba(239,68,68,.12);
+  color: white;
 }
+
+
 
 /* =========================
    FILTROS
    ========================= */
 .filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-bottom: 16px;
+  margin-bottom: 24px;
 }
 
 .filter-group {
@@ -536,26 +617,62 @@ h2 {
 }
 
 .filter-group label {
-  font-size: 13px;
-  margin-bottom: 4px;
+  color: #cbd5e1;
+  font-weight: 600;
+  margin-bottom: 6px;
 }
 
 .filter-group input {
-  padding: 6px 8px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 14px;
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(255,255,255,.03);
+  color: white;
+  transition: .25s;
+}
+
+.filter-group input::placeholder {
+  color: #94a3b8;
+}
+
+.filter-group input:focus {
+  outline: none;
+  border-color: #004BFF;
+  box-shadow:
+    0 0 0 4px rgba(0,75,255,.15);
 }
 
 /* =========================
    TABELA
    ========================= */
 .table-container {
-  width: 100%;
   overflow-x: auto;
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: .3s ease;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(20,20,20,.65),
+      rgba(10,10,10,.68)
+    );
+
+  border: 1px solid rgba(0,75,255,.25);
+
+  border-radius: 24px;
+
+  box-shadow:
+    0 15px 40px rgba(0,0,0,.35);
+
+  padding: 16px;
+}
+
+.table-container:hover {
+
+  border-color: rgba(0,75,255,.5);
+
+  box-shadow:
+    0 10px 30px rgba(0,75,255,.15);
 }
 
 table {
@@ -565,25 +682,30 @@ table {
 }
 
 thead {
-  background: #f5f5f5;
+  background: rgba(0,75,255,.15);
+}
+
+th {
+  color: #e2e8f0;
+  font-weight: 700;
 }
 
 th,
 td {
-  padding: 10px 12px;
-  border-bottom: 1px solid #eee;
+  padding: 14px;
+  border-bottom: 1px solid rgba(255,255,255,.05);
+  color: white;
   font-size: 13px;
   text-align: left;
   vertical-align: middle;
 }
 
-th {
-  font-weight: 600;
-  color: #555;
+tbody tr {
+  transition: .2s;
 }
 
 tbody tr:hover {
-  background: #fafafa;
+  background: rgba(255,255,255,.03);
 }
 
 /* =========================
@@ -601,56 +723,71 @@ tbody tr:hover {
 
 .pedido-codigo-lista span {
   font-size: 12px;
-  color: #666;
+   color: #94a3b8;
 }
 
 /* =========================
    STATUS
    ========================= */
 .badge {
-  display: inline-block;
-  padding: 3px 8px;
-  border-radius: 999px;
-  background: #e3f2fd;
-  color: #1565c0;
+  padding: 6px 12px;
+  border-radius: 30px;
   font-size: 12px;
   font-weight: 700;
-  text-transform: capitalize;
 }
 
 /* =========================
    AÇÕES
    ========================= */
 .btn-finalizar {
-  background: #2e7d32;
-  color: #fff;
   border: none;
-  padding: 6px 10px;
-  border-radius: 6px;
-  font-size: 12px;
+
+  padding: 8px 12px;
+
+  border-radius: 10px;
+
+  background: #22c55e;
+
+  color: white;
+
   font-weight: 700;
+
   cursor: pointer;
-  white-space: nowrap;
 }
 
 .btn-export {
-  background: #dfd261;
-  color: #fff;
   border: none;
-  padding: 6px 10px;
-  border-radius: 6px;
-  font-size: 12px;
+
+  padding: 8px 12px;
+
+  border-radius: 10px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #004BFF,
+      #2563eb
+    );
+
+  color: white;
+
   font-weight: 700;
+
   cursor: pointer;
-  white-space: nowrap;
+
+  transition: .25s;
 }
 
+
 .btn-export:hover {
-  background: #dfd261;
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 10px 25px rgba(0,75,255,.35);
 }
 
 .btn-finalizar:hover {
-  background: #1b5e20;
+  background: #16a34a;
 }
 
 .acao-desabilitada {
@@ -663,9 +800,7 @@ tbody tr:hover {
    ESTADO VAZIO
    ========================= */
 .empty {
-  text-align: center;
-  color: #777;
-  margin-top: 20px;
+  color: #94a3b8;
 }
 
 /* =========================
@@ -686,17 +821,17 @@ tbody tr:hover {
 }
 
 .badge-success {
-  background-color: #28a745;
-  color: white;
+  background: rgba(34,197,94,.15);
+  color: #22c55e;
 }
 
 .badge-warning {
-  background-color: #ffc107;
-  color: black;
+  background: rgba(245,158,11,.15);
+  color: #fbbf24;
 }
 
 .badge-danger {
-  background-color: #dc3545;
-  color: white;
+  background: rgba(239,68,68,.15);
+  color: #ef4444;
 }
 </style>

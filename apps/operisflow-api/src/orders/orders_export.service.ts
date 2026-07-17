@@ -45,24 +45,31 @@ export class OrdersExportService {
       worksheet.getCell("B5").value = 'PEDIDO\n ESPORTIVO - '+month+' / '+year;
     }
     worksheet.getCell("B5").alignment = { wrapText: true, vertical: "middle", horizontal: "center" };
+
+    const dataFormatada = new Date(order.createdAt).toLocaleDateString("pt-BR");
     
-    worksheet.getCell("E5").value = `PEDIDO\n N. ${order.orderNumber}`;
+    worksheet.getCell("E5").value = `PEDIDO N. ${order.orderNumber}\n ${dataFormatada}`;
     worksheet.getCell("E5").alignment = { wrapText: true, vertical: "middle", horizontal: "center" };
 
 
-    worksheet.getCell("B7").value = order.client.name;
+    worksheet.getCell("B7").value = order.client.razao_social;
     worksheet.getCell("B8").value = order.client.nome_fantasia;
-    worksheet.getCell("B9").value = order.client.razao_social;
-    worksheet.getCell("B10").value = order.client.address;
-    worksheet.getCell("B11").value = order.client.cnpj;
-    worksheet.getCell("B12").value = order.client.email;
-    worksheet.getCell("B13").value = order.client.phone;
+    worksheet.getCell("B9").value = order.client.cnpj;
+    worksheet.getCell("B10").value = order.client.email;
+    worksheet.getCell("B11").value = order.client.telcomercial;
+    worksheet.getCell("B12").value = order.client.telpessoal;
+    worksheet.getCell("B13").value = order.client.address;
+    worksheet.getCell("B14").value = order.client.bairro;
+    worksheet.getCell("B15").value = order.client.estado;
+    worksheet.getCell("B16").value = order.client.cep;
+    worksheet.getCell("B17").value = order.client.inscricao_estadual;
+    worksheet.getCell("B18").value = order.client.inscricao_municipal;
 
     // ===============================
     // ITEMS (dinâmicos, com estilo)
     // ===============================
-    const START_ROW = 16;
-    const TEMPLATE_ROW = 16;
+    const START_ROW = 21;
+    const TEMPLATE_ROW = 21;
 
     const templateRow = worksheet.getRow(TEMPLATE_ROW);
 

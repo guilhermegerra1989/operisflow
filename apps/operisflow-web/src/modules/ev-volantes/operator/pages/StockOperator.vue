@@ -228,11 +228,12 @@ onMounted(async () => {
 </script>
 
 <template>
+ <div class="page">
   <div class="container">
 
     <div class="top-bar">
       <img
-        src="../../../../assets/ev-volantes-logo.png"
+        src="../../../../assets/ev_volantes_image.png"
         alt="EV Volantes"
         class="logo"
       />
@@ -323,16 +324,80 @@ onMounted(async () => {
       Nenhum item encontrado.
     </div>
   </div>
+  </div>
 </template>
 
 
 <style scoped>
 
+.page {
+  min-height: 100vh;
+
+  padding: 30px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #111111,
+      #171717,
+      #0d0d0d
+    );
+}
+
 .container {
-  padding: 16px;
+  position: relative;
+
+  overflow: hidden;
+
   width: 100%;
-  max-width: 1200px;
+  max-width: 1300px;
+
   margin: 0 auto;
+
+  padding: 32px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(20,20,20,.65),
+      rgba(10,10,10,.68)
+    );
+
+  border: 1px solid rgba(0,75,255,.25);
+
+  border-radius: 24px;
+
+  transition: .35s ease;
+
+  box-shadow:
+    0 15px 40px rgba(0,0,0,.35);
+}
+
+.container::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0,75,255,.08),
+      transparent 40%
+    );
+
+  pointer-events: none;
+}
+
+.container:hover {
+
+  border-color: #004BFF;
+
+  transform: translateY(-4px);
+
+  box-shadow:
+    0 18px 45px rgba(0,75,255,.25);
 }
 
 @media (min-width: 900px) {
@@ -370,13 +435,17 @@ onMounted(async () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
-  margin-right: 15px;
+
+  margin-bottom: 30px;
 }
 
 .logo {
-  height: 36px;
+  height: 60px;
   object-fit: contain;
+
+  filter:
+    brightness(0)
+    invert(1);
 }
 
 .top-actions {
@@ -387,36 +456,65 @@ onMounted(async () => {
 /* Botões */
 .btn-secondary {
   background: transparent;
-  border: 1px solid #0759a0;
-  color: #5e72a8;
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 600;
+
+  border: 2px solid #004BFF;
+
+  color: #004BFF;
+
+  padding: 8px 14px;
+
+  border-radius: 10px;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
   cursor: pointer;
+
+  transition: .25s;
 }
 
 .btn-secondary:hover {
-  background: #e3f2fd;
+  background: rgba(0,75,255,.12);
+
+  color: white;
 }
 
 .btn-logout {
-  background: transparent;
-  border: 1px solid #e53935;
-  color: #e53935;
+  width: auto;
+  min-width: unset;
+
   padding: 4px 10px;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 600;
+
+  font-size: 12px;
+
+  border-radius: 8px;
+
+  background: transparent;
+
+  border: 1px solid rgba(239,68,68,.35);
+
+  color: #f87171;
+
   cursor: pointer;
+
+  transition: .25s;
 }
 
 .btn-logout:hover {
-  background: #ffebee;
+  background: rgba(239,68,68,.12);
+
+  color: white;
 }
 
 h2 {
-  margin-bottom: 16px;
+  color: white;
+
+  text-align: center;
+
+  font-size: 2rem;
+
+  margin-bottom: 32px;
 }
 
 /* FILTROS */
@@ -454,11 +552,23 @@ h2 {
 
 /* TABELA */
 .table-container {
-  width: 100%;
   overflow-x: auto;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+
+  background: rgba(255,255,255,.03);
+
+  border: 1px solid rgba(255,255,255,.08);
+
+  border-radius: 18px;
+
+  transition: .25s;
+}
+
+.table-container:hover {
+
+  border-color: rgba(0,75,255,.4);
+
+  box-shadow:
+    0 10px 30px rgba(0,75,255,.15);
 }
 
 table {
@@ -474,31 +584,42 @@ table {
 }
 
 thead {
-  background: #f5f5f5;
+  background: rgba(0,75,255,.15);
 }
 
 th,
 td {
-  padding: 10px 12px;
-  border-bottom: 1px solid #eee;
+  padding: 14px;
+
+  color: white;
+
+  border-bottom:
+    1px solid rgba(255,255,255,.05);
+
   font-size: 13px;
-  text-align: left;
-  vertical-align: middle;
 }
 
 th {
+  color: #e2e8f0;
+
   font-weight: 700;
-  color: #555;
+}
+
+
+tbody tr {
+  transition: .2s;
 }
 
 tbody tr:hover {
-  background: #fafafa;
+  background: rgba(255,255,255,.03);
 }
 
 .empty {
   text-align: center;
-  color: #777;
-  margin-top: 20px;
+
+  color: #94a3b8;
+
+  margin-top: 24px;
 }
 
 @media (max-width: 600px) {
@@ -537,24 +658,33 @@ tbody tr:hover {
 
 .estoque-input {
   width: 120px;
-  height: 36px;
-  padding: 0 10px;
-  border-radius: 10px;
-  border: 1px solid #e5e7eb;
-  background: #fff;
-  font-size: 13px;
-  color: #1f2937;
-  outline: none;
-  transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
-}
 
-.estoque-input:hover {
-  background: #f9fafb;
+  height: 36px;
+
+  padding: 0 10px;
+
+  border-radius: 10px;
+
+  border: 1px solid rgba(255,255,255,.08);
+
+  background: rgba(255,255,255,.03);
+
+  color: white;
+
+  outline: none;
+
+  transition: .25s;
 }
 
 .estoque-input:focus {
-  border-color: rgba(7, 89, 160, .45);
-  box-shadow: 0 0 0 4px rgba(7, 89, 160, .10);
+  border-color: #004BFF;
+
+  box-shadow:
+    0 0 0 4px rgba(0,75,255,.15);
+}
+
+.estoque-input:hover {
+  border-color: rgba(0,75,255,.35);
 }
 
 /* ✅ DESABILITADO (operador + snapshot) */
@@ -653,12 +783,20 @@ input[type=number] {
 
 .saving-overlay {
   position: sticky;
+
   top: 0;
-  background: #e3f2fd;
-  color: #0759a0;
-  padding: 10px 16px;
-  font-weight: 600;
-  border-bottom: 1px solid #cfe3f8;
+
+  background: rgba(0,75,255,.15);
+
+  color: #60a5fa;
+
+  padding: 12px 16px;
+
+  font-weight: 700;
+
+  border-bottom:
+    1px solid rgba(0,75,255,.25);
+
   z-index: 10;
 }
 

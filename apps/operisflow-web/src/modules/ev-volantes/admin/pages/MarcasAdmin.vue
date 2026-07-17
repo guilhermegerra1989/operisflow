@@ -160,7 +160,7 @@ function exportToCsv() {
 
     <div class="top-bar">
       <img
-        src="../../../../assets/ev-volantes-logo.png"
+        src="../../../../assets/ev_volantes_image.png"
         alt="EV Volantes"
         class="logo"
       />

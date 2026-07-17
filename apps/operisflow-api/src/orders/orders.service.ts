@@ -136,6 +136,13 @@ async findAll(tenantId: string) {
       u.cnpj AS cnpj,
       u.telefone AS telefone,
       u.email AS email,
+      u.tel_comercial AS telcomercial,
+      u.tel_pessoal AS telpessoal,
+      u.bairro as bairro,
+      u.estado AS estado,
+      u.cep AS cep,
+      u.inscricao_estadual AS inscricao_estadual,
+      u.inscricao_municipal AS inscricao_municipal,
 
       oi.quantidade,
       v.id AS volante_id,
@@ -177,22 +184,33 @@ async groupOrdersWithItems(rows: any[]) {
     // se ainda não existe, cria o "cabeçalho" do pedido
     if (!order) {
       order = {
-        id: row.order_id,
-        title: row.title,
-        description: row.description,
-        tipo: row.tipo,
-        status: row.status,
-        createdAt: row.created_at,
-        numeroPedido: row.numero_pedido,
-        clientName: row.client_name,  
-        nome_fantasia: row.nome_fantasia, 
-        razao_social: row.razao_social,  
-        cnpj: row.cnpj,
-        phone: row.telefone,
-        address: row.endereco,
-        email: row.email, 
-        items: [] as any[],
-      };
+      id: row.order_id,
+      title: row.title,
+      description: row.description,
+      tipo: row.tipo,
+      status: row.status,
+      createdAt: row.created_at,
+      numeroPedido: row.numero_pedido,
+
+      clientName: row.client_name,
+      nome_fantasia: row.nome_fantasia,
+      razao_social: row.razao_social,
+
+      cnpj: row.cnpj,
+      phone: row.telefone,
+      address: row.endereco,
+      email: row.email,
+
+      telcomercial: row.telcomercial,
+      telpessoal: row.telpessoal,
+      bairro: row.bairro,
+      estado: row.estado,
+      cep: row.cep,
+      inscricao_estadual: row.inscricao_estadual,
+      inscricao_municipal: row.inscricao_municipal,
+
+      items: [] as any[],
+    };
 
       ordersMap.set(row.order_id, order);
     }
