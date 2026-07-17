@@ -34,6 +34,51 @@ export class AuthService {
     };
   }
 
+  async resetPassword(
+  cnpj: string,
+  email: string,
+  password: string,
+) {
+
+  const result = await this.db.query(
+    `
+    SELECT id
+    FROM users
+    WHERE cnpj = $1
+      AND LOWER(email) = LOWER($2)
+      AND active = true
+    `,
+    [cnpj, email],
+  );
+
+  const user = result.rows[0];
+
+  if (!user) {
+    throw new UnauthorizedException(
+      'Cliente não encontrado',
+    );
+  }
+
+  await this.db.query(
+    `
+    UPDATE users
+    SET
+      password = $1,
+      updated_at = NOW()
+    WHERE id = $2
+    `,
+    [
+      password,
+      user.id,
+    ],
+  );
+
+  return {
+    success: true,
+    message: 'Senha atualizada com sucesso',
+  };
+}
+
   async login(email: string, password: string) {
     const user = await this.validateUser(email, password);
 
@@ -122,5 +167,40 @@ export class AuthService {
     rotaNome: row.rota_nome,
   };
 }
+
+
+async validateReset(cnpj: string, email: string) {
+
+    const result = await this.db.query(
+      `
+      SELECT
+        id,
+        razao_social,
+        nome_fantasia,
+        email,
+        cnpj
+      FROM users
+      WHERE cnpj = $1
+        AND LOWER(email) = LOWER($2)
+        AND active = true
+      `,
+      [cnpj, email],
+    );
+
+    const user = result.rows[0];
+
+    if (!user) {
+      throw new UnauthorizedException(
+        'Cliente não encontrado',
+      );
+    }
+
+    return {
+      id: user.id,
+      razaoSocial: user.razao_social,
+      nomeFantasia: user.nome_fantasia,
+    };
+  }
+
 
 }

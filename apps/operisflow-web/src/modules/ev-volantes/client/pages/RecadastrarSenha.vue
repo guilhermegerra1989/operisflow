@@ -2,8 +2,6 @@
 import { ref, computed } from "vue";
 import { apiPostPublic } from "../../api/apiClient";
 
-const tipo = ref<"client" | "admin" | "operator">("client");
-
 const cnpj = ref("");
 const email = ref("");
 
@@ -16,31 +14,61 @@ const mostrarConfirmacao = ref(false);
 const loading = ref(false);
 const sucesso = ref(false);
 
+const validado = ref(false);
+const razaoSocial = ref("");
+
 const mostrarCamposSenha = computed(() => {
-
-  if (tipo.value === "client") {
-    return !!cnpj.value && !!email.value;
-  }
-
-  return !!email.value;
-
+  return validado.value;
 });
 
+async function validarCliente() {
+  if (!cnpj.value.trim()) {
+    alert("Informe o CNPJ.");
+    return;
+  }
+
+  if (!email.value.trim()) {
+    alert("Informe o e-mail.");
+    return;
+  }
+
+  try {
+    loading.value = true;
+
+    const response = await apiPostPublic(
+      "/auth/validate-reset",
+      {
+        cnpj: cnpj.value.trim(),
+        email: email.value.trim().toLowerCase(),
+      }
+    );
+
+    validado.value = true;
+    razaoSocial.value =
+      response.razaoSocial ||
+      response.razao_social ||
+      response.nome_fantasia ||
+      "Cliente encontrado";
+
+  } catch (error) {
+    validado.value = false;
+    razaoSocial.value = "";
+
+    alert(
+      "Nenhum cliente encontrado com os dados informados."
+    );
+  } finally {
+    loading.value = false;
+  }
+}
+
 function validar() {
-
-  if (
-    tipo.value === "client" &&
-    !cnpj.value
-  ) {
-    return "CNPJ obrigatório";
-  }
-
-  if (!email.value) {
-    return "Email obrigatório";
-  }
-
   if (!novaSenha.value) {
     return "Nova senha obrigatória";
+  }
+
+  if (novaSenha.value.length < 6) {
+    return "A senha deve possuir pelo menos 6 caracteres";
   }
 
   if (!confirmarSenha.value) {
@@ -55,7 +83,6 @@ function validar() {
 }
 
 async function redefinirSenha() {
-
   const erro = validar();
 
   if (erro) {
@@ -64,18 +91,16 @@ async function redefinirSenha() {
   }
 
   try {
-
     loading.value = true;
 
-   await apiPostPublic(
-    "/auth/reset-password",
-    {
-      tipo: tipo.value,
-      cnpj: cnpj.value,
-      email: email.value,
-      password: novaSenha.value
-    }
-  );
+    await apiPostPublic(
+      "/auth/reset-password",
+      {
+        cnpj: cnpj.value.trim(),
+        email: email.value.trim().toLowerCase(),
+        password: novaSenha.value,
+      }
+    );
 
     sucesso.value = true;
 
@@ -84,15 +109,11 @@ async function redefinirSenha() {
     }, 2500);
 
   } catch {
-
     alert(
       "Não foi possível atualizar a senha."
     );
-
   } finally {
-
     loading.value = false;
-
   }
 }
 
@@ -100,7 +121,6 @@ function voltarLogin() {
   window.location.href = "/ev-volantes/login";
 }
 </script>
-
 
 <template>
 
@@ -112,11 +132,7 @@ function voltarLogin() {
 
       <div class="top-bar">
 
-        <img
-          src="../../../../assets/ev_volantes_image.png"
-          alt="EV Volantes"
-          class="logo"
-        />
+        ../../../../assets/ev_volantes_image.png
 
         <button
           class="btn-secondary btn-small"
@@ -130,26 +146,8 @@ function voltarLogin() {
       <h2>Recuperar Senha</h2>
 
       <p class="subtitle">
-        Informe seus dados para redefinir a senha.
+        Informe o CNPJ e o e-mail cadastrados para localizar sua empresa.
       </p>
-
-      <div class="role-selector">
-        <div class="role-card" :class="{ active: tipo === 'client' }" @click="tipo = 'client'">
-          <span>🏢</span>
-          <strong>Cliente</strong>
-          <small>Recuperar por CNPJ</small>
-        </div>
-
-        <div class="role-card" :class="{ active: tipo === 'admin' }" @click="tipo = 'admin'">
-          <span>👑</span>
-          <strong>Administrador</strong>
-        </div>
-
-        <div class="role-card" :class="{ active: tipo === 'operator' }" @click="tipo = 'operator'">
-          <span>⚙️</span>
-          <strong>Operador</strong>
-        </div>
-      </div>
 
       <div
         v-if="sucesso"
@@ -161,17 +159,49 @@ function voltarLogin() {
 
       <div class="form">
 
-        <div v-if="tipo === 'client'" class="field required">
+        <div class="field required">
           <label>CNPJ</label>
-          <input v-model="cnpj" />
+
+          <input
+            v-model="cnpj"
+            placeholder="Digite o CNPJ"
+            :disabled="validado"
+          />
         </div>
 
         <div class="field required">
           <label>Email</label>
+
           <input
             v-model="email"
             type="email"
+            placeholder="Digite o e-mail cadastrado"
+            :disabled="validado"
           />
+        </div>
+
+        <button
+          v-if="!validado"
+          class="btn-primary"
+          @click="validarCliente"
+          :disabled="loading"
+        >
+          {{
+            loading
+              ? "Validando..."
+              : "Validar Dados"
+          }}
+        </button>
+
+        <div
+          v-if="validado"
+          class="cliente-valido"
+        >
+          <div>✅ Cliente encontrado</div>
+
+          <strong>
+            {{ razaoSocial }}
+          </strong>
         </div>
 
         <div v-if="mostrarCamposSenha">
@@ -192,13 +222,12 @@ function voltarLogin() {
                 class="btn-eye"
                 @click="mostrarSenha = !mostrarSenha"
               >
-                {{ mostrarSenha ? '🙈' : '👁️' }}
+                {{ mostrarSenha ? "🙈" : "👁️" }}
               </button>
 
             </div>
 
           </div>
-
 
           <div class="field required">
 
@@ -216,37 +245,36 @@ function voltarLogin() {
                 class="btn-eye"
                 @click="mostrarConfirmacao = !mostrarConfirmacao"
               >
-                {{ mostrarConfirmacao ? '🙈' : '👁️' }}
+                {{ mostrarConfirmacao ? "🙈" : "👁️" }}
               </button>
 
             </div>
 
           </div>
 
-        </div>
+          <button
+            class="btn-primary"
+            @click="redefinirSenha"
+            :disabled="loading"
+          >
+            {{
+              loading
+                ? "Atualizando..."
+                : "Atualizar Senha"
+            }}
+          </button>
 
-        <button
-          v-if="mostrarCamposSenha"
-          class="btn-primary"
-          @click="redefinirSenha"
-          :disabled="loading"
-        >
-          {{
-            loading
-              ? "Atualizando..."
-              : "Atualizar Senha"
-          }}
-        </button>
+        </div>
 
       </div>
 
     </div>
+
   </div>
 
 </div>
 
 </template>
-
 
 <style scoped>
 
@@ -670,6 +698,41 @@ select:focus {
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+.cliente-valido {
+  margin-top: 6px;
+
+  padding: 18px;
+
+  border-radius: 14px;
+
+  text-align: center;
+
+  background: rgba(34, 197, 94, 0.12);
+
+  border: 1px solid rgba(34, 197, 94, 0.3);
+
+  color: #86efac;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 6px;
+}
+
+.cliente-valido strong {
+  color: white;
+
+  font-size: 1rem;
+}
+
+.field[disabled],
+input:disabled {
+  opacity: 0.8;
+
+  cursor: not-allowed;
 }
 
 </style>

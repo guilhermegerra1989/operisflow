@@ -11,6 +11,8 @@ import { CurrentUser } from '../common/decorators/current-user.decorator';
 
 import { UsersService } from '../users/users.service';
 import { CreateUserDto } from '../users/dto/create-user.dto';
+import { ValidateResetDto } from './dto/validate-reset.dto';
+import { ResetPasswordDto } from './dto/reset-password.dto';
 
 
 class LoginDto {
@@ -57,5 +59,26 @@ export class AuthController {
   }
 
 
+
+ @Post('validate-reset')
+  async validateReset(
+    @Body() dto: ValidateResetDto,
+  ) {
+    return this.authService.validateReset(
+      dto.cnpj,
+      dto.email,
+    );
+  }
+
+@Post('reset-password')
+async resetPassword(
+  @Body() dto: ResetPasswordDto,
+) {
+  return this.authService.resetPassword(
+    dto.cnpj,
+    dto.email,
+    dto.password,
+  );
+}
 
 }
